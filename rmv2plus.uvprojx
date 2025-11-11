@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\main</IncludePath>
+              <IncludePath>.\main;.\lib;.\periph</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -389,10 +389,52 @@
               <FileType>1</FileType>
               <FilePath>.\main\main.c</FilePath>
             </File>
+            <File>
+              <FileName>main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\main\main.h</FilePath>
+            </File>
+            <File>
+              <FileName>presets.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\main\presets.h</FilePath>
+            </File>
+            <File>
+              <FileName>locale_ru.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\main\locale_ru.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>lib</GroupName>
+          <Files>
+            <File>
+              <FileName>BA63.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lib\BA63.c</FilePath>
+            </File>
+            <File>
+              <FileName>BA63.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lib\BA63.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>periph</GroupName>
+          <Files>
+            <File>
+              <FileName>TIM6.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM6.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIM6.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM6.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>

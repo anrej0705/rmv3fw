@@ -1,8 +1,9 @@
-./objects/main.o: main\main.c \
+./objects/tim6.o: periph\TIM6.c periph\TIM6.h \
+  N:\KEIL536\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h \
   N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h \
   RTE\_STM32F100RB\RTE_Components.h \
   N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\core_cm3.h \
-  N:\KEIL536\ARM\ARMCLANG\Bin\..\include\stdint.h \
   N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\cmsis_version.h \
   N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\cmsis_compiler.h \
   N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\cmsis_armclang.h \
@@ -17,7 +18,6 @@
   N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_iwdg.h \
   N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rcc.h \
   N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rtc.h \
-  N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h \
   N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h \
   N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h \
-  main\main.h lib\BA63.h periph\TIM6.h main\presets.h main\locale_ru.h
+  main\presets.h
