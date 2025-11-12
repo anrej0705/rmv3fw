@@ -3,7 +3,7 @@
 
 #include "stdint.h"
 
-void setup_tim6();
+void setup_delay_ms();
 void delay_ms(uint16_t ms);
 
 #endif

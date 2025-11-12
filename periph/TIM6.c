@@ -2,7 +2,7 @@
 #include "stm32f10x_tim.h"
 #include "presets.h"
 
-void setup_tim6()
+void setup_delay_ms()
 {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM6, ENABLE);
 	
@@ -15,6 +15,9 @@ void setup_tim6()
 	m_tim.TIM_RepetitionCounter = 0;
 	m_tim.TIM_Prescaler = TIM6_PSC;
 	TIM_TimeBaseInit(TIM6, &m_tim);
+	
+	//Врубаем
+	TIM6->CR1 |= TIM_CR1_CEN;
 }
 
 //Миллисекундная задержка - спамить не стоит так как виснет весь контроллер
