@@ -1,7 +1,10 @@
 #include "stm32f10x.h"                  // Device header
 #include "main.h"
-#include "BA63.h"
-#include "TIM6.h"
+#include "BA63.h"												//Основной экран отображения
+#include "TIM6.h"												//Миллисекундная задержка
+#include "TIM15.h"											//Таймер управления приводом ЛПМ
+#include "TIM16.h"											//Таймер управления принимающей бобиной
+#include "TIM17.h"											//Таймер управления подающей бобины
 
 #include "presets.h"
 #include "locale_ru.h"
@@ -12,6 +15,9 @@ int main(void)
 {
 	//Начинаем настройку железок
 	setup_tim6();
+	setup_ttm();
+	setup_feed_coil();
+	setup_take_coil();
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Настраиваем таймеры
@@ -24,9 +30,6 @@ int main(void)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM15, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM16, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM17, ENABLE);
 	
 	//Настраиваем таймеры
 	TIM_TimeBaseInitTypeDef m_tim;
@@ -67,21 +70,6 @@ int main(void)
 	m_tim.TIM_Period = TIM7_ARR;
 	TIM_TimeBaseInit(TIM7, &m_tim);
 	
-	//TIM15 - управление скоростью лпм
-	m_tim.TIM_Prescaler = TIM15_PSC;
-	m_tim.TIM_Period = TIM15_PWM_MAX;
-	TIM_TimeBaseInit(TIM15, &m_tim);
-	
-	//TIM16 - управление скоростью принимающей бобины
-	m_tim.TIM_Prescaler = TIM16_PSC;
-	m_tim.TIM_Period = TIM16_PWM_MAX;
-	TIM_TimeBaseInit(TIM16, &m_tim);
-	
-	//TIM17 - управление скоростью подающей бобины
-	m_tim.TIM_Prescaler = TIM17_PSC;
-	m_tim.TIM_Period = TIM17_PWM_MAX;
-	TIM_TimeBaseInit(TIM17, &m_tim);
-	
 	//Настраивае ШИМ где надо
 	TIM_OCInitTypeDef m_pwm;
 	TIM_OCStructInit(&m_pwm);
@@ -95,12 +83,6 @@ int main(void)
 	TIM_OC2Init(TIM2, &m_pwm);		//25%
 	TIM_OC3Init(TIM2, &m_pwm);		//25%
 	TIM_OC4Init(TIM2, &m_pwm);		//25%
-	
-	m_pwm.TIM_Pulse = DRIVER_DEFAULT_PWM;
-	TIM_OC1Init(TIM15, &m_pwm);
-	TIM_OC1Init(TIM16, &m_pwm);
-	TIM_OC1Init(TIM17, &m_pwm);
-	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -142,7 +124,7 @@ int main(void)
 	GPIO_StructInit(&m_gpio);
 	
 	//Эти параметры будут везде
-	m_gpio.GPIO_Speed = GPIO_Speed_10MHz;
+	m_gpio.GPIO_Speed = GPIO_Speed_2MHz;
 	
 	//Настройка пинов которые будут обычными пинами
 	m_gpio.GPIO_Mode = GPIO_Mode_Out_PP;
@@ -188,11 +170,17 @@ int main(void)
 	TIM_Cmd(TIM5, ENABLE);
 	TIM_Cmd(TIM6, ENABLE);
 	TIM_Cmd(TIM7, ENABLE);
-	TIM_Cmd(TIM15, ENABLE);
-	TIM_Cmd(TIM16, ENABLE);
-	TIM_Cmd(TIM17, ENABLE);
 	USART_Cmd(USART1, ENABLE);
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+	//Запуски
+	start_ttm();
+	start_feed_coil();
+	start_take_coil();
+	
+	set_speed_ttm(800);
+	set_speed_feed_coil(800);
+	set_speed_take_coil(800);
 		
 	//Ждём пока экран раскочегарится, нагреется крч приведёт себя в готовность
 	delay_ms(366);																															//Ждём пока всё загрузится и просрётся
