@@ -2,6 +2,7 @@
 #include "main.h"
 #include "BA63.h"												//Основной экран отображения
 #include "TIM6.h"												//Миллисекундная задержка
+#include "TIM7.h"												//Опрос кнопок
 #include "TIM15.h"											//Таймер управления приводом ЛПМ
 #include "TIM16.h"											//Таймер управления принимающей бобиной
 #include "TIM17.h"											//Таймер управления подающей бобины
@@ -20,6 +21,8 @@ int main(void)
 	setup_usart();
 	
 	setup_delay_ms();
+	setup_key_poller();
+	
 	setup_ttm();
 	setup_feed_coil();
 	setup_take_coil();
@@ -32,7 +35,7 @@ int main(void)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
+	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
 	
@@ -71,9 +74,9 @@ int main(void)
 	TIM_TimeBaseInit(TIM5, &m_tim);
 	
 	//TIM7 - опрос кнопок и переключателей
-	m_tim.TIM_Prescaler = TIM7_PSC;
-	m_tim.TIM_Period = TIM7_ARR;
-	TIM_TimeBaseInit(TIM7, &m_tim);
+	//m_tim.TIM_Prescaler = TIM7_PSC;
+	//m_tim.TIM_Period = TIM7_ARR;
+	//TIM_TimeBaseInit(TIM7, &m_tim);
 	
 	//Настраивае ШИМ где надо
 	TIM_OCInitTypeDef m_pwm;
@@ -104,11 +107,12 @@ int main(void)
 	TIM_Cmd(TIM3, ENABLE);
 	TIM_Cmd(TIM4, ENABLE);
 	TIM_Cmd(TIM5, ENABLE);
-	TIM_Cmd(TIM7, ENABLE);
 	USART_Cmd(USART1, ENABLE);
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 	//Запуски
+	start_key_poller();
+	
 	start_ttm();
 	start_feed_coil();
 	start_take_coil();
@@ -121,6 +125,12 @@ int main(void)
 	delay_ms(366);																															//Ждём пока всё загрузится и просрётся
 	BA63_Init();																																//Чистим экран от мусора
 	welcome();																																	//Здороваемся с челом
+	
+	//Цiкл в конце обязателен, если конечно хочется чтобы прерывания работали
+	while(1)
+	{
+		//NOP
+	}
 }
 
 void welcome(void)
