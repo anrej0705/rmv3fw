@@ -1,6 +1,8 @@
 #include "stm32f10x.h"                  // Device header
 #include "main.h"
 #include "BA63.h"												//Основной экран отображения
+#include "TIM1.h"												//Таймер, останавливающий двигатель по достижении нужного количества импульсов
+#include "TIM4.h"												//Управление светодиодами и экраном
 #include "TIM6.h"												//Миллисекундная задержка
 #include "TIM7.h"												//Опрос кнопок
 #include "TIM15.h"											//Таймер управления приводом ЛПМ
@@ -20,10 +22,13 @@ int main(void)
 	setup_gpio();
 	setup_usart();
 	
+	setup_led_screen_update();
+	
 	setup_delay_ms();
 	setup_key_poller();
 	
 	setup_ttm();
+	setup_ttm_controller();
 	setup_feed_coil();
 	setup_take_coil();
 	
@@ -34,10 +39,6 @@ int main(void)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
-	//RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
-	
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1, ENABLE);
 	
 	//Настраиваем таймеры
 	TIM_TimeBaseInitTypeDef m_tim;
@@ -47,11 +48,6 @@ int main(void)
 	m_tim.TIM_ClockDivision = 0;
 	m_tim.TIM_CounterMode = TIM_CounterMode_Up;
 	m_tim.TIM_RepetitionCounter = 0;
-	
-	//TIM1 - управление таймером 15
-	m_tim.TIM_Prescaler = 0;									//Без делителя, считаем всем импульсы
-	m_tim.TIM_Period = TTM_PULSES_THRESHOLD;
-	TIM_TimeBaseInit(TIM1, &m_tim);
 	
 	//TIM2 - управление яркостью подсветки - RGBY_PRESET/RGBY_PWM_RANGE = скважность ШИМ
 	m_tim.TIM_Prescaler = RGBY_PSC;
@@ -67,16 +63,6 @@ int main(void)
 	m_tim.TIM_Prescaler = TIM4_PSC;
 	m_tim.TIM_Period = TIM4_ARR;
 	TIM_TimeBaseInit(TIM4, &m_tim);
-	
-	//TIM5 - управление светодиодами и экраном BA63
-	m_tim.TIM_Prescaler = TIM5_PSC;
-	m_tim.TIM_Period = TIM5_ARR;
-	TIM_TimeBaseInit(TIM5, &m_tim);
-	
-	//TIM7 - опрос кнопок и переключателей
-	//m_tim.TIM_Prescaler = TIM7_PSC;
-	//m_tim.TIM_Period = TIM7_ARR;
-	//TIM_TimeBaseInit(TIM7, &m_tim);
 	
 	//Настраивае ШИМ где надо
 	TIM_OCInitTypeDef m_pwm;
@@ -102,7 +88,7 @@ int main(void)
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Запускаемся
-	TIM_Cmd(TIM1, ENABLE);
+	//TIM_Cmd(TIM1, ENABLE);
 	TIM_Cmd(TIM2, ENABLE);
 	TIM_Cmd(TIM3, ENABLE);
 	TIM_Cmd(TIM4, ENABLE);
@@ -113,11 +99,14 @@ int main(void)
 	//Запуски
 	start_key_poller();
 	
+	start_led_screen_update();
+	
 	start_ttm();
+	start_ttm_controller();
 	start_feed_coil();
 	start_take_coil();
 	
-	set_speed_ttm(800);
+	set_speed_ttm(200);
 	set_speed_feed_coil(800);
 	set_speed_take_coil(800);
 		
