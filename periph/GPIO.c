@@ -1,8 +1,12 @@
 #include "stm32f10x_rcc.h"
 #include "stm32f10x_gpio.h"
 #include "GPIO.h"
+#include "TIM17.h"
+#include "TIM16.h"
+#include "TIM15.h"
 
 bool pa_service_menu_button_lock = 0;
+bool pb_main_switch_lock = 0;
 
 void setup_gpio(void)
 {	
@@ -20,11 +24,32 @@ void setup_gpio(void)
 	//Эти параметры будут везде
 	m_gpio.GPIO_Speed = GPIO_Speed_2MHz;
 	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Кнопки
+	m_gpio.GPIO_Mode = GPIO_Mode_IPD;
+	
+	//GPIOA
+	m_gpio.GPIO_Pin = GPIO_Pin_0;
+	GPIO_Init(GPIOA, &m_gpio);
+	
+	//GPIOB
+	m_gpio.GPIO_Pin = GPIO_Pin_7;
+	GPIO_Init(GPIOB, &m_gpio);
+	
+	//GPIOC
+	m_gpio.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
+	GPIO_Init(GPIOC, &m_gpio);
+	
+	//GPIOD
+	m_gpio.GPIO_Pin = GPIO_Pin_2;
+	GPIO_Init(GPIOD, &m_gpio);
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Настройка пинов которые будут обычными пинами
 	m_gpio.GPIO_Mode = GPIO_Mode_Out_PP;
 	
 	//GPIOA
-	m_gpio.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_8 | GPIO_Pin_11;
+	m_gpio.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_11;
 	GPIO_Init(GPIOA, &m_gpio);
 	
 	//GPIOB
@@ -32,31 +57,43 @@ void setup_gpio(void)
 	GPIO_Init(GPIOB, &m_gpio);
 	
 	//GPIOC
-	m_gpio.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
+	m_gpio.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
 	GPIO_Init(GPIOC, &m_gpio);
 	
-	//GPIOD
-	m_gpio.GPIO_Pin = GPIO_Pin_2;
-	GPIO_Init(GPIOD, &m_gpio);
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Настройка АНАЛоговых входов
+	m_gpio.GPIO_Mode = GPIO_Mode_AIN;
 	
+	//GPIOA
+	m_gpio.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+	GPIO_Init(GPIOA, &m_gpio);
+	
+	//GPIOB
+	m_gpio.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+	GPIO_Init(GPIOB, &m_gpio);
+	
+	//GPIOC
+	m_gpio.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
+	GPIO_Init(GPIOC, &m_gpio);
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Настройка блатных чертей
 	m_gpio.GPIO_Mode = GPIO_Mode_AF_PP;
 	
 	//GPIOA
-	m_gpio.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12;
+	m_gpio.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12;
 	GPIO_Init(GPIOA, &m_gpio);
 	
 	//GPIOB
 	m_gpio.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_14;
 	GPIO_Init(GPIOB, &m_gpio);
 	
-	//GPIOC
-	m_gpio.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
-	GPIO_Init(GPIOC, &m_gpio);
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
 
 inline void check_buttons()
 {
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Проверяем нажатие кнопки сервисного меню
 	if((GPIOA->IDR & PA_SERVICE_MENU_BUTTON) == 1 && !pa_service_menu_button_lock)
 	{
@@ -78,18 +115,35 @@ inline void check_buttons()
 		
 		//Пока что переключаем направление вращения двигателей
 	}
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
 
 inline void check_switchers()
 {
-	if(GPIOD->IDR & PD_MOTOR_MAIN_SWITCH)
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	if((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 1 && !pb_main_switch_lock)
 	{	//Лог.1 - выкл
-		GPIOB->ODR |= PB_COIL_ENABLE;
+		pb_main_switch_lock = 1;
+		
+		GPIOB->ODR |= PB_COILS_ENABLE;
 		GPIOB->ODR |= PB_TTM_ENABLE;
+		
+		//Вырубаем таймеры
+		stop_ttm();
+		stop_feed_coil();
+		stop_take_coil();
 	}
-	else
+	else if ((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 0 && pb_main_switch_lock)
 	{	//Лог.0 - вкл
-		GPIOB->ODR &= ~PB_COIL_ENABLE;
+		pb_main_switch_lock = 0;
+		
+		GPIOB->ODR &= ~PB_COILS_ENABLE;
 		GPIOB->ODR &= ~PB_TTM_ENABLE;
+		
+		//Врубаем таймеры
+		start_ttm();
+		start_feed_coil();
+		start_take_coil();
 	}
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }

@@ -8,8 +8,9 @@
 #define PA_FEED_COIL_DIRECTION			GPIO_Pin_8
 #define PA_TAKE_COIL_DIRECTION			GPIO_Pin_11
 
-#define PB_COIL_ENABLE							GPIO_Pin_5
+#define PB_COILS_ENABLE							GPIO_Pin_5
 #define PB_TTM_ENABLE								GPIO_Pin_6
+#define PB_FRAME_CHANGE_LED					GPIO_Pin_12
 #define PB_TTM_DIRECTION						GPIO_Pin_15
 
 #define PD_MOTOR_MAIN_SWITCH				GPIO_Pin_2
