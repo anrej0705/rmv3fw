@@ -2,6 +2,8 @@
 #include "stm32f10x_gpio.h"
 #include "GPIO.h"
 
+bool pa_service_menu_button_lock = 0;
+
 void setup_gpio(void)
 {	
 	//Теперь самый сок - порты блять
@@ -51,4 +53,43 @@ void setup_gpio(void)
 	//GPIOC
 	m_gpio.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
 	GPIO_Init(GPIOC, &m_gpio);
+}
+
+inline void check_buttons()
+{
+	//Проверяем нажатие кнопки сервисного меню
+	if((GPIOA->IDR & PA_SERVICE_MENU_BUTTON) == 1 && !pa_service_menu_button_lock)
+	{
+		pa_service_menu_button_lock = 1;
+		
+		GPIOA->ODR |= PA_FEED_COIL_DIRECTION;
+		GPIOA->ODR |= PA_TAKE_COIL_DIRECTION;
+		GPIOB->ODR |= PB_TTM_DIRECTION;
+		
+		//Пока что переключаем направление вращения двигателей
+	}
+	else if((GPIOA->IDR & PA_SERVICE_MENU_BUTTON) == 0 && pa_service_menu_button_lock)
+	{
+		pa_service_menu_button_lock = 0;
+		
+		GPIOA->ODR &= ~PA_FEED_COIL_DIRECTION;
+		GPIOA->ODR &= ~PA_TAKE_COIL_DIRECTION;
+		GPIOB->ODR &= ~PB_TTM_DIRECTION;
+		
+		//Пока что переключаем направление вращения двигателей
+	}
+}
+
+inline void check_switchers()
+{
+	if(GPIOD->IDR & PD_MOTOR_MAIN_SWITCH)
+	{	//Лог.1 - выкл
+		GPIOB->ODR |= PB_COIL_ENABLE;
+		GPIOB->ODR |= PB_TTM_ENABLE;
+	}
+	else
+	{	//Лог.0 - вкл
+		GPIOB->ODR &= ~PB_COIL_ENABLE;
+		GPIOB->ODR &= ~PB_TTM_ENABLE;
+	}
 }
