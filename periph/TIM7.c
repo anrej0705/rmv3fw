@@ -6,7 +6,9 @@
 
 //Есть такая тема - в контроллере баг, когда настраиваешь таймер при запуске он сразу же даёт 
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
-bool tim7_irg_bugfix = 0;
+bool tim7_irq_bugfix = 0;
+
+bool led_switch = 0;
 
 void setup_key_poller()
 {
@@ -22,6 +24,11 @@ void setup_key_poller()
 	m_tim.TIM_Prescaler = TIM7_PSC;
 	m_tim.TIM_Period = TIM7_ARR;
 	TIM_TimeBaseInit(TIM7, &m_tim);
+	
+	TIM7->CNT = 0;
+	
+	TIM7->EGR |= TIM_EGR_UG;
+	TIM_ClearITPendingBit(TIM7, TIM4_IRQn);
 	
 	//Врубаем прерывания
 	TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
@@ -46,11 +53,15 @@ void TIM7_IRQHandler()
 	//Зануляем счётчик, готовим к новой партии импульсов
 	TIM7->CNT = 0;
 	
-	if(!tim7_irg_bugfix)
+	if(!tim7_irq_bugfix)
 	{	//Фиксим ложное срабатывание прерывания
-		tim7_irg_bugfix = 1;
+		tim7_irq_bugfix = 1;
 		return;
 	}
+	
+	led_switch = !led_switch;
+	
+	led_switch == 1 ? (GPIOB->ODR |= GPIO_Pin_10) : (GPIOB->ODR &= ~GPIO_Pin_10);
 	
 	check_buttons();
 	check_switchers();
