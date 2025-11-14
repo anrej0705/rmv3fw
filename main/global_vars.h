@@ -39,5 +39,6 @@ bool cmp_remain(uint8_t desired_bytes);			//Возвращает 0 если же
 bool fifo_is_empty();												//1 если пустой
 void fifo_insert(char* queue, uint8_t size);//Вставка массива и запуск педерачи если она уже не ведётся
 char fifo_read();														//Смотрим что насрано в буфер и возвращаем 1(один(one)) ківш із смердючим гівном
+void fifo_push(char symbol);								//Вставка символа в очередь
 
 #endif

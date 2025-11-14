@@ -51,6 +51,12 @@ inline bool fifo_is_empty()
 	return 0;
 }
 
+inline void fifo_push(char symbol)
+{
+	ba63_fifo.buffer[ba63_fifo.stop] = symbol;
+	++ba63_fifo.stop;
+}
+
 inline void fifo_insert(char* queue, uint8_t size)
 {
 	if(size >= ba63_fifo.size)
@@ -60,6 +66,7 @@ inline void fifo_insert(char* queue, uint8_t size)
 	for(uint8_t idx = 0; idx < size; ++idx)
 	{	//Копируем в буфер инфу
 		ba63_fifo.buffer[idx + ba63_fifo.stop] = queue[idx];
+		//++ba63_fifo.stop;
 		GPIOC->ODR = queue[idx];
 	}
 	//Обновляем позицию остановки
