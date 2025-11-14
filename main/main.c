@@ -11,6 +11,7 @@
 #include "TIM17.h"											//Таймер управления подающей бобины
 #include "USART.h"											//Управление экраном отображения
 #include "GPIO.h"												//Порты и ноги и проч проч проч
+#include "NVIC.h"												//Настройка прерываний
 
 #include "presets.h"
 #include "locale_ru.h"
@@ -40,11 +41,7 @@ int main(void)
 	setup_feed_coil();
 	setup_take_coil();
 	
-	NVIC_SetPriority(TIM1_UP_TIM16_IRQn, 0);
-	NVIC_SetPriority(TIM2_IRQn, 1);
-	NVIC_SetPriority(TIM3_IRQn, 1);
-	NVIC_SetPriority(TIM4_IRQn, 1);
-	NVIC_SetPriority(TIM7_IRQn, 1);
+	setup_nvic();
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Настраиваем таймеры
@@ -152,7 +149,6 @@ int main(void)
 	start_key_poller();
 	
 	start_sensor_poll();
-	start_led_screen_update();
 	
 	start_ttm_controller();
 	
@@ -164,6 +160,8 @@ int main(void)
 	delay_ms(366);																															//Ждём пока всё загрузится и просрётся
 	BA63_Init();																																//Чистим экран от мусора
 	welcome();																																	//Здороваемся с челом
+	
+	start_led_screen_update();
 	
 	//Цiкл в конце обязателен, если конечно хочется чтобы прерывания работали
 	while(1)

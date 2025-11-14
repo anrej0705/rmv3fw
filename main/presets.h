@@ -16,7 +16,7 @@
 
 //TIM4 - управление светодиодами и экраном BA63
 #define TIM4_PSC								24000		//Делитель до 1 микросекунды
-#define TIM4_ARR								50			//Длительность паузы между прерываниями в микросекундах
+#define TIM4_ARR								100			//Длительность паузы между прерываниями в микросекундах
 
 //TIM6 - генерация миллисекундной задержки
 #define TIM6_PSC								24000		//Делитель до 1 миллисекунды
@@ -38,5 +38,19 @@
 #define TIM17_PWM_MAX						32			//Значение для 100% ШИМ, но это формально, ШИМ всегда будет 50%
 
 #define DRIVER_DEFAULT_PWM			16			//Значение для 50% ШИМ
+
+#define TIM1_IRQ_PRIORITY				0				//Приоритет таймера отслеживающий количество импульсов
+#define TIM3_IRQ_PRIORITY				2				//Приоритет таймера опроса датчиков
+#define TIM4_IRQ_PRIORITY				4				//Приоритет таймера управления светодиодами и индикацией в целом
+#define TIM6_IRQ_PRIORITY				3				//Приоритет задержки, хз зачем пусть будет
+#define TIM7_IRQ_PRIORITY				3				//Приоритет таймера опроса кнопок
+#define USART_IRQ_PRIORITY			6				//Приоритет передатчика инфы на экран отображения
+
+#define TIM1_IRQ_SUBPRIORITY		1				//Хз пусть будет
+#define TIM3_IRQ_SUBPRIORITY		6				
+#define TIM4_IRQ_SUBPRIORITY		6				
+#define TIM6_IRQ_SUBPRIORITY		6				
+#define TIM7_IRQ_SUBPRIORITY		6				
+#define USART_IRQ_SUBPRIORITY		9				
 
 #endif
