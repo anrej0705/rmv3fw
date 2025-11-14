@@ -1,6 +1,7 @@
 #include "TIM15.h"
 #include "stm32f10x_tim.h"
 #include "presets.h"
+#include "GPIO.h"
 
 //Настройка таймера
 void setup_ttm(void)
@@ -35,6 +36,9 @@ void setup_ttm(void)
 	m_pwm.TIM_Pulse = DRIVER_DEFAULT_PWM;	//50%
 	
 	TIM_OC1Init(TIM15, &m_pwm);
+	
+	//Настройка направления вращения
+	GPIOB->ODR &= ~PB_TTM_DIRECTION;
 }
 
 inline void start_ttm(void)
@@ -47,6 +51,9 @@ inline void stop_ttm(void)
 {	//ВЫРУБАЕМ И ТАЙМЕР И ЕГО ШИМ
 	TIM15->CR1 &= ~TIM_CR1_CEN;
 	TIM15->BDTR &= ~TIM_BDTR_MOE;
+	
+	//Зануляем счётчик
+	TIM15->CNT = 0;
 }
 
 inline void set_speed_ttm(uint16_t speed)

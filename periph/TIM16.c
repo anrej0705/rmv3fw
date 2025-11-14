@@ -1,6 +1,7 @@
 #include "TIM16.h"
 #include "stm32f10x_tim.h"
 #include "presets.h"
+#include "GPIO.h"
 
 //Настройка таймера
 void setup_take_coil(void)
@@ -30,6 +31,9 @@ void setup_take_coil(void)
 	m_pwm.TIM_Pulse = DRIVER_DEFAULT_PWM;	//50%
 	
 	TIM_OC1Init(TIM16, &m_pwm);
+	
+	//Настраиваем направления кручения хуй
+	GPIOA->ODR |= PA_TAKE_COIL_DIRECTION;
 }
 
 inline void start_take_coil(void)
@@ -42,6 +46,9 @@ inline void stop_take_coil(void)
 {	//ВЫРУБАЕМ И ТАЙМЕР И ЕГО ШИМ
 	TIM16->CR1 &= ~TIM_CR1_CEN;
 	TIM16->BDTR &= ~TIM_BDTR_MOE;
+	
+	//Зануляем счётчик
+	TIM16->CNT = 0;
 }
 
 inline void set_speed_take_coil(uint16_t speed)
