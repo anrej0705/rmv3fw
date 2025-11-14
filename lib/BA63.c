@@ -2,6 +2,8 @@
 #include "stm32f10x_usart.h"
 #include "stm32f10x_tim.h"
 #include "stdio.h"
+#include "global_vars.h"
+#include "USART.h"
 
 uint8_t charSet866[256] = {
   0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07, 0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,  // 0x00...0x0F
@@ -25,23 +27,85 @@ uint8_t charSet866[256] = {
 //Команды - VT100
 char clearCmd[4] = {"\e[2J"};
 char cpcode[3] = {0x1B, 0x52, 0x00};
+char cpcode_cyr[3] = {0x1B, 0x52, 0x00};
 char setCurPos[6] = {"\e[0;0H"};	//Y затем X
 char delEndline[4] = {"\e[0K"};
-
+char identificationCode[4] = {"\e[0c"};
+char unknown[15] = { 0x1B, 0x5B, 0x3F, 0x32, 0x3B, 0x30, 0x30, 0x3B, 0x32, 0x3B, 0x34, 0x3B, 0x32, 0x30, 0x63 };
 
 //Задаем кодовую страницу дисплея
 void BA63_SetCP(uint16_t cpCode)
 {
 	switch(cpCode)
 	{
-		case 866:
+		case 437:							//Латинская амера
+		{
+			cpcode[2]=0x30;
+			for(int i = 0; i < 3; ++i)
+			{
+				fifo_push(cpcode[i]);
+			}
+			usart_start_transmit();
+			break;
+		}
+		case 850:							//СкандиВАния?
+		{
+			cpcode[2]=0x31;
+			for(int i = 0; i < 3; ++i)
+			{
+				fifo_push(cpcode[i]);
+			}
+			usart_start_transmit();
+			break;
+		}
+		case 852:							//Пшекичи и проч восточ гэйропа
+		{
+			cpcode[2]=0x32;
+			for(int i = 0; i < 3; ++i)
+			{
+				fifo_push(cpcode[i]);
+			}
+			usart_start_transmit();
+			break;
+		}
+		case 857:							//Турки
+		{
+			cpcode[2]=0x33;
+			for(int i = 0; i < 3; ++i)
+			{
+				fifo_push(cpcode[i]);
+			}
+			usart_start_transmit();
+			break;
+		}
+		case 862:							//Родина евrеев
+		{
+			cpcode[2]=0x37;
+			for(int i = 0; i < 3; ++i)
+			{
+				fifo_push(cpcode[i]);
+			}
+			usart_start_transmit();
+			break;
+		}
+		case 866:							//Древние русы
 		{
 			cpcode[2]=0x35;
 			for(int i = 0; i < 3; ++i)
 			{
-				while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);			//Ждём пока передача не завершится
-				USART_SendData(USART1, cpcode[i]);
+				fifo_push(cpcode[i]);
 			}
+			usart_start_transmit();
+			break;
+		}
+		case 737:							//Гречка
+		{
+			cpcode[2]=0x36;
+			for(int i = 0; i < 3; ++i)
+			{
+				fifo_push(cpcode[i]);
+			}
+			usart_start_transmit();
 			break;
 		}
 		default:
@@ -49,26 +113,26 @@ void BA63_SetCP(uint16_t cpCode)
 			cpcode[2]=0x01;	//Если ничего не подобралось то ставим пиндостан
 			for(int i = 0; i < 3; ++i)
 			{
-				while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);			//Ждём пока передача не завершится
-				USART_SendData(USART1, cpcode[i]);
+				fifo_push(cpcode[i]);
 			}
+			usart_start_transmit();
 			break;
 		}
 	}
 }
 
 //Очистка дисплея
-void BA63_ClearVFD(void)
+inline void BA63_ClearVFD()
 {
 	for(int i = 0; i < 4; ++i)
 	{
-		while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);					//Ждём пока передача не завершится
-		USART_SendData(USART1, clearCmd[i]);
+		fifo_push(clearCmd[i]);
 	}
+	usart_start_transmit();
 }
 
 //Задаём позицию курсора
-void BA63_SetPos(uint8_t _pX, uint8_t _pY)
+inline void BA63_SetPos(uint8_t _pX, uint8_t _pY)
 {
 	char _X[2] = {'1'};
 	char _Y[2] = {'1'};
@@ -79,37 +143,53 @@ void BA63_SetPos(uint8_t _pX, uint8_t _pY)
 	
 	for(int i = 0; i < 6; ++i)
 	{
-		while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);					//Ждём пока передача не завершится
-		USART_SendData(USART1, setCurPos[i]);
+		fifo_push(setCurPos[i]);
 	}
+	usart_start_transmit();
 }
 
 //Шлём строку
-void BA63_SendString(uint8_t *string)
-{
-	uint8_t counter=0;
-	uint8_t charToSend=0;
-	while(string[counter]!=0)
+inline void BA63_SendString(char *string, uint8_t size)
+{	
+	for(uint8_t pos = 0; pos < size; ++pos)
 	{
-		while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);					//Ждём пока передача не завершится
-		charToSend = charSet866[string[counter]];
-		USART_SendData(USART1, charToSend);
-		counter++;
+		fifo_push(charSet866[string[pos]]);
 	}
+	usart_start_transmit();
 }
 
 //Чистим строку от позиции курсора направо
-void BA63_DeleteToEndline(void)
+inline void BA63_DeleteToEndline()
 {
 	for(int i = 0; i < 4; ++i)
 	{
-		while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) != SET);					//Ждём пока передача не завершится
-		USART_SendData(USART1, delEndline[i]);
+		fifo_push(delEndline[i]);
 	}
+	usart_start_transmit();
 }
 
-void BA63_Init(void)
+void BA63_Init()
 {	//Особо настраивать нечего, просто чистим от мусора и задаём или обновляем кодовую страницу
 	BA63_ClearVFD();																													//Чистим экран
 	BA63_SetCP(866);																													//Открываем страницу 866 children porn
+}
+
+//
+void BA63_identification()
+{
+	for(int i = 0; i < 4; ++i)
+	{
+		fifo_push(identificationCode[i]);
+	}
+	usart_start_transmit();
+}
+
+//???
+void BA63_unknown_code()
+{
+	for(int i = 0; i < 15; ++i)
+	{
+		fifo_push(unknown[i]);
+	}
+	usart_start_transmit();
 }
