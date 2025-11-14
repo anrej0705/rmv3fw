@@ -3,6 +3,7 @@
 #include "USART.h"
 #include "stdbool.h"
 #include "global_vars.h"
+#include "TIM6.h"
 
 bool led_switch1 = 0;
 
@@ -49,7 +50,10 @@ void USART1_IRQHandler()
 			led_switch1 = 0;
 			
 			ba63_fifo.tx_en = 1;
-			USART_SendData(USART1, fifo_read());																		//Начинаем педерачу
+			
+			char tmp = fifo_read();
+			
+			USART_SendData(USART1, tmp);																		//Начинаем педерачу
 		}
 	}
 	
