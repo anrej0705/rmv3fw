@@ -53,6 +53,7 @@ inline void stop_take_coil(void)
 
 inline void set_speed_take_coil(uint16_t speed)
 {	//Больше - меньше
+	TIM16->CNT = 0;
 	TIM16->ARR = speed;
 	TIM16->CCR1 = speed/2;	//50% ШИМ
 }

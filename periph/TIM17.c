@@ -53,6 +53,7 @@ inline void stop_feed_coil(void)
 
 inline void set_speed_feed_coil(uint16_t speed)
 {	//Больше - меньше
+	TIM17->CNT = 0;
 	TIM17->ARR = speed;
 	TIM17->CCR1 = speed/2;	//50% ШИМ
 }
