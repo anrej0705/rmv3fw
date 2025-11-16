@@ -121,16 +121,21 @@ void update_screen(void)
 	cached_adc_vref = adc_vref;
 	cached_tim1_pulses_cnt = tim1_pulses_cnt;
 	
-	sprintf(sensor_val, "%04d", feed_coil_current_speed);
-	strncpy(&screen_buf.first[0], "X0:", 2);
+	sprintf(sensor_val, "%04d", take_coil_current_speed);
+	strncpy(&screen_buf.first[0], "X0:", 3);
 	strncpy(&screen_buf.first[3], sensor_val, 4);
 	
-	sprintf(sensor_val, "%04d", feed_coil_target_speed);
+	sprintf(sensor_val, "%04d", take_coil_tension_sensor);
 	strncpy(&screen_buf.first[10], "X1:", 2);
 	strncpy(&screen_buf.first[13], sensor_val, 4);
 	
-	sprintf(sensor_val, "%04d", feed_coil_tension_sensor);
+	sprintf(sensor_val, "%04d", feed_coil_current_speed);
+	strncpy(&screen_buf.second[0], "X0:", 3);
 	strncpy(&screen_buf.second[3], sensor_val, 4);
+	
+	sprintf(sensor_val, "%04d", feed_coil_tension_sensor);
+	strncpy(&screen_buf.second[10], "X1:", 2);
+	strncpy(&screen_buf.second[13], sensor_val, 4);
 	
 	//Обновляем экран
 	BA63_SetPos(0, 0);

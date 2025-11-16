@@ -10,7 +10,7 @@ void start_sensor_poll(void);
 void stop_sensor_poll(void);
 void TIM3_IRQHandler(void);
 //uint16_t calc_segment(uint16_t target_val);
-uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t *target_speed, bool engine_select);
+uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, bool engine_select);
 
 void insert_sample(uint16_t *samples_map, uint8_t *samples_ptr, uint16_t new_sample);
 uint16_t get_sample(uint16_t *samples_map);

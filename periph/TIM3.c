@@ -65,106 +65,17 @@ void TIM3_IRQHandler()
 	}
 	
 	insert_sample(feed_coil_samples_map, &feed_coil_semaples_map_ptr, feed_coil_tension_sensor);
-	insert_sample(feed_coil_samples_map, &take_coil_semaples_map_ptr, take_coil_tension_sensor);
+	insert_sample(take_coil_samples_map, &take_coil_semaples_map_ptr, take_coil_tension_sensor);
 	
-	//set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map)));
-	set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map), &feed_coil_current_speed, &feed_coil_target_speed, FEED_COIL));
-	//set_speed_feed_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, &take_coil_target_speed, TAKE_COIL));
-	
-	//set_speed_feed_coil(calc_segment(feed_coil_tension_sensor));
-	//set_speed_take_coil(calc_segment(take_coil_tension_sensor));
+	set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map), &feed_coil_current_speed, FEED_COIL));
+	set_speed_take_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, TAKE_COIL));
 }
 
 //Работа этой функции рассказана в файле "предварительно рассчитанная таблица значений.txt"
-uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t *target_speed, bool engine_select)
+//current_speed нужно передавать как ссылку чтобы скорость менялась
+uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, bool engine_select)
 {
-	if(target_val >= 2000)													//Защита от выхода за пределы таблицы
-	{
-		return coil_acceleration_lut[feed_coil_current_speed];
-	}
-	
-	//Выбрана подающая бобина
-	if(engine_select)
-	{
-		if(feed_coil_current_speed < TAKE_COIL_START_THRESHOLD && !feed_coil_lock)
-		{
-			feed_coil_lock = 1;
-			stop_feed_coil();
-		}
-		else if(feed_coil_current_speed > FEED_COIL_START_THRESHOLD && feed_coil_lock)
-		{
-			feed_coil_lock = 0;
-			start_feed_coil();
-		}
-	}
-	else
-	{
-		if(take_coil_current_speed < TAKE_COIL_STOP_THRESHOLD && !take_coil_lock)
-		{
-			take_coil_lock = 1;
-			stop_take_coil();
-		}
-		else if(take_coil_current_speed > FEED_COIL_STOP_THRESHOLD && take_coil_lock)
-		{
-			take_coil_lock = 0;
-			start_take_coil();
-		}
-	}
-	
-	//Если current_speed и target_speed равны то обновляем значения считая что функция закончила плавный переход
-	if(feed_coil_current_speed == feed_coil_target_speed)
-	{
-		feed_coil_target_speed = target_val;										//Задаём длину отрезка
-		return coil_acceleration_lut[feed_coil_current_speed];	//Возвращаем текущую скорость
-	}
-	
-	//Если отрезок идёт право от 0, то прибавляем но если влево то отнимаем
-	if(feed_coil_current_speed < feed_coil_target_speed && (feed_coil_current_speed + 10) < COIL_ACCELERATION_LUT_SIZE)
-	{
-		feed_coil_current_speed += 10;
-		if(feed_coil_current_speed + 10 >= feed_coil_target_speed)				//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
-		{
-			feed_coil_current_speed = feed_coil_target_speed;
-		}
-	}
-	else if(feed_coil_current_speed > feed_coil_target_speed && (feed_coil_current_speed - 10) > 0)
-	{
-		feed_coil_current_speed -= 10;
-		if(feed_coil_current_speed - 10 <= feed_coil_target_speed)				//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
-		{
-			feed_coil_current_speed = feed_coil_target_speed;
-		}
-	}
-	
-	return coil_acceleration_lut[feed_coil_current_speed];
-}
-
-/*
-void TIM3_IRQHandler()
-{
-	//Сбрасываем флаг прерывания а то охуевание будет
-	TIM3->SR &= ~TIM_SR_UIF;
-	
-	//Зануляем счётчик, готовим к новой партии импульсов
-	TIM3->CNT = 0;
-	
-	if(!tim3_irq_bugfix)
-	{	//Фиксим ложное срабатывание прерывания
-		tim3_irq_bugfix = 1;
-		return;
-	}
-	
-	insert_sample(feed_coil_samples_map, &feed_coil_semaples_map_ptr, feed_coil_tension_sensor);
-	insert_sample(feed_coil_samples_map, &take_coil_semaples_map_ptr, take_coil_tension_sensor);
-	
-	set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map), &feed_coil_current_speed, &feed_coil_target_speed, FEED_COIL));
-	set_speed_feed_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, &take_coil_target_speed, TAKE_COIL));
-}
-
-//Работа этой функции рассказана в файле "предварительно рассчитанная таблица значений.txt"
-uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t *target_speed, bool engine_select)
-{
-	if(target_val >= 2000)													//Защита от выхода за пределы таблицы
+	if(target_val >= 2000)																		//Защита от выхода за пределы таблицы
 	{
 		return coil_acceleration_lut[*current_speed];
 	}
@@ -172,8 +83,7 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t *ta
 	//Выбрана подающая бобина
 	if(engine_select)
 	{
-		//Проверка и остановка или запуск двигателя подающей бобины
-		if(*current_speed < TAKE_COIL_START_THRESHOLD && !feed_coil_lock)
+		if(*current_speed < FEED_COIL_START_THRESHOLD && !feed_coil_lock)
 		{
 			feed_coil_lock = 1;
 			stop_feed_coil();
@@ -186,13 +96,12 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t *ta
 	}
 	else
 	{
-		//Проверка и остановка или запуск двигателя принимающей бобины
 		if(*current_speed < TAKE_COIL_STOP_THRESHOLD && !take_coil_lock)
 		{
 			take_coil_lock = 1;
 			stop_take_coil();
 		}
-		else if(*current_speed > FEED_COIL_STOP_THRESHOLD && take_coil_lock)
+		else if(*current_speed > TAKE_COIL_STOP_THRESHOLD && take_coil_lock)
 		{
 			take_coil_lock = 0;
 			start_take_coil();
@@ -200,33 +109,32 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t *ta
 	}
 	
 	//Если current_speed и target_speed равны то обновляем значения считая что функция закончила плавный переход
-	if(current_speed == target_speed)
+	if(*current_speed == target_val)
 	{
-		*target_speed = target_val;										//Задаём длину отрезка
-		return coil_acceleration_lut[*current_speed];	//Возвращаем текущую скорость
+		*current_speed = target_val;															//Задаём длину отрезка
+		return coil_acceleration_lut[*current_speed];						//Возвращаем текущую скорость
 	}
 	
 	//Если отрезок идёт право от 0, то прибавляем но если влево то отнимаем
-	if(*current_speed < *target_speed && (*current_speed + 10) < COIL_ACCELERATION_LUT_SIZE)
+	if(*current_speed <= target_val && (*current_speed + 5) < COIL_ACCELERATION_LUT_SIZE)
 	{
-		*current_speed += 10;
-		if(*current_speed + 10 >= *target_speed)				//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+		*current_speed += 5;
+		if(*current_speed + 5 >= target_val)				//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
 		{
-			*current_speed = *target_speed;
+			*current_speed = target_val;
 		}
 	}
-	else if(*current_speed > *target_speed && (current_speed - 10) > 0)
+	else if(*current_speed >= target_val && (*current_speed - 5) > 0)
 	{
-		*current_speed -= 10;
-		if(*current_speed - 10 <= *target_speed)				//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+		*current_speed -= 5;
+		if(*current_speed - 5 <= target_val)				//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
 		{
-			*current_speed = *target_speed;
+			*current_speed = target_val;
 		}
 	}
 	
 	return coil_acceleration_lut[*current_speed];
 }
-*/
 
 //Добавляем в карту инфу из ацп
 inline void insert_sample(uint16_t *samples_map, uint8_t *samples_ptr, uint16_t new_sample)
