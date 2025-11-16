@@ -12,6 +12,9 @@
 #include "USART.h"											//Управление экраном отображения
 #include "GPIO.h"												//Порты и ноги и проч проч проч
 #include "NVIC.h"												//Настройка прерываний
+#include "DMA.h"												//Название само за себя говорит
+
+#include "stdio.h"
 
 #include "presets.h"
 #include "locale_ru.h"
@@ -81,28 +84,13 @@ int main(void)
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Настраиваем АЦП
 	
+	setup_dma();
+	
 	RCC_APB2PeriphClockCmd(RCC_APB2ENR_ADC1EN, ENABLE);
-	RCC_AHBPeriphClockCmd(RCC_AHBENR_DMA1EN, ENABLE);
 	
 	ADC_InitTypeDef m_adc;
-	DMA_InitTypeDef m_dma;
 	
 	ADC_StructInit(&m_adc);
-	DMA_StructInit(&m_dma);
-	
-	m_dma.DMA_BufferSize = 4;
-	m_dma.DMA_DIR = DMA_DIR_PeripheralSRC;
-	m_dma.DMA_M2M = DMA_M2M_Disable;
-	m_dma.DMA_MemoryBaseAddr = (uint32_t)&adc_buffer;
-	m_dma.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;
-	m_dma.DMA_MemoryInc = DMA_MemoryInc_Enable;
-	m_dma.DMA_Mode = DMA_Mode_Circular;
-	m_dma.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR;
-	m_dma.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
-	m_dma.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
-	m_dma.DMA_Priority = DMA_Priority_High;
-	DMA_Init(DMA1_Channel1, &m_dma);
-	DMA_Cmd(DMA1_Channel1, ENABLE);
 	
 	m_adc.ADC_ContinuousConvMode = ENABLE;
 	m_adc.ADC_DataAlign = ADC_DataAlign_Right;
@@ -120,7 +108,6 @@ int main(void)
 	ADC_DMACmd(ADC1, ENABLE);
 	
 	ADC_TempSensorVrefintCmd(ENABLE);
-	
 	
 	//Калибруемся, в перерывах между калибровками пинаем хуи
 	ADC_ResetCalibration(ADC1);
@@ -144,24 +131,23 @@ int main(void)
 	TIM_Cmd(TIM2, ENABLE);
 	USART_Cmd(USART1, ENABLE);
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	
+	//Ждём пока экран раскочегарится, нагреется крч приведёт себя в готовность
+	delay_ms(166);																															//Ждём пока всё загрузится и просрётся
+	BA63_Init();																																//Чистим экран от мусора
+	//welcome();																																	//Здороваемся с челом
 		
 	//Запуски
+	start_led_screen_update();
 	start_key_poller();
 	
 	start_sensor_poll();
 	
 	start_ttm_controller();
 	
-	set_speed_ttm(800);
-	set_speed_feed_coil(800);
-	set_speed_take_coil(800);
-	
-	//Ждём пока экран раскочегарится, нагреется крч приведёт себя в готовность
-	delay_ms(366);																															//Ждём пока всё загрузится и просрётся
-	BA63_Init();																																//Чистим экран от мусора
-	welcome();																																	//Здороваемся с челом
-	
-	start_led_screen_update();
+	set_speed_ttm(84);
+	//set_speed_feed_coil(1104);
+	//set_speed_take_coil(1104);
 	
 	//Цiкл в конце обязателен, если конечно хочется чтобы прерывания работали
 	while(1)
@@ -190,14 +176,20 @@ void welcome(void)
 	delay_ms(50);
 	BA63_SetPos(0,0);
 	BA63_SendString(device_name_frame6, sizeof(device_name_frame6));
+	delay_ms(50);
+	BA63_SetPos(0,0);
+	BA63_SendString(device_name_frame7, sizeof(device_name_frame7));
 	
-	//В процессе разработки мне регулярно снилась одна милфа(SR) так что её имя будет кодовым для проекта
+	//В процессе разработки мне регулярно снилась одна милфа(SR) так что её имя будет кодовым для проекта(нахуя?)
 	BA63_SetPos(0,1);
 	BA63_SendString(projectCode, sizeof(projectCode));
 	
 	delay_ms(950);
 	
 	//Сворачиваем заголовок
+	BA63_SetPos(0,0);
+	BA63_SendString(device_name_frame6, sizeof(device_name_frame6));
+	delay_ms(50);
 	BA63_SetPos(0,0);
 	BA63_SendString(device_name_frame5, sizeof(device_name_frame5));
 	delay_ms(50);
@@ -225,3 +217,17 @@ void welcome(void)
 	
 	//Приветствие завершено
 }
+
+void HardFault_Handler(void)
+{
+	NVIC_SystemReset();
+}
+
+/*void DMA1_Channel1_IRQHandler()
+{
+	//Когда DMA завершил свою работу сохраняем значения из массива
+	
+	feed_coil_tension_sensor = adc_buffer[0];
+	take_coil_tension_sensor = adc_buffer[1];
+	cpu_temp_sensor = adc_buffer[2];
+}*/
