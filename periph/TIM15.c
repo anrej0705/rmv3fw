@@ -65,7 +65,11 @@ inline void set_speed_ttm(uint16_t speed)
 		return;
 	}
 	
-	TIM15->CNT = 0;
 	TIM15->ARR = speed;
 	TIM15->CCR1 = speed/2;	//50% ШИМ
+	
+	if(TIM15->CNT > speed)
+	{
+		TIM15->CNT = speed - 1;
+	}
 }

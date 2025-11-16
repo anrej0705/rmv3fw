@@ -60,9 +60,13 @@ inline void set_speed_feed_coil(uint16_t speed)
 		return;
 	}
 	
-	TIM17->CNT = 0;
 	TIM17->ARR = speed;
 	TIM17->CCR1 = speed/2;	//50% ШИМ
+	
+	if(TIM17->CNT > speed)
+	{
+		TIM17->CNT = speed - 1;
+	}
 }
 
 inline uint16_t get_speed_feed_coil()

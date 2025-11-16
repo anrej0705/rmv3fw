@@ -60,9 +60,13 @@ inline void set_speed_take_coil(uint16_t speed)
 		return;
 	}
 	
-	TIM16->CNT = 0;
 	TIM16->ARR = speed;
 	TIM16->CCR1 = speed/2;	//50% ШИМ
+	
+	if(TIM16->CNT > speed)
+	{
+		TIM16->CNT = speed - 1;
+	}
 }
 
 inline uint16_t get_speed_take_coil()
