@@ -58,6 +58,13 @@ inline void stop_ttm(void)
 
 inline void set_speed_ttm(uint16_t speed)
 {	//Больше - меньше
+	
+	//Проверяем если задаётся одна и та же скорость то не надо ломать работу таймера
+	if(TIM15->ARR == speed)
+	{
+		return;
+	}
+	
 	TIM15->CNT = 0;
 	TIM15->ARR = speed;
 	TIM15->CCR1 = speed/2;	//50% ШИМ

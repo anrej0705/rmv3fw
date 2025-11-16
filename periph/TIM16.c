@@ -53,7 +53,19 @@ inline void stop_take_coil(void)
 
 inline void set_speed_take_coil(uint16_t speed)
 {	//Больше - меньше
+	
+	//Проверяем если задаётся одна и та же скорость то не надо ломать работу таймера
+	if(TIM16->ARR == speed)
+	{
+		return;
+	}
+	
 	TIM16->CNT = 0;
 	TIM16->ARR = speed;
 	TIM16->CCR1 = speed/2;	//50% ШИМ
+}
+
+inline uint16_t get_speed_take_coil()
+{
+	return TIM16->ARR;
 }

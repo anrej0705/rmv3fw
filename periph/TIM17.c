@@ -53,7 +53,19 @@ inline void stop_feed_coil(void)
 
 inline void set_speed_feed_coil(uint16_t speed)
 {	//Больше - меньше
+	
+	//Проверяем если задаётся одна и та же скорость то не надо ломать работу таймера
+	if(TIM17->ARR == speed)
+	{
+		return;
+	}
+	
 	TIM17->CNT = 0;
 	TIM17->ARR = speed;
 	TIM17->CCR1 = speed/2;	//50% ШИМ
+}
+
+inline uint16_t get_speed_feed_coil()
+{
+	return TIM17->ARR;
 }
