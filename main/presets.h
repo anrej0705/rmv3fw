@@ -55,13 +55,25 @@
 
 #define COIL_AA_SAMPLES							16			//Количество показаний из которых будет посчитано среднее - сглаженное значение
 
-#define FEED_COIL_START_THRESHOLD		820			//Порог после которого двигатель запускается
+#define FEED_COIL_START_THRESHOLD		1640		//Порог после которого двигатель запускается
 #define TAKE_COIL_START_THRESHOLD		720			//Порог для остановки двигателя
 
-#define FEED_COIL_STOP_THRESHOLD		700
-#define TAKE_COIL_STOP_THRESHOLD		600
+#define FEED_COIL_STOP_THRESHOLD		1880
+#define TAKE_COIL_STOP_THRESHOLD		200
 
 #define FEED_COIL										1
 #define TAKE_COIL										0
+
+#define FILM_DIRECTION_DEFAULT			0
+#define FILM_DIRECTION_REVERSE			1
+
+#define COILS_ENGINE_ENABLE					1
+#define COILS_ENGINE_DISABLE				0
+
+#define TTM_ENGINE_ENABLE						1
+#define TTM_ENGINE_DISABLE					0
+
+#define ENGINE_COOLER_ENABLE				1
+#define ENGINE_COOLER_DISABLE				0
 
 #endif

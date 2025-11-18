@@ -4,7 +4,10 @@
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool green_led_frame_change = 0;
-bool ttm_engine_enable = 0;
+bool ttm_engine_enable = TTM_ENGINE_DISABLE;							//Флаг активации двигателя привода ЛПМ
+bool coils_engine_enable = COILS_ENGINE_DISABLE;					//Флаг активации двигателей бобин
+bool film_direction = FILM_DIRECTION_DEFAULT;							//Направление протяжки
+bool engine_cooler_enable = ENGINE_COOLER_DISABLE;				//Флаг вкл/выкл пропеллеров(тех самых гитлеровских)
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 uint16_t feed_coil_tension_sensor = UINT16_MAX >> 4;
 uint16_t take_coil_tension_sensor = UINT16_MAX >> 4;
@@ -93,9 +96,7 @@ inline char fifo_read()
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Координаты отрезка плавного изменения скорости двигателя
 uint16_t feed_coil_current_speed = DRIVER_DEFAULT_PWM;
-uint16_t feed_coil_target_speed = DRIVER_DEFAULT_PWM;
 uint16_t take_coil_current_speed = DRIVER_DEFAULT_PWM;
-uint16_t take_coil_target_speed = DRIVER_DEFAULT_PWM;
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Массив с подбранными значениями из ацп для сглаживания графика скорости подающей бобины
 uint16_t feed_coil_samples_map[COIL_AA_SAMPLES] = {0};
@@ -106,4 +107,11 @@ uint8_t take_coil_semaples_map_ptr;
 //Флаги блокировок - двигатели остановлены?
 bool feed_coil_lock = 0;
 bool take_coil_lock = 0;
+//Дебажные фишки - показывает выбранное значение периода ШИМ
+uint16_t degub_selected_feed_coil_pwm = DRIVER_DEFAULT_PWM;
+uint16_t degub_selected_take_coil_pwm = DRIVER_DEFAULT_PWM;
+uint16_t debug_feed_coil_arr = 0;
+uint16_t debug_take_coil_arr = 0;
+uint16_t debug_feed_coil_ccr1 = 0;
+uint16_t debug_take_coil_ccr1 = 0;
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
