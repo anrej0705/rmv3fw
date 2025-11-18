@@ -3,6 +3,9 @@
 
 #include "stdint.h"
 
-extern const uint16_t coil_acceleration_lut[2000];
+#define COIL_ACCELERATION_LUT_SIZE			2000
+
+extern const uint16_t coil_acceleration_lut[COIL_ACCELERATION_LUT_SIZE];
+extern const uint16_t feed_coil_acceleration_lut[COIL_ACCELERATION_LUT_SIZE];
 
 #endif
