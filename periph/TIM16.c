@@ -3,6 +3,8 @@
 #include "presets.h"
 #include "GPIO.h"
 
+#include "global_vars.h"
+
 //Настройка таймера
 void setup_take_coil(void)
 {
@@ -53,6 +55,7 @@ inline void stop_take_coil(void)
 
 inline void set_speed_take_coil(uint16_t speed)
 {	//Больше - меньше
+	uint16_t tmp = TIM16->CNT;
 	
 	//Проверяем если задаётся одна и та же скорость то не надо ломать работу таймера
 	if(TIM16->ARR == speed)
@@ -62,6 +65,9 @@ inline void set_speed_take_coil(uint16_t speed)
 	
 	TIM16->ARR = speed;
 	TIM16->CCR1 = speed/2;	//50% ШИМ
+	
+	debug_take_coil_arr = speed;
+	debug_take_coil_ccr1 = speed/2;
 	
 	if(TIM16->CNT > speed)
 	{

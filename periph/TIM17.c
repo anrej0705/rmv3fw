@@ -3,6 +3,8 @@
 #include "presets.h"
 #include "GPIO.h"
 
+#include "global_vars.h"
+
 //Настройка таймера
 void setup_feed_coil(void)
 {
@@ -53,6 +55,7 @@ inline void stop_feed_coil(void)
 
 inline void set_speed_feed_coil(uint16_t speed)
 {	//Больше - меньше
+	uint16_t tmp = TIM17->CNT;
 	
 	//Проверяем если задаётся одна и та же скорость то не надо ломать работу таймера
 	if(TIM17->ARR == speed)
@@ -62,6 +65,9 @@ inline void set_speed_feed_coil(uint16_t speed)
 	
 	TIM17->ARR = speed;
 	TIM17->CCR1 = speed/2;	//50% ШИМ
+	
+	debug_feed_coil_arr = speed;
+	debug_feed_coil_ccr1 = speed/2;
 	
 	if(TIM17->CNT > speed)
 	{
