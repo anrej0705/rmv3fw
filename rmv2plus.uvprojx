@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -338,7 +338,7 @@
             <v6Rtti>1</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
               <IncludePath>.\main;.\lib;.\periph</IncludePath>
             </VariousControls>
@@ -404,6 +404,56 @@
               <FileType>5</FileType>
               <FilePath>.\main\locale_ru.h</FilePath>
             </File>
+            <File>
+              <FileName>global_vars.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\main\global_vars.h</FilePath>
+            </File>
+            <File>
+              <FileName>global_vars.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main\global_vars.c</FilePath>
+            </File>
+            <File>
+              <FileName>locale_ru.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main\locale_ru.c</FilePath>
+            </File>
+            <File>
+              <FileName>NVIC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\main\NVIC.h</FilePath>
+            </File>
+            <File>
+              <FileName>NVIC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main\NVIC.c</FilePath>
+            </File>
+            <File>
+              <FileName>coil_acceleration_lut.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main\coil_acceleration_lut.c</FilePath>
+            </File>
+            <File>
+              <FileName>speed_lut.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\main\speed_lut.h</FilePath>
+            </File>
+            <File>
+              <FileName>DMA.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\main\DMA.h</FilePath>
+            </File>
+            <File>
+              <FileName>DMA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main\DMA.c</FilePath>
+            </File>
+            <File>
+              <FileName>feed_coil_acceleration_lut.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main\feed_coil_acceleration_lut.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -419,6 +469,16 @@
               <FileType>5</FileType>
               <FilePath>.\lib\BA63.h</FilePath>
             </File>
+            <File>
+              <FileName>speed_ctrl.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lib\speed_ctrl.h</FilePath>
+            </File>
+            <File>
+              <FileName>speed_ctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lib\speed_ctrl.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -430,9 +490,99 @@
               <FilePath>.\periph\TIM6.h</FilePath>
             </File>
             <File>
+              <FileName>TIM15.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM15.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIM16.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM16.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIM17.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM17.h</FilePath>
+            </File>
+            <File>
               <FileName>TIM6.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\periph\TIM6.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM15.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM15.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM16.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM17.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM17.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\GPIO.h</FilePath>
+            </File>
+            <File>
+              <FileName>USART.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\USART.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPIO.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\GPIO.c</FilePath>
+            </File>
+            <File>
+              <FileName>USART.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\USART.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM7.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM7.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIM4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM4.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIM3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM3.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIM1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\periph\TIM1.h</FilePath>
+            </File>
+            <File>
+              <FileName>TIM7.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM7.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM4.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM3.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\periph\TIM1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -455,12 +605,6 @@
           <targetInfo name="STM32F100RB"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="GPIO" Cvendor="Keil" Cversion="1.3" condition="STM32F1xx CMSIS">
-        <package name="STM32F1xx_DFP" schemaVersion="1.7.2" url="https://www.keil.com/pack/" vendor="Keil" version="2.4.1"/>
-        <targetInfos>
-          <targetInfo name="STM32F100RB"/>
-        </targetInfos>
-      </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32F1xx CMSIS">
         <package name="STM32F1xx_DFP" schemaVersion="1.7.2" url="https://www.keil.com/pack/" vendor="Keil" version="2.4.1"/>
         <targetInfos>
@@ -474,6 +618,12 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="DAC" Cvendor="Keil" Cversion="3.6.0" condition="STM32F1xx STDPERIPH RCC">
+        <package name="STM32F1xx_DFP" schemaVersion="1.7.2" url="https://www.keil.com/pack/" vendor="Keil" version="2.4.1"/>
+        <targetInfos>
+          <targetInfo name="STM32F100RB"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="DMA" Cvendor="Keil" Cversion="3.6.0" condition="STM32F1xx STDPERIPH RCC">
         <package name="STM32F1xx_DFP" schemaVersion="1.7.2" url="https://www.keil.com/pack/" vendor="Keil" version="2.4.1"/>
         <targetInfos>
           <targetInfo name="STM32F100RB"/>
