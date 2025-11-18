@@ -77,8 +77,8 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, bool engine_
 	
 	if(engine_select)
 	{
-		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed/* - 400*/];
-		return feed_coil_acceleration_lut[*current_speed/* - 400*/];
+		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed - 50];
+		return feed_coil_acceleration_lut[*current_speed - 50];
 	}
 	else
 	{
