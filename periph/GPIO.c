@@ -5,6 +5,8 @@
 #include "TIM16.h"
 #include "TIM15.h"
 
+#include "global_vars.h"
+
 bool pa_service_menu_button_lock = 0;
 bool pb_main_switch_lock = 0;
 
@@ -53,7 +55,7 @@ void setup_gpio(void)
 	GPIO_Init(GPIOA, &m_gpio);
 	
 	//GPIOB
-	m_gpio.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_15;
+	m_gpio.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_15;
 	GPIO_Init(GPIOB, &m_gpio);
 	
 	//GPIOC
@@ -100,7 +102,7 @@ inline void check_buttons()
 		pa_service_menu_button_lock = 1;
 		
 		GPIOA->ODR |= PA_FEED_COIL_DIRECTION;
-		GPIOA->ODR |= PA_TAKE_COIL_DIRECTION;
+		GPIOA->ODR &= ~PA_TAKE_COIL_DIRECTION;
 		GPIOB->ODR |= PB_TTM_DIRECTION;
 		
 		//Пока что переключаем направление вращения двигателей
@@ -110,7 +112,7 @@ inline void check_buttons()
 		pa_service_menu_button_lock = 0;
 		
 		GPIOA->ODR &= ~PA_FEED_COIL_DIRECTION;
-		GPIOA->ODR &= ~PA_TAKE_COIL_DIRECTION;
+		GPIOA->ODR |= PA_TAKE_COIL_DIRECTION;
 		GPIOB->ODR &= ~PB_TTM_DIRECTION;
 		
 		//Пока что переключаем направление вращения двигателей
@@ -121,29 +123,42 @@ inline void check_buttons()
 inline void check_switchers()
 {
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	if((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 1 && !pb_main_switch_lock)
+	if((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 1 && pb_main_switch_lock)
 	{	//Лог.1 - выкл
-		pb_main_switch_lock = 1;
+		pb_main_switch_lock = 0;
 		
-		GPIOB->ODR |= PB_COILS_ENABLE;
-		GPIOB->ODR |= PB_TTM_ENABLE;
+		ttm_engine_enable = TTM_ENGINE_DISABLE;
+		coils_engine_enable = COILS_ENGINE_DISABLE;
+		
+		//Выключаем пропеллеры чтобы не шумели, всё равно охлаждать нечего
+		engine_cooler_enable = ENGINE_COOLER_DISABLE;
 		
 		//Вырубаем таймеры
 		stop_ttm();
 		stop_feed_coil();
 		stop_take_coil();
 	}
-	else if ((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 0 && pb_main_switch_lock)
+	else if ((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 0 && !pb_main_switch_lock)
 	{	//Лог.0 - вкл
-		pb_main_switch_lock = 0;
+		pb_main_switch_lock = 1;
 		
-		GPIOB->ODR &= ~PB_COILS_ENABLE;
-		GPIOB->ODR &= ~PB_TTM_ENABLE;
+		ttm_engine_enable = TTM_ENGINE_ENABLE;
+		coils_engine_enable = COILS_ENGINE_ENABLE;
+		
+		//Врубаем пропеллеры, а то всё перегреется к хуям)))
+		engine_cooler_enable = ENGINE_COOLER_ENABLE;
 		
 		//Врубаем таймеры
 		start_ttm();
-		start_feed_coil();
-		start_take_coil();
+		
+		if(!feed_coil_lock)
+		{
+			start_feed_coil();
+		}
+		if(!take_coil_lock)
+		{
+			start_take_coil();
+		}
 	}
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
