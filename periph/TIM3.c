@@ -18,6 +18,8 @@
 #include "speed_lut.h"
 #include "stdbool.h"
 
+uint16_t psc = 0;
+
 //Есть такая тема - в контроллере баг, когда настраиваешь таймер при запуске он сразу же даёт 
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
 bool tim3_irq_bugfix = 0;
@@ -69,10 +71,26 @@ void TIM3_IRQHandler()
 		return;
 	}
 	
+	if(!ttm_engine_pwm_en)
+	{
+		++psc;
+	}
+	
+	if(psc == 100)
+	{
+		ttm_engine_pwm_en = 1;
+		green_led_frame_change = 0;
+		psc = 0;
+	}
+	
 	//Смотрим битики
 	ttm_engine_enable == TTM_ENGINE_DISABLE ? (GPIOB->ODR |= PB_TTM_ENABLE) : (GPIOB->ODR &= ~PB_TTM_ENABLE);
 	coils_engine_enable == COILS_ENGINE_DISABLE ? (GPIOB->ODR |= PB_COILS_ENABLE) : (GPIOB->ODR &= ~PB_COILS_ENABLE);
 	engine_cooler_enable == ENGINE_COOLER_DISABLE ? (GPIOB->ODR |= PB_FAN_ENABLE) : (GPIOB->ODR &= ~PB_FAN_ENABLE);
+	
+	ttm_engine_pwm_en == TTM_ENGINE_DISABLE ? (stop_ttm()) : (start_ttm());
+	feed_coil_engine_pwm_en == COILS_ENGINE_DISABLE ? (stop_feed_coil()) : (start_feed_coil());
+	take_coil_engine_pwm_en == ENGINE_COOLER_DISABLE ? (stop_take_coil()) : (start_take_coil());
 	
 	//GPIOB->ODR |= PB_COILS_ENABLE;
 	//GPIOB->ODR |= PB_TTM_ENABLE;
@@ -83,4 +101,5 @@ void TIM3_IRQHandler()
 	
 	set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map), &feed_coil_current_speed, feed_coil_tension_sensor, FEED_COIL));
 	set_speed_take_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, take_coil_tension_sensor, TAKE_COIL));
+	set_speed_ttm(get_new_speed());
 }

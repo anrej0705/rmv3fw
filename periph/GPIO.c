@@ -130,13 +130,13 @@ inline void check_switchers()
 		ttm_engine_enable = TTM_ENGINE_DISABLE;
 		coils_engine_enable = COILS_ENGINE_DISABLE;
 		
+		ttm_engine_pwm_en = 0;
+		green_led_frame_change = 0;
+		TIM15->CNT = 0;
+		ttm_current_speed = DRIVER_DEFAULT_ARR;
+		
 		//Выключаем пропеллеры чтобы не шумели, всё равно охлаждать нечего
 		engine_cooler_enable = ENGINE_COOLER_DISABLE;
-		
-		//Вырубаем таймеры
-		stop_ttm();
-		stop_feed_coil();
-		stop_take_coil();
 	}
 	else if ((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 0 && !pb_main_switch_lock)
 	{	//Лог.0 - вкл
@@ -145,20 +145,10 @@ inline void check_switchers()
 		ttm_engine_enable = TTM_ENGINE_ENABLE;
 		coils_engine_enable = COILS_ENGINE_ENABLE;
 		
+		ttm_engine_pwm_en = 1;
+		
 		//Врубаем пропеллеры, а то всё перегреется к хуям)))
 		engine_cooler_enable = ENGINE_COOLER_ENABLE;
-		
-		//Врубаем таймеры
-		start_ttm();
-		
-		if(!feed_coil_lock)
-		{
-			start_feed_coil();
-		}
-		if(!take_coil_lock)
-		{
-			start_take_coil();
-		}
 	}
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }

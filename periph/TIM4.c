@@ -98,13 +98,13 @@ void update_screen(void)
 	char char_take_coil_dv[4];
 	
 	//Обновляем строку сенсоров
-	//sprintf(sensor_val, "%04d", feed_coil_tension_sensor);
+	sprintf(sensor_val, "%04d", feed_coil_tension_sensor);
 	//strncpy(&screen_buf.first[0], ru_debug_adc, 4);
-	//strncpy(&screen_buf.first[5], sensor_val, 4);
+	strncpy(&screen_buf.first[0], sensor_val, 4);
 	
-	//sprintf(sensor_val, "%04d", take_coil_tension_sensor);
-	//strncpy(&screen_buf.first[11], ru_debug_adc, 4);
-	//strncpy(&screen_buf.first[16], sensor_val, 5);
+	sprintf(sensor_val, "%04d", take_coil_tension_sensor);
+	//strncpy(&screen_buf.second[0], ru_debug_adc, 4);
+	strncpy(&screen_buf.second[0], sensor_val, 4);
 	
 	//Температура и референсное напряжение
 	//sprintf(sensor_val, "%04d", cpu_temp_sensor);
@@ -125,34 +125,40 @@ void update_screen(void)
 	cached_tim1_pulses_cnt = tim1_pulses_cnt;
 	
 	sprintf(sensor_val, "%04d", debug_feed_coil_arr);
-	strncpy(&screen_buf.first[0], sensor_val, 4);
+	strncpy(&screen_buf.first[5], sensor_val, 4);
 	
 	sprintf(char_feed_coil_dv, "%03d", feed_coil_dv);
-	strncpy(&screen_buf.first[5], char_feed_coil_dv, 3);
+	strncpy(&screen_buf.first[10], char_feed_coil_dv, 3);
 	
 	sprintf(char_feed_coil_dv, "%03d", feed_coil_slowdown_dv);
-	strncpy(&screen_buf.first[9], char_feed_coil_dv, 3);
+	strncpy(&screen_buf.first[14], char_feed_coil_dv, 3);
 	
-	sprintf(sensor_val, "%03d", feed_coil_dv_lut_ptr);
-	strncpy(&screen_buf.first[13], sensor_val, 3);
+	//sprintf(sensor_val, "%04d", TIM1->CNT);
+	//strncpy(&screen_buf.first[13], sensor_val, 4);
 	
-	sprintf(sensor_val, "%03d", feed_coil_slowdown_dv_lut_ptr);
-	strncpy(&screen_buf.first[17], sensor_val, 3);
+	//sprintf(sensor_val, "%03d", feed_coil_dv_lut_ptr);
+	//strncpy(&screen_buf.first[13], sensor_val, 3);
+	
+	//sprintf(sensor_val, "%03d", feed_coil_slowdown_dv_lut_ptr);
+	//strncpy(&screen_buf.first[17], sensor_val, 3);
 	
 	sprintf(sensor_val, "%04d", debug_take_coil_arr);
-	strncpy(&screen_buf.second[0], sensor_val, 4);
+	strncpy(&screen_buf.second[5], sensor_val, 4);
 	
 	sprintf(char_take_coil_dv, "%03d", take_coil_dv);
-	strncpy(&screen_buf.second[5], char_take_coil_dv, 3);
+	strncpy(&screen_buf.second[10], char_take_coil_dv, 3);
 	
 	sprintf(char_take_coil_dv, "%03d", take_coil_slowdown_dv);
-	strncpy(&screen_buf.second[9], char_take_coil_dv, 3);
+	strncpy(&screen_buf.second[14], char_take_coil_dv, 3);
 	
-	sprintf(sensor_val, "%03d", take_coil_dv_lut_ptr);
-	strncpy(&screen_buf.second[13], sensor_val, 3);
+	//sprintf(sensor_val, "%04d", tim1_pulses_cnt);
+	//strncpy(&screen_buf.second[13], sensor_val, 4);
 	
-	sprintf(sensor_val, "%03d", take_coil_slowdown_dv_lut_ptr);
-	strncpy(&screen_buf.second[17], sensor_val, 3);
+	//sprintf(sensor_val, "%03d", take_coil_dv_lut_ptr);
+	//strncpy(&screen_buf.second[13], sensor_val, 3);
+	
+	//sprintf(sensor_val, "%03d", take_coil_slowdown_dv_lut_ptr);
+	//strncpy(&screen_buf.second[17], sensor_val, 3);
 	
 	//Обновляем экран
 	BA63_SetPos(0, 0);

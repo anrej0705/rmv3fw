@@ -11,8 +11,6 @@
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
 bool tim1_irq_bugfix = 0;
 
-int psc = 0;
-
 void setup_ttm_controller()
 {
 	//Да начнётся ёбка
@@ -27,7 +25,7 @@ void setup_ttm_controller()
 	m_tim.TIM_CounterMode = TIM_CounterMode_Up;
 	m_tim.TIM_RepetitionCounter = 0;
 	m_tim.TIM_Prescaler = 0;									//Без делителя, считаем всем импульсы
-	m_tim.TIM_Period = TTM_PULSES_THRESHOLD;
+	m_tim.TIM_Period = TTM_PULSES_THRESHOLD - 1;
 	TIM_TimeBaseInit(TIM1, &m_tim);
 	
 	//Здесь настраиваем таймер чтобы он тактировался снаружи
@@ -59,19 +57,13 @@ void TIM1_UP_TIM16_IRQHandler()
 		return;
 	}
 	
-	++psc;
+	TIM15->CR1 &= ~TIM_CR1_CEN;
+	TIM15->BDTR &= ~TIM_BDTR_MOE;
 	
-	if(psc != 2)
-	{
-		green_led_frame_change = !green_led_frame_change;
-		ttm_engine_enable = !ttm_engine_enable;
-	}
-	else
-	{
-		green_led_frame_change = !green_led_frame_change;
-		ttm_engine_enable = !ttm_engine_enable;
-		psc = 0;
-	}
+	ttm_engine_pwm_en = 0;
+	ttm_current_speed = 300;
+	
+	green_led_frame_change = !green_led_frame_change;
 	
 	//Зануляем счётчик, готовим к новой партии импульсов
 	TIM1->CNT = 0;
