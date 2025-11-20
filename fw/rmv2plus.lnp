@@ -6,6 +6,7 @@
 ".\objects\coil_acceleration_lut.o"
 ".\objects\dma.o"
 ".\objects\feed_coil_acceleration_lut.o"
+".\objects\dv.o"
 ".\objects\ba63.o"
 ".\objects\speed_ctrl.o"
 ".\objects\tim6.o"
