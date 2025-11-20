@@ -12,7 +12,7 @@
 
 //TIM3 - опрос датчиков натяжения и датчика камеры
 #define TIM3_PSC										24000		//Делитель до 1 микросекунды
-#define TIM3_ARR										1				//Длительность паузы между прерываниями в микросекундах
+#define TIM3_ARR										4				//Длительность паузы между прерываниями в микросекундах
 
 //TIM4 - управление светодиодами и экраном BA63
 #define TIM4_PSC										24000		//Делитель до 1 микросекунды
@@ -55,10 +55,10 @@
 
 #define COIL_AA_SAMPLES							16			//Количество показаний из которых будет посчитано среднее - сглаженное значение
 
-#define FEED_COIL_START_THRESHOLD		1850		//Порог после которого двигатель запускается
-#define TAKE_COIL_START_THRESHOLD		720			//Порог для остановки двигателя
+#define FEED_COIL_START_THRESHOLD		1800		//Порог после которого двигатель запускается
+#define TAKE_COIL_START_THRESHOLD		720
 
-#define FEED_COIL_STOP_THRESHOLD		1970
+#define FEED_COIL_STOP_THRESHOLD		1920		//Порог для остановки двигателя
 #define TAKE_COIL_STOP_THRESHOLD		200
 
 #define FEED_COIL										1

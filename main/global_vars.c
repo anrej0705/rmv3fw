@@ -114,4 +114,13 @@ uint16_t debug_feed_coil_arr = 0;
 uint16_t debug_take_coil_arr = 0;
 uint16_t debug_feed_coil_ccr1 = 0;
 uint16_t debug_take_coil_ccr1 = 0;
+//Приросты скоростей двигателей
+int16_t feed_coil_dv = 1;
+int16_t feed_coil_slowdown_dv = 1;
+int16_t take_coil_dv = 1;
+int16_t take_coil_slowdown_dv = 1;
+uint8_t feed_coil_dv_lut_ptr = 0;
+uint8_t feed_coil_slowdown_dv_lut_ptr = 0;
+uint8_t take_coil_dv_lut_ptr = 0;
+uint8_t take_coil_slowdown_dv_lut_ptr = 0;
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

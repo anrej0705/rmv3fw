@@ -44,4 +44,7 @@ void DMA1_Channel1_IRQHandler(void)
 
 	cpu_temp_sensor += adc_buffer[2];
 	cpu_temp_sensor = cpu_temp_sensor / 2;
+	
+	feed_coil_tension_sensor >= 2000 ? (feed_coil_tension_sensor = 1999) : (feed_coil_tension_sensor = feed_coil_tension_sensor);
+	take_coil_tension_sensor >= 2000 ? (take_coil_tension_sensor = 1999) : (take_coil_tension_sensor = take_coil_tension_sensor);
 }

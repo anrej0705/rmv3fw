@@ -145,7 +145,7 @@ int main(void)
 	
 	start_ttm_controller();
 	
-	set_speed_ttm(84);
+	set_speed_ttm(334);
 	//set_speed_feed_coil(1104);
 	//set_speed_take_coil(1104);
 	

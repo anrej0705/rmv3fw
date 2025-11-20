@@ -76,6 +76,15 @@ extern uint16_t debug_feed_coil_arr;
 extern uint16_t debug_take_coil_arr;
 extern uint16_t debug_feed_coil_ccr1;
 extern uint16_t debug_take_coil_ccr1;
+//Приросты скоростей двигателей
+extern int16_t feed_coil_dv;
+extern int16_t feed_coil_slowdown_dv;
+extern int16_t take_coil_dv;
+extern int16_t take_coil_slowdown_dv;
+extern uint8_t feed_coil_dv_lut_ptr;
+extern uint8_t feed_coil_slowdown_dv_lut_ptr;
+extern uint8_t take_coil_dv_lut_ptr;
+extern uint8_t take_coil_slowdown_dv_lut_ptr;
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif
