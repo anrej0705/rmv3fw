@@ -132,6 +132,14 @@ int main(void)
 	USART_Cmd(USART1, ENABLE);
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
+	//ttm_current_speed = 80;
+	ttm_speed_dv = TTM_SPEED_DV;
+	ttm_target_speed = TTM_TARGET_SPEED;
+	feed_coil_engine_pwm_en = 1;
+	take_coil_engine_pwm_en = 1;
+	
+	USART_Cmd(USART1, ENABLE);set_speed_ttm(ttm_current_speed);
+	
 	//Ждём пока экран раскочегарится, нагреется крч приведёт себя в готовность
 	delay_ms(166);																															//Ждём пока всё загрузится и просрётся
 	BA63_Init();																																//Чистим экран от мусора
@@ -145,7 +153,8 @@ int main(void)
 	
 	start_ttm_controller();
 	
-	set_speed_ttm(334);
+	ttm_engine_pwm_en = 1;
+	
 	//set_speed_feed_coil(1104);
 	//set_speed_take_coil(1104);
 	

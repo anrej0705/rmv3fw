@@ -37,6 +37,7 @@
 #define TIM17_PSC										24			//Делитель до 1 микросекунды
 #define TIM17_PWM_MAX								1400		//Значение для 100% ШИМ, но это формально, ШИМ всегда будет 50%
 
+#define DRIVER_DEFAULT_ARR					1400		//Значение для 100% ШИМ
 #define DRIVER_DEFAULT_PWM					700			//Значение для 50% ШИМ
 
 #define TIM1_IRQ_PRIORITY						0				//Приоритет таймера отслеживающий количество импульсов
@@ -59,7 +60,7 @@
 #define TAKE_COIL_START_THRESHOLD		720
 
 #define FEED_COIL_STOP_THRESHOLD		1920		//Порог для остановки двигателя
-#define TAKE_COIL_STOP_THRESHOLD		200
+#define TAKE_COIL_STOP_THRESHOLD		500
 
 #define FEED_COIL										1
 #define TAKE_COIL										0
@@ -75,5 +76,8 @@
 
 #define ENGINE_COOLER_ENABLE				1
 #define ENGINE_COOLER_DISABLE				0
+
+#define TTM_TARGET_SPEED						80
+#define TTM_SPEED_DV								18
 
 #endif

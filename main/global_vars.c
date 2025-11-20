@@ -8,6 +8,9 @@ bool ttm_engine_enable = TTM_ENGINE_DISABLE;							//Флаг активации
 bool coils_engine_enable = COILS_ENGINE_DISABLE;					//Флаг активации двигателей бобин
 bool film_direction = FILM_DIRECTION_DEFAULT;							//Направление протяжки
 bool engine_cooler_enable = ENGINE_COOLER_DISABLE;				//Флаг вкл/выкл пропеллеров(тех самых гитлеровских)
+bool ttm_engine_pwm_en = 0;																//Вкл/выкл генерацию ШИМ для двигателя привода ЛПМ
+bool feed_coil_engine_pwm_en = 0;													//Вкл/выкл генерацию ШИМ для двигателя подающей бобины
+bool take_coil_engine_pwm_en = 0;													//Вкл/выкл генерацию ШИМ для двигателя принимающей бобины
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 uint16_t feed_coil_tension_sensor = UINT16_MAX >> 4;
 uint16_t take_coil_tension_sensor = UINT16_MAX >> 4;
@@ -97,6 +100,9 @@ inline char fifo_read()
 //Координаты отрезка плавного изменения скорости двигателя
 uint16_t feed_coil_current_speed = DRIVER_DEFAULT_PWM;
 uint16_t take_coil_current_speed = DRIVER_DEFAULT_PWM;
+uint16_t ttm_current_speed = DRIVER_DEFAULT_PWM;
+uint16_t ttm_target_speed = DRIVER_DEFAULT_PWM;
+int8_t ttm_speed_dv = 1;
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Массив с подбранными значениями из ацп для сглаживания графика скорости подающей бобины
 uint16_t feed_coil_samples_map[COIL_AA_SAMPLES] = {0};
