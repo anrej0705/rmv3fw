@@ -81,6 +81,6 @@ void TIM3_IRQHandler()
 	insert_sample(feed_coil_samples_map, &feed_coil_semaples_map_ptr, feed_coil_tension_sensor);
 	insert_sample(take_coil_samples_map, &take_coil_semaples_map_ptr, take_coil_tension_sensor);
 	
-	set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map), &feed_coil_current_speed, FEED_COIL));
-	set_speed_take_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, TAKE_COIL));
+	set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map), &feed_coil_current_speed, feed_coil_tension_sensor, FEED_COIL));
+	set_speed_take_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, take_coil_tension_sensor, TAKE_COIL));
 }

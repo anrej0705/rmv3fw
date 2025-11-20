@@ -9,7 +9,9 @@
 
 //Есть такая тема - в контроллере баг, когда настраиваешь таймер при запуске он сразу же даёт 
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
-bool tim1_irg_bugfix = 0;
+bool tim1_irq_bugfix = 0;
+
+int psc = 0;
 
 void setup_ttm_controller()
 {
@@ -51,25 +53,26 @@ void TIM1_UP_TIM16_IRQHandler()
 	//Сбрасываем флаг прерывания а то охуевание будет
 	TIM1->SR &= ~TIM_SR_UIF;
 	
-	//Зануляем счётчик, готовим к новой партии импульсов
-	TIM1->CNT = 0;
-	
-	if(!tim1_irg_bugfix)
+	if(!tim1_irq_bugfix)
 	{	//Фиксим ложное срабатывание прерывания
-		tim1_irg_bugfix = 1;
+		tim1_irq_bugfix = 1;
 		return;
 	}
 	
-	green_led_frame_change = !green_led_frame_change;
+	++psc;
 	
-	if(green_led_frame_change)
+	if(psc != 2)
 	{
-		//GPIOB->ODR |= PB_FRAME_CHANGE_LED;
-		GPIOB->ODR |= PB_TTM_ENABLE;
+		green_led_frame_change = !green_led_frame_change;
+		ttm_engine_enable = !ttm_engine_enable;
 	}
 	else
 	{
-		//GPIOB->ODR &= ~PB_FRAME_CHANGE_LED;
-		GPIOB->ODR &= ~PB_TTM_ENABLE;
+		green_led_frame_change = !green_led_frame_change;
+		ttm_engine_enable = !ttm_engine_enable;
+		psc = 0;
 	}
+	
+	//Зануляем счётчик, готовим к новой партии импульсов
+	TIM1->CNT = 0;
 }
