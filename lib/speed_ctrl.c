@@ -4,9 +4,11 @@
 #include "TIM16.h"
 #include "TIM17.h"
 
+#include "stdlib.h"
+
 //Работа этой функции рассказана в файле "предварительно рассчитанная таблица значений.txt"
 //current_speed нужно передавать как ссылку чтобы скорость менялась
-uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, bool engine_select)
+uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t tension_sensor_val, bool engine_select)
 {
 	if(target_val >= 2000 && engine_select)										//Защита от выхода за пределы таблицы
 	{
@@ -30,6 +32,43 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, bool engine_
 			feed_coil_lock = 0;
 			start_feed_coil();
 		}
+	
+		//Если current_speed и target_speed равны то обновляем значения считая что функция закончила плавный переход
+		if(*current_speed == target_val)
+		{
+			*current_speed = target_val;																												//Задаём длину отрезка
+			feed_coil_dv_lut_ptr = 0;																													
+			feed_coil_slowdown_dv_lut_ptr = 0;
+			return feed_coil_acceleration_lut[*current_speed];																	//Возвращаем текущую скорость
+		}
+		
+		//Если отрезок идёт право от 0, то прибавляем но если влево то отнимаем
+		if(*current_speed <= target_val && (*current_speed + feed_coil_dv) < COIL_ACCELERATION_LUT_SIZE)
+		{
+			feed_coil_dv_lut_ptr = abs(*current_speed - tension_sensor_val) / 50;								//На разнице между текущей скоростью и инфой полученного от датчика натяжения вычисляем прирост скорости
+			feed_coil_dv_lut_ptr >= 20 ? (feed_coil_dv_lut_ptr = 19) : (feed_coil_dv_lut_ptr = feed_coil_dv_lut_ptr);
+			
+			feed_coil_dv = dv[feed_coil_dv_lut_ptr];																						//По таблице смотрим какой прирост скорости надо выбрать
+			*current_speed += feed_coil_dv;																											//Изменяем скорость
+			*current_speed >= COIL_ACCELERATION_LUT_SIZE ? (*current_speed = COIL_ACCELERATION_LUT_SIZE - 1) : (*current_speed = *current_speed);
+			if(*current_speed + feed_coil_dv >= target_val)																			//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+			{
+				*current_speed = target_val;
+			}
+		}
+		else if(*current_speed >= target_val && (*current_speed - feed_coil_dv) > 0)
+		{
+			feed_coil_slowdown_dv_lut_ptr = abs(tension_sensor_val - *current_speed) / 50;			//
+			feed_coil_slowdown_dv_lut_ptr >= 20 ? (feed_coil_slowdown_dv_lut_ptr = 19) : (feed_coil_slowdown_dv_lut_ptr = feed_coil_slowdown_dv_lut_ptr);
+			
+			feed_coil_slowdown_dv = slowdown_dv[feed_coil_slowdown_dv_lut_ptr];									//По таблице смотрим какой прирост скорости надо выбрать
+			*current_speed += feed_coil_slowdown_dv;																						//Изменяем скорость
+			*current_speed >= COIL_ACCELERATION_LUT_SIZE ? (*current_speed = 0) : (*current_speed = *current_speed);
+			if(*current_speed + feed_coil_slowdown_dv <= target_val)														//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+			{
+				*current_speed = target_val;
+			}
+		}
 	}
 	else
 	{
@@ -43,42 +82,47 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, bool engine_
 			take_coil_lock = 0;
 			start_take_coil();
 		}
-	}
-	
-	//Если current_speed и target_speed равны то обновляем значения считая что функция закончила плавный переход
-	if(*current_speed == target_val && engine_select)
-	{
-		*current_speed = target_val;														//Задаём длину отрезка
-		return feed_coil_acceleration_lut[*current_speed];			//Возвращаем текущую скорость
-	}
-	if(*current_speed == target_val && !engine_select)
-	{
-		*current_speed = target_val;														//Задаём длину отрезка
-		return coil_acceleration_lut[*current_speed];						//Возвращаем текущую скорость
-	}
-	
-	//Если отрезок идёт право от 0, то прибавляем но если влево то отнимаем
-	if(*current_speed <= target_val && (*current_speed + 5) < COIL_ACCELERATION_LUT_SIZE)
-	{
-		*current_speed += 5;
-		if(*current_speed + 5 >= target_val)										//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+		
+		//Если current_speed и target_speed равны то обновляем значения считая что функция закончила плавный переход
+		if(*current_speed == target_val)
 		{
-			*current_speed = target_val;
+			*current_speed = target_val;																												//Задаём длину отрезка
+			return coil_acceleration_lut[*current_speed];																				//Возвращаем текущую скорость
 		}
-	}
-	else if(*current_speed >= target_val && (*current_speed - 5) > 0)
-	{
-		*current_speed -= 5;
-		if(*current_speed - 5 <= target_val)										//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+		
+		//Если отрезок идёт право от 0, то прибавляем но если влево то отнимаем
+		if(*current_speed <= target_val && (*current_speed + take_coil_dv) < COIL_ACCELERATION_LUT_SIZE)
 		{
-			*current_speed = target_val;
+			take_coil_slowdown_dv_lut_ptr = abs(tension_sensor_val - *current_speed) / 50;			//
+			take_coil_slowdown_dv_lut_ptr >= 20 ? (take_coil_slowdown_dv_lut_ptr = 19) : (take_coil_slowdown_dv_lut_ptr = take_coil_slowdown_dv_lut_ptr);
+			
+			take_coil_slowdown_dv = slowdown_dv[take_coil_slowdown_dv_lut_ptr];									//По таблице смотрим какой прирост скорости надо выбрать
+			*current_speed += take_coil_slowdown_dv;																						//Сложение + проверка
+			*current_speed >= COIL_ACCELERATION_LUT_SIZE ? (*current_speed = 0) : (*current_speed = *current_speed);
+			if(*current_speed - take_coil_slowdown_dv <= target_val)														//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+			{
+				*current_speed = target_val;
+			}
+		}
+		else if(*current_speed >= target_val && (*current_speed - take_coil_dv) > 0)
+		{
+			take_coil_dv_lut_ptr = abs(*current_speed - tension_sensor_val) / 50;								//На разнице между текущей скоростью и инфой полученного от датчика натяжения вычисляем прирост скорости
+			take_coil_dv_lut_ptr >= 20 ? (take_coil_dv_lut_ptr = 19) : (take_coil_dv_lut_ptr = take_coil_dv_lut_ptr);
+			
+			take_coil_dv = dv[take_coil_dv_lut_ptr];																						//По таблице смотрим какой прирост скорости надо выбрать
+			*current_speed += take_coil_dv;
+			*current_speed >= COIL_ACCELERATION_LUT_SIZE ? (*current_speed = COIL_ACCELERATION_LUT_SIZE - 1) : (*current_speed = *current_speed);
+			if(*current_speed + take_coil_dv >= target_val)																			//Если очередное прибавление в цикле превысит значение конца отрезка то считаем что достигли конца отрезка
+			{
+				*current_speed = target_val;
+			}
 		}
 	}
 	
 	if(engine_select)
 	{
-		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed - 50];
-		return feed_coil_acceleration_lut[*current_speed - 50];
+		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed - 190];
+		return feed_coil_acceleration_lut[*current_speed - 190];
 	}
 	else
 	{
