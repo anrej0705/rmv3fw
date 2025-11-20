@@ -25,12 +25,12 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t ten
 		if(*current_speed > FEED_COIL_START_THRESHOLD && !feed_coil_lock)
 		{
 			feed_coil_lock = 1;
-			stop_feed_coil();
+			feed_coil_engine_pwm_en = 0;
 		}
 		else if(*current_speed < FEED_COIL_START_THRESHOLD && feed_coil_lock)
 		{
 			feed_coil_lock = 0;
-			start_feed_coil();
+			feed_coil_engine_pwm_en = 1;
 		}
 	
 		//Если current_speed и target_speed равны то обновляем значения считая что функция закончила плавный переход
@@ -75,12 +75,12 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t ten
 		if(*current_speed < TAKE_COIL_STOP_THRESHOLD && !take_coil_lock)
 		{
 			take_coil_lock = 1;
-			stop_take_coil();
+			take_coil_engine_pwm_en = 0;
 		}
 		else if(*current_speed > TAKE_COIL_STOP_THRESHOLD && take_coil_lock)
 		{
 			take_coil_lock = 0;
-			start_take_coil();
+			take_coil_engine_pwm_en = 1;
 		}
 		
 		//Если current_speed и target_speed равны то обновляем значения считая что функция закончила плавный переход
@@ -154,4 +154,25 @@ inline uint16_t get_sample(uint16_t *samples_map)
 	}
 	
 	return (uint16_t)(tmp / COIL_AA_SAMPLES);
+}
+
+inline uint16_t get_new_speed()
+{
+	//Проверяем ускорился ли двигатель или ещё в процессе
+	if(ttm_engine_pwm_en && (ttm_current_speed - ttm_speed_dv > ttm_target_speed))
+	{
+		//Если ещё в процессе то ускоряем
+		ttm_current_speed -= ttm_speed_dv;
+		return ttm_current_speed;
+	}
+	else if(ttm_engine_pwm_en)
+	{
+		//Если уже ускорен то ничего не делаем
+		ttm_current_speed = ttm_target_speed;
+		return ttm_current_speed;
+	}
+	else
+	{
+		return UINT16_MAX;
+	}
 }
