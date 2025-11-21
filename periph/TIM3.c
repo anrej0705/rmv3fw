@@ -76,7 +76,44 @@ void TIM3_IRQHandler()
 		++psc;
 	}
 	
-	if(psc == 100)
+	/*if(psc == 160)
+	{
+		TIM2->CCR2 = 384;
+	}
+	if(psc == 210)
+	{
+		TIM2->CCR2 = 0;
+	}
+	
+	if(psc == 260)
+	{
+		TIM2->CCR3 = 384;
+	}
+	if(psc == 310)
+	{
+		TIM2->CCR3 = 0;
+	}
+	
+	if(psc == 360)
+	{
+		TIM2->CCR4 = 384;
+	}
+	if(psc == 410)
+	{
+		TIM2->CCR4 = 0;
+	}
+	
+	if(psc == 480)
+	{
+		ttm_engine_pwm_en = 1;
+		green_led_frame_change = 0;
+		psc = 0;
+		TIM2->CCR2 = 0;
+		TIM2->CCR3 = 0;
+		TIM2->CCR4 = 0;
+	}*/
+	
+	if(psc == 180)
 	{
 		ttm_engine_pwm_en = 1;
 		green_led_frame_change = 0;
