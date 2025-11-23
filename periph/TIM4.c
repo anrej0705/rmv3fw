@@ -92,7 +92,470 @@ void TIM4_IRQHandler()
 
 void update_screen(void)
 {
-	char sensor_val[5];
+	if(ui_code == cached_ui_code)
+	{	//Убираем бесполезную перерисовку
+		return;
+	}
+	
+	switch(ui_code)
+	{
+		case 0:
+		{
+			//Не используется
+			BA63_ClearVFD();
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 1:
+		{
+			//Шаблон настройки цвета
+			
+			//Рисуем шаблон настроек в буфере
+			strncpy(screen_buf.first, ru_color_preset_template, 21);
+			//Пишем подсказку
+			strncpy(screen_buf.second, ru_color_preset_hint, 21);
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 2:
+		{
+			//Шаблон счётчика кадров
+			
+			//Рисуем в буфер на второй строчке
+			strncpy(screen_buf.second, ru_frames_template, 21);
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			break;
+		}
+		case 3:
+		{
+			//Очистка от указателей на меняемый цвет
+			
+			//Убираем все квадратные скобки
+			screen_buf.first[0] = ' ';
+			screen_buf.first[6] = ' ';
+			screen_buf.first[12] = ' ';
+			screen_buf.first[18] = ' ';
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 31:
+		{
+			//Настройка красного
+			
+			//Рисуем в буфере квадратные скобки как-бэ показывая что сейчас изменяется красный цвет
+			screen_buf.first[0] = '[';
+			screen_buf.first[6] = ']';
+			screen_buf.first[12] = ' ';
+			screen_buf.first[18] = ' ';
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 32:
+		{
+			//Настройка зелёного
+			
+			//Рисуем в буфере квадратные скобки как-бэ показывая что сейчас изменяется зелёный цвет
+			screen_buf.first[0] = ' ';
+			screen_buf.first[6] = '[';
+			screen_buf.first[12] = ']';
+			screen_buf.first[18] = ' ';
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 33:
+		{
+			//Настройка синего
+			
+			//Рисуем в буфере квадратные скобки как-бэ показывая что сейчас изменяется синий цвет
+			screen_buf.first[0] = ' ';
+			screen_buf.first[6] = ' ';
+			screen_buf.first[12] = '[';
+			screen_buf.first[18] = ']';
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 34:
+		{
+			//Готовность
+			
+			//Пишем надпись готовности
+			strncpy(screen_buf.second, ru_ready, 21);
+			
+			//Отправляем на экран, на вторую строку
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 35:
+		{
+			//Сканирование с ожиданием
+			
+			//Чистим значки в буфере и обновляем экран
+			screen_buf.second[10] = ' ';
+			screen_buf.second[12] = ' ';
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 36:
+		{
+			//Протяжка плёнки вперёд
+			
+			//Ставим значок
+			screen_buf.second[14] = ' ';
+			screen_buf.second[12] = 0x99;
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		/*case 37:
+		{
+			//Протяжка плёнки назад
+			
+			//Ставим значок
+			screen_buf.second[12] = 0x1F;
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}*/
+		case 38:
+		{
+			//Сигнал затвора камеры
+			
+			//Ставим значок
+			screen_buf.second[14] = 0x3C;
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 39:
+		{
+			//Пауза
+			
+			//Пишем надпись паузы
+			strncpy(screen_buf.second, ru_paused, 21);
+			
+			//Отправляем на экран, на вторую строку
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 40:
+		{
+			//Настройка красного из паузы
+			
+			//Рисуем в буфере квадратные скобки как-бэ показывая что сейчас изменяется красный цвет
+			screen_buf.first[0] = '[';
+			screen_buf.first[6] = ']';
+			screen_buf.first[12] = ' ';
+			screen_buf.first[18] = ' ';
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 41:
+		{
+			//Настройка зелёного из паузы
+			
+			//Рисуем в буфере квадратные скобки как-бэ показывая что сейчас изменяется красный цвет
+			screen_buf.first[0] = ' ';
+			screen_buf.first[6] = '[';
+			screen_buf.first[12] = ']';
+			screen_buf.first[18] = ' ';
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 42:
+		{
+			//Настройка синего из паузы
+			
+			//Рисуем в буфере квадратные скобки как-бэ показывая что сейчас изменяется красный цвет
+			screen_buf.first[0] = ' ';
+			screen_buf.first[6] = ' ';
+			screen_buf.first[12] = '[';
+			screen_buf.first[18] = ']';
+			
+			//Отправляем на экран
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 43:
+		{
+			//Завершено
+			
+			//Пишем надпись паузы
+			strncpy(screen_buf.second, ru_paused, 21);
+			
+			//Отправляем на экран, на вторую строку
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 44:
+		{
+			//Управление с компа
+			
+			//Пишем надпись, сообщающую о том что эта хрень с компа рулится
+			strncpy(screen_buf.second, ru_remote_ctrl, 21);
+			
+			//Отправляем на экран, на вторую строку
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 50:
+		{
+			//Сервисное меню 1 страница
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.first, ru_service_menu_1, 21);
+			strncpy(screen_buf.second, ru_service_menu_2, 21);
+			
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 51:
+		{
+			//Сервисное меню 2 страница
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.first, ru_service_menu_3, 21);
+			strncpy(screen_buf.second, ru_service_menu_4, 21);
+			
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 52:
+		{
+			//Сервисное меню 3 страница
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.first, ru_service_menu_5, 21);
+			strncpy(screen_buf.second, ru_service_menu_6, 21);
+			
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 53:
+		{
+			//Сервисное меню 4 страница
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.first, ru_service_menu_7, 21);
+			strncpy(screen_buf.second, ru_service_menu_8, 21);
+			
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 54:
+		{
+			//Сервисное меню 5 страница
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.first, ru_service_menu_9, 21);
+			strncpy(screen_buf.second, ru_service_menu_10, 21);
+			
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 55:
+		{
+			//Сервисное меню 6 страница
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.first, ru_service_menu_11, 21);
+			strncpy(screen_buf.second, ru_service_menu_12, 21);
+			
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 100:
+		{
+			//Перегрелся двигатель лпм
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.second, ru_alarm_ttm_engine_overheat, 21);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 101:
+		{
+			//Перегрелся двигатель раздающей бобины
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.second, ru_alarm_feed_engine_overheat, 21);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 102:
+		{
+			//Перегрелся двигатель принимающей бобины
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.second, ru_alarm_take_engine_overheat, 21);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 103:
+		{
+			//Сработал таходатчик лпм
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.second, ru_alarm_ttm_break, 21);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 104:
+		{
+			//Сработал таходатчик раздающей бобины
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.second, ru_alarm_feed_break, 21);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 105:
+		{
+			//Сработал таходатчик принимающей бобины
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.second, ru_alarm_take_break, 21);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 106:
+		{
+			//Больше 1 срабатывания разных датчиков
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.second, ru_alarm_general_feilor, 21);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+	}
+	/*char sensor_val[5];
 	
 	char char_feed_coil_dv[4];
 	char char_take_coil_dv[4];
@@ -164,7 +627,7 @@ void update_screen(void)
 	BA63_SetPos(0, 0);
 	BA63_SendString(screen_buf.first, sizeof(screen_buf.first));
 	BA63_SetPos(0, 1);
-	BA63_SendString(screen_buf.second, sizeof(screen_buf.second));
+	BA63_SendString(screen_buf.second, sizeof(screen_buf.second));*/
 	
 	//++i1;
 }
