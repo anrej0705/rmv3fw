@@ -1,6 +1,6 @@
 Dependencies for Project 'rmv2plus', Target 'STM32F100RB': (DO NOT MODIFY !)
 CompilerVersion: 6160000::V6.16::ARMCLANG
-F (.\main\main.c)(0x691F8872)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/main.o -MD)
+F (.\main\main.c)(0x6923C5A3)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/main.o -MD)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\core_cm3.h)(0x68523360)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
@@ -27,7 +27,7 @@ I (main\main.h)(0x6914D0EE)
 I (lib\BA63.h)(0x69185FD5)
 I (periph\TIM1.h)(0x691486C1)
 I (periph\TIM3.h)(0x691BAE5B)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (periph\TIM4.h)(0x6914CDC5)
 I (periph\TIM6.h)(0x69143819)
@@ -36,21 +36,21 @@ I (periph\TIM15.h)(0x69142BDC)
 I (periph\TIM16.h)(0x69142D4E)
 I (periph\TIM17.h)(0x69142D4E)
 I (periph\USART.h)(0x69166727)
-I (periph\GPIO.h)(0x691779D0)
+I (periph\GPIO.h)(0x6922C287)
 I (main\NVIC.h)(0x691711A8)
 I (main\DMA.h)(0x6918BD24)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
-I (main\locale_ru.h)(0x69185FA9)
-I (main\global_vars.h)(0x691F44DF)
+I (main\locale_ru.h)(0x6922646C)
+I (main\global_vars.h)(0x6923DB31)
 F (.\main\main.h)(0x6914D0EE)()
-F (.\main\presets.h)(0x691F8A6C)()
-F (.\main\locale_ru.h)(0x69185FA9)()
-F (.\main\global_vars.h)(0x691F44DF)()
-F (.\main\global_vars.c)(0x691F88A0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/global_vars.o -MD)
-I (main\global_vars.h)(0x691F44DF)
+F (.\main\presets.h)(0x6923E756)()
+F (.\main\locale_ru.h)(0x6922646C)()
+F (.\main\global_vars.h)(0x6923DB31)()
+F (.\main\global_vars.c)(0x6923DB3E)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/global_vars.o -MD)
+I (main\global_vars.h)(0x6923DB31)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\core_cm3.h)(0x68523360)
 I (N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\cmsis_version.h)(0x68523360)
@@ -72,8 +72,8 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-F (.\main\locale_ru.c)(0x69185F8D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/locale_ru.o -MD)
-I (main\locale_ru.h)(0x69185FA9)
+F (.\main\locale_ru.c)(0x6923C7E0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/locale_ru.o -MD)
+I (main\locale_ru.h)(0x6922646C)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 F (.\main\NVIC.h)(0x691711A8)()
 F (.\main\NVIC.c)(0x69171355)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/nvic.o -MD)
@@ -100,7 +100,7 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 F (.\main\coil_acceleration_lut.c)(0x6919E3F9)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/coil_acceleration_lut.o -MD)
 I (main\speed_lut.h)(0x691F258F)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
@@ -130,16 +130,16 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\global_vars.h)(0x691F44DF)
+I (main\global_vars.h)(0x6923DB31)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 F (.\main\feed_coil_acceleration_lut.c)(0x6919E77D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/feed_coil_acceleration_lut.o -MD)
 I (main\speed_lut.h)(0x691F258F)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
-F (.\main\dv.c)(0x691F51B0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/dv.o -MD)
+F (.\main\dv.c)(0x6920B508)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/dv.o -MD)
 I (main\speed_lut.h)(0x691F258F)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
-F (.\lib\BA63.c)(0x69185FCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/ba63.o -MD)
+F (.\lib\BA63.c)(0x6923C6F3)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/ba63.o -MD)
 I (lib\BA63.h)(0x69185FD5)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
@@ -164,22 +164,29 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
-I (main\global_vars.h)(0x691F44DF)
+I (main\global_vars.h)(0x6923DB31)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 I (periph\USART.h)(0x69166727)
 F (.\lib\BA63.h)(0x69185FD5)()
 F (.\lib\speed_ctrl.h)(0x691F44A0)()
-F (.\lib\speed_ctrl.c)(0x691F4CF5)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/speed_ctrl.o -MD)
+F (.\lib\speed_ctrl.c)(0x6920B773)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/speed_ctrl.o -MD)
 I (lib\speed_ctrl.h)(0x691F44A0)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (main\global_vars.h)(0x691F44DF)
-I (main\presets.h)(0x691F8A6C)
+I (main\global_vars.h)(0x6923DB31)
+I (main\presets.h)(0x6923E756)
 I (main\speed_lut.h)(0x691F258F)
 I (periph\TIM16.h)(0x69142D4E)
 I (periph\TIM17.h)(0x69142D4E)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdlib.h)(0x60354E20)
+F (.\lib\key_convert.h)(0x6923E339)()
+F (.\lib\key_convert.c)(0x6923E3E2)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/key_convert.o -MD)
+I (lib\key_convert.h)(0x6923E339)
+I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
+I (main\global_vars.h)(0x6923DB31)
+I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
+I (main\presets.h)(0x6923E756)
 F (.\periph\TIM6.h)(0x69143819)()
 F (.\periph\TIM15.h)(0x69142BDC)()
 F (.\periph\TIM16.h)(0x69142D4E)()
@@ -208,7 +215,7 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rtc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 F (.\periph\TIM15.c)(0x691F45D0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim15.o -MD)
 I (periph\TIM15.h)(0x69142BDC)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
@@ -233,8 +240,8 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rtc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
-I (periph\GPIO.h)(0x691779D0)
+I (main\presets.h)(0x6923E756)
+I (periph\GPIO.h)(0x6922C287)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 F (.\periph\TIM16.c)(0x691BAC0A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim16.o -MD)
 I (periph\TIM16.h)(0x69142D4E)
@@ -260,10 +267,10 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rtc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
-I (periph\GPIO.h)(0x691779D0)
+I (main\presets.h)(0x6923E756)
+I (periph\GPIO.h)(0x6922C287)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (main\global_vars.h)(0x691F44DF)
+I (main\global_vars.h)(0x6923DB31)
 F (.\periph\TIM17.c)(0x691BAC23)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim17.o -MD)
 I (periph\TIM17.h)(0x69142D4E)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
@@ -288,13 +295,13 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rtc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
-I (periph\GPIO.h)(0x691779D0)
+I (main\presets.h)(0x6923E756)
+I (periph\GPIO.h)(0x6922C287)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (main\global_vars.h)(0x691F44DF)
-F (.\periph\GPIO.h)(0x691779D0)()
+I (main\global_vars.h)(0x6923DB31)
+F (.\periph\GPIO.h)(0x6922C287)()
 F (.\periph\USART.h)(0x69166727)()
-F (.\periph\GPIO.c)(0x691F7454)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/gpio.o -MD)
+F (.\periph\GPIO.c)(0x6923E7EF)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/gpio.o -MD)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\ARM\CMSIS\6.2.0\CMSIS\Core\Include\core_cm3.h)(0x68523360)
@@ -317,13 +324,14 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (periph\GPIO.h)(0x691779D0)
+I (periph\GPIO.h)(0x6922C287)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (periph\TIM17.h)(0x69142D4E)
 I (periph\TIM16.h)(0x69142D4E)
 I (periph\TIM15.h)(0x69142BDC)
-I (main\global_vars.h)(0x691F44DF)
-I (main\presets.h)(0x691F8A6C)
+I (main\global_vars.h)(0x6923DB31)
+I (main\presets.h)(0x6923E756)
+I (lib\key_convert.h)(0x6923E339)
 F (.\periph\USART.c)(0x6916FC18)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/usart.o -MD)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)
@@ -349,14 +357,14 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
 I (periph\USART.h)(0x69166727)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (main\global_vars.h)(0x691F44DF)
-I (main\presets.h)(0x691F8A6C)
+I (main\global_vars.h)(0x6923DB31)
+I (main\presets.h)(0x6923E756)
 I (periph\TIM6.h)(0x69143819)
 F (.\periph\TIM7.h)(0x69144536)()
 F (.\periph\TIM4.h)(0x6914CDC5)()
 F (.\periph\TIM3.h)(0x691BAE5B)()
 F (.\periph\TIM1.h)(0x691486C1)()
-F (.\periph\TIM7.c)(0x6915E5DC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim7.o -MD)
+F (.\periph\TIM7.c)(0x6922C332)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim7.o -MD)
 I (periph\TIM7.h)(0x69144536)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)
@@ -380,10 +388,10 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
-I (periph\GPIO.h)(0x691779D0)
+I (main\presets.h)(0x6923E756)
+I (periph\GPIO.h)(0x6922C287)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-F (.\periph\TIM4.c)(0x691F87ED)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim4.o -MD)
+F (.\periph\TIM4.c)(0x6923E807)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim4.o -MD)
 I (periph\TIM4.h)(0x6914CDC5)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)
@@ -407,18 +415,18 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (periph\GPIO.h)(0x691779D0)
-I (main\global_vars.h)(0x691F44DF)
+I (periph\GPIO.h)(0x6922C287)
+I (main\global_vars.h)(0x6923DB31)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdio.h)(0x60354E24)
 I (N:\KEIL536\ARM\ARMCLANG\include\string.h)(0x60354E20)
-I (main\locale_ru.h)(0x69185FA9)
+I (main\locale_ru.h)(0x6922646C)
 I (lib\BA63.h)(0x69185FD5)
-F (.\periph\TIM3.c)(0x691F8A71)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim3.o -MD)
+F (.\periph\TIM3.c)(0x6922A061)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim3.o -MD)
 I (periph\TIM3.h)(0x691BAE5B)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdint.h)(0x60354E20)
-I (main\presets.h)(0x691F8A6C)
+I (main\presets.h)(0x6923E756)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_rcc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)
@@ -441,11 +449,11 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\global_vars.h)(0x691F44DF)
+I (main\global_vars.h)(0x6923DB31)
 I (periph\TIM15.h)(0x69142BDC)
 I (periph\TIM16.h)(0x69142D4E)
 I (periph\TIM17.h)(0x69142D4E)
-I (periph\GPIO.h)(0x691779D0)
+I (periph\GPIO.h)(0x6922C287)
 I (lib\speed_ctrl.h)(0x691F44A0)
 I (main\speed_lut.h)(0x691F258F)
 F (.\periph\TIM1.c)(0x691F8DD8)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/tim1.o -MD)
@@ -472,10 +480,10 @@ I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_tim.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\stm32f10x_usart.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
-I (main\presets.h)(0x691F8A6C)
-I (main\global_vars.h)(0x691F44DF)
+I (main\presets.h)(0x6923E756)
+I (main\global_vars.h)(0x6923DB31)
 I (N:\KEIL536\ARM\ARMCLANG\include\stdbool.h)(0x60354E1A)
-I (periph\GPIO.h)(0x691779D0)
+I (periph\GPIO.h)(0x6922C287)
 F (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\src\misc.c)(0x690E2507)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m3 -c-funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./main -I ./lib -I ./periph-I./RTE/Device/STM32F100RB-I./RTE/_STM32F100RB-IN:/KEIL_ARM_PACKS/ARM/CMSIS/6.2.0/CMSIS/Core/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/Include-IN:/KEIL_ARM_PACKS/Keil/STM32F1xx_DFP/2.4.1/Device/StdPeriph_Driver/inc-D__UVISION_VERSION="536" -D_RTE_ -DSTM32F10X_MD_VL -D_RTE_ -DUSE_STDPERIPH_DRIVER-o ./objects/misc.o -MD)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc\misc.h)(0x61ADBFAE)
 I (N:\KEIL_ARM_PACKS\Keil\STM32F1xx_DFP\2.4.1\Device\Include\stm32f10x.h)(0x61ADBFAE)

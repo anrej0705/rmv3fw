@@ -9,6 +9,7 @@
 ".\objects\dv.o"
 ".\objects\ba63.o"
 ".\objects\speed_ctrl.o"
+".\objects\key_convert.o"
 ".\objects\tim6.o"
 ".\objects\tim15.o"
 ".\objects\tim16.o"
