@@ -1,4 +1,5 @@
 #include "key_convert.h"
+#include "global_vars.h"
 
 uint8_t convert_key(uint8_t key_code)
 {
@@ -53,7 +54,8 @@ uint8_t convert_key(uint8_t key_code)
 	}
 }
 
-uint8_t set_zero(uint8_t input, uint16_t grade)
+//Установка 0 в выбранный разряд 0-2
+uint16_t set_zero(uint8_t input, uint16_t grade)
 {
 	//Если пришло что-то ебанутое, то даже не связываемся
 	if(grade > 2)
@@ -62,8 +64,8 @@ uint8_t set_zero(uint8_t input, uint16_t grade)
 	}
 	
 	//Временная переменная для облегчения понимания кода
-	uint8_t x = input;
-	uint8_t y;
+	uint16_t x = input;
+	uint16_t y;
 	
 	//Пишем 0 в выбранный разряд
 	switch(grade)
@@ -99,4 +101,113 @@ uint8_t set_zero(uint8_t input, uint16_t grade)
 	}
 	
 	return x;
+}
+
+//Функция обновляет значение яркости канала цвета добавляя туда новое значение вводимое юзером
+inline uint8_t convert_level(uint8_t prev_level, uint8_t input_key_code)
+{
+	uint8_t tmp = prev_level;
+	if(input_key_code == 13)
+	{
+		//Паунс в окно
+		tmp = 0;
+		dig_num = 0;
+	}
+	else
+	{
+		//Конвертируем номер клавиши в целое число
+		dig_tmp = convert_key(input_key_code);
+		
+		//Проверяем попадание
+		if(dig_tmp != 255)
+		{
+			//Проверки
+			if(dig_num > 2)
+			{
+				dig_num = 0;
+			}
+			
+			if(dig_num == 2 && dig_tmp > 2)
+			{
+				//Ограничение сверху. Чел вводит 300, снижаем до 255 - максимального для 8 бит
+				tmp = 255;
+				//Перемещаем указатель разряда дальше
+				++dig_num;
+			}
+			else
+			{
+				switch(dig_num)
+				{
+					case 0:
+					{
+						//Чтобы было проще проверить переполнение, будем работать с большее широкой временной переменной
+						level_tmp = tmp;
+						
+						//Записываем 0 в первый разряд, чтобы избежать переполнения
+						level_tmp = set_zero(level_tmp, 0);
+						
+						//Ставим новое число в выбранный разряд
+						level_tmp += dig_tmp;
+						
+						//Проверяем переполнение
+						if(level_tmp > 255)
+						{
+							//Сбрасываем все остальные разряды
+							level_tmp = dig_tmp;
+						}
+						
+						tmp = (uint8_t)level_tmp;
+						break;
+					}
+					case 1:
+					{
+						//Чтобы было проще проверить переполнение, будем работать с большее широкой временной переменной
+						level_tmp = tmp;
+						
+						//Записываем 0 в первый разряд, чтобы избежать переполнения
+						level_tmp = set_zero(level_tmp, 1);
+						
+						//Ставим новое число в выбранный разряд
+						level_tmp += (dig_tmp * 10);
+						
+						//Проверяем переполнение
+						if(level_tmp > 255)
+						{
+							//Сбрасываем только крайний разряд
+							level_tmp = set_zero(level_tmp, 2);
+						}
+						
+						tmp = (uint8_t)level_tmp;
+						break;
+					}
+					case 2:
+					{
+						//Чтобы было проще проверить переполнение, будем работать с большее широкой временной переменной
+						level_tmp = tmp;
+						
+						//Записываем 0 в первый разряд, чтобы избежать переполнения
+						level_tmp = set_zero(level_tmp, 2);
+						
+						//Ставим новое число в выбранный разряд
+						level_tmp += (dig_tmp * 100);
+						
+						//Проверяем переполнение
+						if(level_tmp > 255)
+						{
+							//Сбрасываем первые 2 разряда
+							level_tmp = set_zero(level_tmp, 0);
+							level_tmp = set_zero(level_tmp, 1);
+						}
+						
+						tmp = (uint8_t)level_tmp;
+						break;
+					}
+				}
+				//Перемещаем указатель разряда дальше
+				++dig_num;
+			}
+		}
+	}
+	
+	return tmp;
 }
