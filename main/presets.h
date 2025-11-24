@@ -60,7 +60,7 @@
 #define TAKE_COIL_START_THRESHOLD		720
 
 #define FEED_COIL_STOP_THRESHOLD		1920		//Порог для остановки двигателя
-#define TAKE_COIL_STOP_THRESHOLD		500
+#define TAKE_COIL_STOP_THRESHOLD		600
 
 #define FEED_COIL										1
 #define TAKE_COIL										0
