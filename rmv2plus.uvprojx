@@ -484,6 +484,16 @@
               <FileType>1</FileType>
               <FilePath>.\lib\speed_ctrl.c</FilePath>
             </File>
+            <File>
+              <FileName>key_convert.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\lib\key_convert.h</FilePath>
+            </File>
+            <File>
+              <FileName>key_convert.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lib\key_convert.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
