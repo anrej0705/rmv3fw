@@ -13,7 +13,7 @@ const char device_name_frame7[21] = "\220\220\220\220\222 \313\363\367-1-35 \221
 const char ru_debug_adc[5] = "\300\326\317:";
 
 const char ru_color_preset_template[21] = " R:000 G:000 B:000 \225\225";
-const char ru_frames_template[21] = "\312\340\344\360 \271:    \241 \240 \226   \225\225";
+const char ru_frames_template[21] = "\312\340\344\360 00000 \241 \240 \226   \225\225";
 const char ru_color_preset_hint[21] = "[#]\316\312       [*]\321\301\320\316\321\321";
 const char ru_ready[21] = "       \303\316\322\316\302       \225\225";
 const char ru_paused[21] = "       \317\300\323\307\300       \225\225";
