@@ -63,6 +63,8 @@ void TIM7_IRQHandler()
 	
 	led_switch == 1 ? (GPIOB->ODR |= GPIO_Pin_10) : (GPIOB->ODR &= ~GPIO_Pin_10);
 	
+	//Сначала проверка клавиатуры для уменьшения количества кода, затем уже проверка кнопок и остального
+	check_keyboard();
 	check_buttons();
 	check_switchers();
 }

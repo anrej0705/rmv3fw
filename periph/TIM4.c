@@ -92,7 +92,7 @@ void TIM4_IRQHandler()
 
 void update_screen(void)
 {
-	if(ui_code == cached_ui_code)
+	if(ui_code == cached_ui_code && key_proced)
 	{	//Убираем бесполезную перерисовку
 		return;
 	}
@@ -104,7 +104,18 @@ void update_screen(void)
 			//Не используется
 			BA63_ClearVFD();
 			
+			sprintf(debug_key_code_char, "%02d", key_code);
+			strncpy(&screen_buf.first[0], debug_key_code_char, 2);
+			
+			key_code = 0;
+			
+			BA63_SetPos(0,0);
+			BA63_SendString(screen_buf.first, 21);
+			
 			cached_ui_code = ui_code;
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
 			break;
 		}
 		case 1:
