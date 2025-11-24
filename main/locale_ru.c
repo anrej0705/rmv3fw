@@ -8,17 +8,17 @@ const char device_name_frame3[21] = "    \222 \313\363\367-1-35 \221     ";
 const char device_name_frame4[21] = "   \220\222 \313\363\367-1-35 \221\220    ";
 const char device_name_frame5[21] = "  \220\220\222 \313\363\367-1-35 \221\220\220   ";
 const char device_name_frame6[21] = " \220\220\220\222 \313\363\367-1-35 \221\220\220\220  ";
-const char device_name_frame7[21] = "\220\220\220\220\222 \313\363\367-1-35 \221\220\220\220\220 ";
+const char device_name_frame7[21] = "\220\220\220\220\222 \313\363\367-1-35 \221\220\220\220\220\220";
 
 const char ru_debug_adc[5] = "\300\326\317:";
 
-const char ru_color_preset_template[21] = " R:000 G:000 B:000 \225 ";
-const char ru_frames_template[21] = "\312\340\344\360 \271:    \241 \240 \226   \225 ";
-const char ru_color_preset_hint[21] = "[#]\316\312       [*]\321\301\320\316\321 ";
-const char ru_ready[21] = "       \303\316\322\316\302       \225 ";
-const char ru_paused[21] = "       \317\300\323\307\300       \225 ";
-const char ru_finish[21] = "  \307\300\302\305\320\330\305\315\316 00000 \225 ";
-const char ru_remote_ctrl[21] = "  \323\317\320\300\302\313\305\315\310\305 \321 \317\312  \225 ";
+const char ru_color_preset_template[21] = " R:000 G:000 B:000 \225\225";
+const char ru_frames_template[21] = "\312\340\344\360 \271:    \241 \240 \226   \225\225";
+const char ru_color_preset_hint[21] = "[#]\316\312       [*]\321\301\320\316\321\321";
+const char ru_ready[21] = "       \303\316\322\316\302       \225\225";
+const char ru_paused[21] = "       \317\300\323\307\300       \225\225";
+const char ru_finish[21] = "  \307\300\302\305\320\330\305\315\316 00000 \225\225";
+const char ru_remote_ctrl[21] = "  \323\317\320\300\302\313\305\315\310\305 \321 \317\312  \225\225";
 
 const char ru_service_menu_1[21] = { 0x30,0x31,0x2E,0xC4,0xC0,0xD2,0xD7,0xC8,0xCA,0xC8,0x20,0xCD,0xC0,0xD2,0xDF,0xC3,0xC0,0x20,0x20,0x20,0x20 };
 const char ru_service_menu_2[21] = { 0x30,0x32,0x2E,0xC4,0xC0,0xD2,0xD7,0xC8,0xCA,0xC8,0x20,0xD2,0xC5,0xCC,0x2D,0xD0,0xDB,0x20,0x20,0x20,0x20 };
