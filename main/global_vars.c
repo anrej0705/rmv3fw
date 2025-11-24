@@ -133,3 +133,7 @@ uint8_t take_coil_slowdown_dv_lut_ptr = 0;
 //Управление режимами кнопок и отображения
 uint8_t ui_code = 0;
 uint8_t cached_ui_code = 0;
+uint8_t key_code = 0;
+char debug_key_code_char[3] = { 0x00, 0x00, 0x00 };
+bool key_lock = 0;
+bool key_proced = 0;

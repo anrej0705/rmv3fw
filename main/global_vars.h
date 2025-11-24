@@ -95,5 +95,9 @@ extern uint8_t take_coil_slowdown_dv_lut_ptr;
 //Управление режимами кнопок и отображения
 extern uint8_t ui_code;												//Переключает функции кнопок и меняет отображаемую инфу в зависимости от цифры
 extern uint8_t cached_ui_code;								//Предотвращает загрузку буфера бесполезными перерисовками. Сбрасывать при любом обновлении
+extern uint8_t key_code;											//Номер нажатой кнопки
+extern char debug_key_code_char[3];						//
+extern bool key_lock;													//Защита от множественных срабатываний
+extern bool key_proced;												//Кнопка обработана
 
 #endif
