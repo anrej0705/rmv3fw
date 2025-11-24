@@ -134,6 +134,9 @@ void update_screen(void)
 			BA63_SendString(screen_buf.second, 21);
 			
 			cached_ui_code = ui_code;
+			
+			//Переходим к настройке красного
+			ui_code = 31;
 			break;
 		}
 		case 2:
@@ -164,6 +167,10 @@ void update_screen(void)
 			BA63_SendString(screen_buf.first, 21);
 			
 			cached_ui_code = ui_code;
+			
+			//Переходим в режим готовности
+			ui_code = 35;
+			
 			break;
 		}
 		case 31:
@@ -176,11 +183,19 @@ void update_screen(void)
 			screen_buf.first[12] = ' ';
 			screen_buf.first[18] = ' ';
 			
+			//Рисуем число в квадратных скобочках
+			sprintf(char_level_red, "%03d", level_red);
+			strncpy(&screen_buf.first[3], char_level_red, 3);
+			
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
 			
 			cached_ui_code = ui_code;
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			break;
 		}
 		case 32:
@@ -192,6 +207,10 @@ void update_screen(void)
 			screen_buf.first[6] = '[';
 			screen_buf.first[12] = ']';
 			screen_buf.first[18] = ' ';
+			
+			//Рисуем число в квадратных скобочках
+			sprintf(char_level_green, "%03d", level_green);
+			strncpy(&screen_buf.first[9], char_level_green, 3);
 			
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
@@ -210,6 +229,10 @@ void update_screen(void)
 			screen_buf.first[12] = '[';
 			screen_buf.first[18] = ']';
 			
+			//Рисуем число в квадратных скобочках
+			sprintf(char_level_blue, "%03d", level_blue);
+			strncpy(&screen_buf.first[15], char_level_blue, 3);
+			
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
@@ -217,7 +240,7 @@ void update_screen(void)
 			cached_ui_code = ui_code;
 			break;
 		}
-		case 34:
+		case 35:
 		{
 			//Готовность
 			
@@ -231,7 +254,7 @@ void update_screen(void)
 			cached_ui_code = ui_code;
 			break;
 		}
-		case 35:
+		case 36:
 		{
 			//Сканирование с ожиданием
 			
@@ -245,7 +268,7 @@ void update_screen(void)
 			cached_ui_code = ui_code;
 			break;
 		}
-		case 36:
+		case 37:
 		{
 			//Протяжка плёнки вперёд
 			
@@ -259,19 +282,6 @@ void update_screen(void)
 			cached_ui_code = ui_code;
 			break;
 		}
-		/*case 37:
-		{
-			//Протяжка плёнки назад
-			
-			//Ставим значок
-			screen_buf.second[12] = 0x1F;
-			
-			BA63_SetPos(0, 1);
-			BA63_SendString(screen_buf.second, 21);
-			
-			cached_ui_code = ui_code;
-			break;
-		}*/
 		case 38:
 		{
 			//Сигнал затвора камеры
