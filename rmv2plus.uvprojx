@@ -454,6 +454,11 @@
               <FileType>1</FileType>
               <FilePath>.\main\feed_coil_acceleration_lut.c</FilePath>
             </File>
+            <File>
+              <FileName>dv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\main\dv.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
