@@ -53,7 +53,7 @@ uint8_t convert_key(uint8_t key_code)
 	}
 }
 
-uint8_t set_zero(uint8_t input, uint8_t grade)
+uint8_t set_zero(uint8_t input, uint16_t grade)
 {
 	//Если пришло что-то ебанутое, то даже не связываемся
 	if(grade > 2)
