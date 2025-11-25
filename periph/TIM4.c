@@ -97,6 +97,21 @@ void update_screen(void)
 		return;
 	}
 	
+	if(led_enabled)
+	{
+			//Обновляем значение ШИМ
+			TIM2->CCR4 = level_red * 3;
+			TIM2->CCR2 = (level_green * 3) / 2;
+			TIM2->CCR3 = level_blue;
+	}
+	else
+	{
+			//Обновляем значение ШИМ
+			TIM2->CCR4 = 0;
+			TIM2->CCR2 = 0;
+			TIM2->CCR3 = 0;
+	}
+	
 	switch(ui_code)
 	{
 		case 0:
@@ -159,11 +174,24 @@ void update_screen(void)
 		{
 			//Шаблон счётчика кадров
 			
+			//Врубаем свет
+			led_enabled = 1;
+			
 			//Рисуем в буфер на второй строчке
 			strncpy(screen_buf.second, ru_frames_template, 21);
 			
 			sprintf(char_frames_counter, "%05d", frames_counter);
 			strncpy(&screen_buf.second[5], char_frames_counter, 5);
+			
+			//В зависимости от того включена ли подсветка рисуем соответствующий значок на экране
+			if(led_enabled)
+			{
+				screen_buf.second[11] = 0x9C;
+			}
+			else
+			{
+				screen_buf.second[11] = 0x9B;
+			}
 			
 			//Отправляем на экран
 			BA63_SetPos(0, 1);
@@ -300,8 +328,8 @@ void update_screen(void)
 			//Сканирование с ожиданием
 			
 			//Чистим значки в буфере и обновляем экран
-			screen_buf.second[10] = ' ';
-			screen_buf.second[12] = ' ';
+			screen_buf.second[13] = ' ';
+			screen_buf.second[15] = ' ';
 			
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
@@ -317,8 +345,8 @@ void update_screen(void)
 			//Протяжка плёнки вперёд
 			
 			//Ставим значок
-			screen_buf.second[14] = ' ';
-			screen_buf.second[12] = 0x99;
+			screen_buf.second[13] = 0x99;
+			screen_buf.second[15] = ' ';
 			
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
@@ -338,8 +366,8 @@ void update_screen(void)
 			strncpy(&screen_buf.second[5], char_frames_counter, 5);
 			
 			//Ставим значок
-			screen_buf.second[12] = 0x90;
-			screen_buf.second[14] = 0x3C;
+			screen_buf.second[13] = 0x90;
+			screen_buf.second[15] = 0x3C;
 			
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
@@ -475,7 +503,7 @@ void update_screen(void)
 			//Ожидание остановки двигателей
 			
 			//Убираем значок протяжки
-			screen_buf.second[12] = '*';
+			screen_buf.second[13] = '*';
 			
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
