@@ -22,6 +22,8 @@ extern const char ru_ready[21];
 extern const char ru_paused[21];
 extern const char ru_finish[21];
 extern const char ru_remote_ctrl[21];
+extern const char ru_engine_disabled[21];
+extern const char ru_wait[21];
 
 extern const char ru_service_menu_1[21];
 extern const char ru_service_menu_2[21];
