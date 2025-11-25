@@ -16,6 +16,7 @@ extern bool ttm_engine_pwm_en;							//Вкл/выкл генерацию ШИМ
 extern bool feed_coil_engine_pwm_en;				//Вкл/выкл генерацию ШИМ для двигателя подающей бобины
 extern bool take_coil_engine_pwm_en;				//Вкл/выкл генерацию ШИМ для двигателя принимающей бобины
 extern bool engine_override;								//Ручное отключение двигателей через переключатель на пенели
+extern bool pause_request;									//Запрос на паузу
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 extern uint16_t feed_coil_tension_sensor;
 extern uint16_t take_coil_tension_sensor;
