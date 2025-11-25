@@ -11,6 +11,7 @@ bool engine_cooler_enable = ENGINE_COOLER_DISABLE;				//Флаг вкл/выкл
 bool ttm_engine_pwm_en = 0;																//Вкл/выкл генерацию ШИМ для двигателя привода ЛПМ
 bool feed_coil_engine_pwm_en = 0;													//Вкл/выкл генерацию ШИМ для двигателя подающей бобины
 bool take_coil_engine_pwm_en = 0;													//Вкл/выкл генерацию ШИМ для двигателя принимающей бобины
+bool engine_override = 0;																	//Срабатывает когда пользователь выключил двигатели переключателем
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 uint16_t feed_coil_tension_sensor = UINT16_MAX >> 4;
 uint16_t take_coil_tension_sensor = UINT16_MAX >> 4;
@@ -44,7 +45,7 @@ struct ba63_fifo_buffer ba63_fifo = {.remain = 223, .size = 224, .tx_en = 0, .st
 
 inline bool cmp_remain(uint8_t desired_bytes)
 {
-	if(desired_bytes > ba63_fifo.remain)
+	if(desired_bytes >= ba63_fifo.remain)
 	{
 		return 0;
 	}
@@ -137,3 +138,22 @@ uint8_t key_code = 0;
 char debug_key_code_char[3] = { 0x00, 0x00, 0x00 };
 bool key_lock = 0;
 bool key_proced = 0;
+bool key_start_lock = 0;
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Значения по каждой компоненте цвета RGBY
+uint8_t level_red = 0;
+uint8_t level_green = 0;
+uint8_t level_blue = 0;
+uint8_t level_yellow = 0;
+uint16_t level_tmp = 0;
+uint8_t dig_num = 0;
+uint8_t dig_tmp = 0;
+char char_level_red[4] = {0};
+char char_level_green[4] = {0};
+char char_level_blue[4] = {0};
+char char_level_yellow[4] = {0};
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Счётчик кадров
+uint16_t frames_counter = 0;
+char char_frames_counter[6] = { 0x20, 0x20, 0x20, 0x20, 0x20, 0x20 };
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
