@@ -107,7 +107,7 @@ void update_screen(void)
 			sprintf(debug_key_code_char, "%02d", key_code);
 			strncpy(&screen_buf.first[0], debug_key_code_char, 2);
 			
-			key_code = 0;
+			key_code = 255;
 			
 			BA63_SetPos(0,0);
 			BA63_SendString(screen_buf.first, 21);
@@ -143,8 +143,16 @@ void update_screen(void)
 			
 			cached_ui_code = ui_code;
 			
-			//Переходим к настройке красного
-			ui_code = 31;
+			if(pause_request)
+			{
+				//Настройка из режима паузы
+				ui_code = 40;
+			}
+			else
+			{
+				//Переходим к настройке красного
+				ui_code = 31;
+			}
 			break;
 		}
 		case 2:
@@ -154,11 +162,25 @@ void update_screen(void)
 			//Рисуем в буфер на второй строчке
 			strncpy(screen_buf.second, ru_frames_template, 21);
 			
+			sprintf(char_frames_counter, "%05d", frames_counter);
+			strncpy(&screen_buf.second[5], char_frames_counter, 5);
+			
 			//Отправляем на экран
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
 			
-			ui_code = 36;
+			if(pause_request)
+			{
+				//Сбрасываем флаг паузы
+				pause_request = 0;
+				
+				//Продолжаем дрочку плёнки
+				ui_code = 37;
+			}
+			else
+			{
+				ui_code = 36;
+			}
 			
 			break;
 		}
@@ -226,6 +248,9 @@ void update_screen(void)
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
 			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			cached_ui_code = ui_code;
 			break;
 		}
@@ -247,6 +272,9 @@ void update_screen(void)
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
 			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			cached_ui_code = ui_code;
 			break;
 		}
@@ -260,6 +288,9 @@ void update_screen(void)
 			//Отправляем на экран, на вторую строку
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
 			
 			cached_ui_code = ui_code;
 			break;
@@ -275,6 +306,9 @@ void update_screen(void)
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
 			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			cached_ui_code = ui_code;
 			break;
 		}
@@ -288,6 +322,9 @@ void update_screen(void)
 			
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
 			
 			cached_ui_code = ui_code;
 			break;
@@ -307,6 +344,9 @@ void update_screen(void)
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
 			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			cached_ui_code = ui_code;
 			break;
 		}
@@ -320,6 +360,9 @@ void update_screen(void)
 			//Отправляем на экран, на вторую строку
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
 			
 			cached_ui_code = ui_code;
 			break;
@@ -342,6 +385,9 @@ void update_screen(void)
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
 			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			cached_ui_code = ui_code;
 			break;
 		}
@@ -362,6 +408,9 @@ void update_screen(void)
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
 			
 			cached_ui_code = ui_code;
 			break;
@@ -384,12 +433,15 @@ void update_screen(void)
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
 			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			cached_ui_code = ui_code;
 			break;
 		}
 		case 43:
 		{
-			//Завершено
+			//Пауза
 			
 			//Пишем надпись паузы
 			strncpy(screen_buf.second, ru_paused, 21);
@@ -397,6 +449,9 @@ void update_screen(void)
 			//Отправляем на экран, на вторую строку
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
 			
 			cached_ui_code = ui_code;
 			break;
@@ -425,6 +480,9 @@ void update_screen(void)
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
 			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			break;
 		}
 		case 46:
@@ -441,6 +499,10 @@ void update_screen(void)
 				cached_ui_code = ui_code;
 				ui_code = 47;
 			}
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			break;
 		}
 		case 47:
@@ -449,7 +511,10 @@ void update_screen(void)
 			strncpy(screen_buf.second, ru_wait, 21);
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
-			//ui_code = 35;
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
 			break;
 		}
 		case 50:

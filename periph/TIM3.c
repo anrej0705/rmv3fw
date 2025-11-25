@@ -86,7 +86,7 @@ void TIM3_IRQHandler()
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop == 50)
+			if(cycles_nop >= 50)
 			{
 				//Симулируем датчик обратной связи
 				skip_cycle = 0;
@@ -100,7 +100,7 @@ void TIM3_IRQHandler()
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop == 50)
+			if(cycles_nop >= 50)
 			{
 				//Симулируем протяжку плёнки
 				skip_cycle = 0;
@@ -114,7 +114,7 @@ void TIM3_IRQHandler()
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop == 50)
+			if(cycles_nop >= 50)
 			{
 				//Симулируем сигнал на затвор
 				skip_cycle = 0;
@@ -132,7 +132,7 @@ void TIM3_IRQHandler()
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop == 50)
+			if(cycles_nop >= 50)
 			{
 				//Симулируем работу двигателей
 				skip_cycle = 0;
@@ -142,16 +142,24 @@ void TIM3_IRQHandler()
 		}
 		case 47:
 		{
-			if(cycles_nop == 0)
+			if(pause_request)
 			{
-				skip_cycle = 1;
+				//Настройка из режима паузы
+				ui_code = 39;
 			}
-			if(cycles_nop == 50)
+			else
 			{
-				//Условно, типа ждём механику
-				skip_cycle = 0;
-				cycles_nop = 0;
-				ui_code = 35;
+				if(cycles_nop == 0)
+				{
+					skip_cycle = 1;
+				}
+				if(cycles_nop >= 50)
+				{
+					//Условно, типа ждём механику
+					skip_cycle = 0;
+					cycles_nop = 0;
+					ui_code = 35;
+				}
 			}
 			break;
 		}
