@@ -149,6 +149,12 @@ inline void check_buttons()
 			if(key_code == 15)
 			{
 				ui_code = 32;
+				
+				//Чистка от мусора
+				level_tmp = 0;
+				dig_num = 0;
+				dig_tmp = 0;
+				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
 				return;
@@ -172,6 +178,12 @@ inline void check_buttons()
 			if(key_code == 15)
 			{
 				ui_code = 33;
+				
+				//Чистка от мусора
+				level_tmp = 0;
+				dig_num = 0;
+				dig_tmp = 0;
+				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
 				return;
@@ -195,6 +207,12 @@ inline void check_buttons()
 			if(key_code == 15)
 			{
 				ui_code = 3;		//Здесь должен быть переход на жёлтый, но его пока нет
+				
+				//Чистка от мусора
+				level_tmp = 0;
+				dig_num = 0;
+				dig_tmp = 0;
+				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
 				return;
@@ -214,6 +232,21 @@ inline void check_buttons()
 		case 35:
 		{
 			//Готовность
+			
+			if(key_code == 13 || key_code == 15)
+			{
+				ui_code = 1;
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+			}
+			else if(key_code == 20)
+			{
+				//Рисуем шаблон и переходим к сканированию
+				ui_code = 2;
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+			}
+			
 			break;
 		}
 		case 36:
@@ -239,16 +272,70 @@ inline void check_buttons()
 		case 40:
 		{
 			//Настройка красного из паузы
+			//Если нажата решётка то переходим к следующему пункту
+			if(key_code == 15)
+			{
+				ui_code = 41;
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+				return;
+			}
+			
+			//Настройка красного
+			level_red = convert_level(level_red, key_code);
+			
+			//Обновляем значение ШИМ
+			TIM2->CCR4 = level_red * 3;
+			
+			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+			key_code = 255;
+			
 			break;
 		}
 		case 41:
 		{
 			//Настройка зелёного из паузы
+			//Если нажата решётка то переходим к следующему пункту
+			if(key_code == 15)
+			{
+				ui_code = 42;
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+				return;
+			}
+			
+			//Настройка красного
+			level_green = convert_level(level_green, key_code);
+			
+			//Обновляем значение ШИМ
+			TIM2->CCR2 = (level_green * 3) / 2;
+			
+			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+			key_code = 255;
+			
 			break;
 		}
 		case 42:
 		{
 			//Настройка синего из паузы
+			//Если нажата решётка то переходим к следующему пункту
+			if(key_code == 15)
+			{
+				ui_code = 39;		//Здесь должен быть переход на жёлтый, но его пока нет. Возвращаемся в паузу
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+				return;
+			}
+			
+			//Настройка красного
+			level_blue = convert_level(level_blue, key_code);
+			
+			//Обновляем значение ШИМ
+			TIM2->CCR3 = level_blue;
+			
+			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+			key_code = 255;
+			
 			break;
 		}
 		case 43:
@@ -327,6 +414,17 @@ inline void check_buttons()
 			break;
 		}
 	}
+	
+	//Проверяем нажатие кнопки пуск
+	if((GPIOB->IDR >> 7 & 0x0001) && !key_start_lock)
+	{
+		key_start_lock = 1;
+		key_code = 20;
+	}
+	else if((GPIOB->IDR >> 7 & 0x0000) && key_start_lock)
+	{
+		key_start_lock = 0;
+	}
 }
 
 inline void check_switchers()
@@ -335,6 +433,7 @@ inline void check_switchers()
 	if((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 1 && pb_main_switch_lock)
 	{	//Лог.1 - выкл
 		pb_main_switch_lock = 0;
+		engine_override = 0;
 		
 		ttm_engine_enable = TTM_ENGINE_DISABLE;
 		coils_engine_enable = COILS_ENGINE_DISABLE;
@@ -350,6 +449,7 @@ inline void check_switchers()
 	else if ((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 0 && !pb_main_switch_lock)
 	{	//Лог.0 - вкл
 		pb_main_switch_lock = 1;
+		engine_override = 1;
 		
 		ttm_engine_enable = TTM_ENGINE_ENABLE;
 		coils_engine_enable = COILS_ENGINE_ENABLE;

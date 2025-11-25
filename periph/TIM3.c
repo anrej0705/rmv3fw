@@ -26,6 +26,10 @@ uint8_t ui_code_arr[31] = { 0, 1, 2, 3, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 
 //Есть такая тема - в контроллере баг, когда настраиваешь таймер при запуске он сразу же даёт 
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
 bool tim3_irq_bugfix = 0;
+	
+//Счётчик пропущенных циклов и флаг пропуска циклов
+bool skip_cycle = 0;
+uint16_t cycles_nop = 0;
 
 void setup_sensor_poll()
 {
@@ -74,10 +78,98 @@ void TIM3_IRQHandler()
 		return;
 	}
 	
-	if(!ttm_engine_pwm_en)
+	switch(ui_code)
 	{
-		++psc;
+		case 36:
+		{
+			if(cycles_nop == 0)
+			{
+				skip_cycle = 1;
+			}
+			if(cycles_nop == 50)
+			{
+				//Симулируем датчик обратной связи
+				skip_cycle = 0;
+				cycles_nop = 0;
+				ui_code = 37;
+			}
+		}
+		case 37:
+		{
+			if(cycles_nop == 0)
+			{
+				skip_cycle = 1;
+			}
+			if(cycles_nop == 50)
+			{
+				//Симулируем протяжку плёнки
+				skip_cycle = 0;
+				cycles_nop = 0;
+				ui_code = 45;
+			}
+		}
+		case 38:
+		{
+			if(cycles_nop == 0)
+			{
+				skip_cycle = 1;
+			}
+			if(cycles_nop == 50)
+			{
+				//Симулируем сигнал на затвор
+				skip_cycle = 0;
+				cycles_nop = 0;
+				
+				//+1 к отфотканным кадрам
+				++frames_counter;
+				
+				ui_code = 36;
+			}
+		}
+		case 45:
+		{
+			if(cycles_nop == 0)
+			{
+				skip_cycle = 1;
+			}
+			if(cycles_nop == 50)
+			{
+				//Симулируем работу двигателей
+				skip_cycle = 0;
+				cycles_nop = 0;
+				ui_code = 38;
+			}
+		}
+		case 47:
+		{
+			if(cycles_nop == 0)
+			{
+				skip_cycle = 1;
+			}
+			if(cycles_nop == 50)
+			{
+				//Условно, типа ждём механику
+				skip_cycle = 0;
+				cycles_nop = 0;
+				ui_code = 35;
+			}
+			break;
+		}
 	}
+	
+	if(skip_cycle)
+	{
+		++cycles_nop;
+	}
+	else
+	{
+		cycles_nop = 0;
+	}
+	
+	//if(!ttm_engine_pwm_en)
+	//{
+	//	++psc;
+	//}
 	
 	/*if(psc == 160)
 	{
@@ -131,7 +223,7 @@ void TIM3_IRQHandler()
 			ptr = 0;
 		}
 		
-		ui_code = ui_code_arr[ptr];
+		//ui_code = ui_code_arr[ptr];
 		
 		psc = 0;
 	}

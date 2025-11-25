@@ -127,6 +127,14 @@ void update_screen(void)
 			//Пишем подсказку
 			strncpy(screen_buf.second, ru_color_preset_hint, 21);
 			
+			//Загружаем текущие значения баланса цвета
+			sprintf(char_level_red, "%03d", level_red);
+			strncpy(&screen_buf.first[3], char_level_red, 3);
+			sprintf(char_level_green, "%03d", level_green);
+			strncpy(&screen_buf.first[9], char_level_green, 3);
+			sprintf(char_level_blue, "%03d", level_blue);
+			strncpy(&screen_buf.first[15], char_level_blue, 3);
+			
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
@@ -150,6 +158,8 @@ void update_screen(void)
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
 			
+			ui_code = 36;
+			
 			break;
 		}
 		case 3:
@@ -169,7 +179,7 @@ void update_screen(void)
 			cached_ui_code = ui_code;
 			
 			//Переходим в режим готовности
-			ui_code = 35;
+			ui_code = 46;
 			
 			break;
 		}
@@ -286,7 +296,12 @@ void update_screen(void)
 		{
 			//Сигнал затвора камеры
 			
+			//Обновляем счётчик кадров
+			sprintf(char_frames_counter, "%05d", frames_counter);
+			strncpy(&screen_buf.second[5], char_frames_counter, 5);
+			
 			//Ставим значок
+			screen_buf.second[12] = 0x90;
 			screen_buf.second[14] = 0x3C;
 			
 			BA63_SetPos(0, 1);
@@ -319,6 +334,10 @@ void update_screen(void)
 			screen_buf.first[12] = ' ';
 			screen_buf.first[18] = ' ';
 			
+			//Рисуем число в квадратных скобочках
+			sprintf(char_level_red, "%03d", level_red);
+			strncpy(&screen_buf.first[3], char_level_red, 3);
+			
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
@@ -336,6 +355,10 @@ void update_screen(void)
 			screen_buf.first[12] = ']';
 			screen_buf.first[18] = ' ';
 			
+			//Рисуем число в квадратных скобочках
+			sprintf(char_level_green, "%03d", level_green);
+			strncpy(&screen_buf.first[9], char_level_green, 3);
+			
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
@@ -352,6 +375,10 @@ void update_screen(void)
 			screen_buf.first[6] = ' ';
 			screen_buf.first[12] = '[';
 			screen_buf.first[18] = ']';
+			
+			//Рисуем число в квадратных скобочках
+			sprintf(char_level_blue, "%03d", level_blue);
+			strncpy(&screen_buf.first[15], char_level_blue, 3);
 			
 			//Отправляем на экран
 			BA63_SetPos(0, 0);
@@ -386,6 +413,43 @@ void update_screen(void)
 			BA63_SendString(screen_buf.second, 21);
 			
 			cached_ui_code = ui_code;
+			break;
+		}
+		case 45:
+		{
+			//Ожидание остановки двигателей
+			
+			//Убираем значок протяжки
+			screen_buf.second[12] = '*';
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			break;
+		}
+		case 46:
+		{
+			//Сообщение с просьбой включить двигатели
+			if(!engine_override)
+			{
+				strncpy(screen_buf.second, ru_engine_disabled, 21);
+				BA63_SetPos(0, 1);
+				BA63_SendString(screen_buf.second, 21);
+			}
+			else
+			{
+				cached_ui_code = ui_code;
+				ui_code = 47;
+			}
+			break;
+		}
+		case 47:
+		{
+			//Сообщение с просьбой подождать - механика готовится
+			strncpy(screen_buf.second, ru_wait, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			//ui_code = 35;
 			break;
 		}
 		case 50:
