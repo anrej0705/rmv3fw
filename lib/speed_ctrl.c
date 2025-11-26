@@ -4,6 +4,8 @@
 #include "TIM16.h"
 #include "TIM17.h"
 
+#include "stm32f10x_tim.h"
+
 #include "stdlib.h"
 
 //Работа этой функции рассказана в файле "предварительно рассчитанная таблица значений.txt"
@@ -121,13 +123,13 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t ten
 	
 	if(engine_select)
 	{
-		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed - 190];
-		return feed_coil_acceleration_lut[*current_speed - 190];
+		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed - 260];
+		return feed_coil_acceleration_lut[*current_speed - 260];
 	}
 	else
 	{
-		degub_selected_take_coil_pwm = coil_acceleration_lut[*current_speed];
-		return coil_acceleration_lut[*current_speed];
+		degub_selected_take_coil_pwm = coil_acceleration_lut[*current_speed - 448];
+		return coil_acceleration_lut[*current_speed - 448];
 	}
 }
 
@@ -158,6 +160,13 @@ inline uint16_t get_sample(uint16_t *samples_map)
 
 inline uint16_t get_new_speed()
 {
+	//Проверяем достигли ли мы порога замедления, если достигли, то начинаем замедляться
+	if(TIM1->CNT > TTM_SLOWDOWN_THRESHOLD)
+	{
+		ttm_current_speed += ttm_speed_dv;
+		return ttm_current_speed;
+	}
+	
 	//Проверяем ускорился ли двигатель или ещё в процессе
 	if(ttm_engine_pwm_en && (ttm_current_speed - ttm_speed_dv > ttm_target_speed))
 	{
