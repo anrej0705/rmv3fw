@@ -69,7 +69,7 @@ void TIM1_UP_TIM16_IRQHandler()
 	
 	//Переключаем машину состояний
 	ui_code = 45;
-	key_code = 255;
+	//key_code = 255;
 	
 	green_led_frame_change = !green_led_frame_change;
 	
