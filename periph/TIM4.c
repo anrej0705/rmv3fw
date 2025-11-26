@@ -203,7 +203,7 @@ void update_screen(void)
 				pause_request = 0;
 				
 				//Продолжаем дрочку плёнки
-				ui_code = 37;
+				ui_code = 45;
 			}
 			else
 			{
@@ -360,10 +360,6 @@ void update_screen(void)
 		case 38:
 		{
 			//Сигнал затвора камеры
-			
-			//Обновляем счётчик кадров
-			sprintf(char_frames_counter, "%05d", frames_counter);
-			strncpy(&screen_buf.second[5], char_frames_counter, 5);
 			
 			//Ставим значок
 			screen_buf.second[13] = 0x90;
@@ -543,6 +539,27 @@ void update_screen(void)
 			//Подымаем флаг обработанного нажатия кнопки
 			key_proced = 1;
 			
+			break;
+		}
+		case 48:
+		{
+			//Протяжка плёнки вперёд
+			
+			//Ставим значок
+			screen_buf.second[13] = ' ';
+			screen_buf.second[15] = ' ';
+			
+			//Обновляем счётчик кадров
+			sprintf(char_frames_counter, "%05d", frames_counter);
+			strncpy(&screen_buf.second[5], char_frames_counter, 5);
+			
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			//Подымаем флаг обработанного нажатия кнопки
+			key_proced = 1;
+			
+			cached_ui_code = ui_code;
 			break;
 		}
 		case 50:

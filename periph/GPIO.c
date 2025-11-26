@@ -399,6 +399,11 @@ inline void check_buttons()
 			
 			break;
 		}
+		case 48:
+		{
+			//Ожидание ответа камеры
+			break;
+		}
 		case 50:
 		{
 			//Сервисное меню 1 страница

@@ -91,8 +91,11 @@ void TIM3_IRQHandler()
 				//Симулируем датчик обратной связи
 				skip_cycle = 0;
 				cycles_nop = 0;
-				ui_code = 37;
+				ui_code = 38;
 			}
+			//ui_code = 37;
+			
+			break;
 		}
 		case 37:
 		{
@@ -100,13 +103,27 @@ void TIM3_IRQHandler()
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop >= 50)
+			
+			if(!ttm_engine_pwm_en)
+			{
+				skip_cycle = 0;
+				cycles_nop = 0;
+				//ui_code = 255;
+				
+				//Запускаем протяжку на 1 кадр вперёд
+				ttm_current_speed = TTM_START_SPEED;
+				ttm_engine_pwm_en = 1;
+				start_ttm();
+			}
+			/*if(cycles_nop >= 150)
 			{
 				//Симулируем протяжку плёнки
 				skip_cycle = 0;
 				cycles_nop = 0;
 				ui_code = 45;
-			}
+			}*/
+			
+			break;
 		}
 		case 38:
 		{
@@ -114,17 +131,16 @@ void TIM3_IRQHandler()
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop >= 50)
+			if(cycles_nop >= 70)
 			{
 				//Симулируем сигнал на затвор
 				skip_cycle = 0;
 				cycles_nop = 0;
 				
-				//+1 к отфотканным кадрам
-				++frames_counter;
-				
-				ui_code = 36;
+				ui_code = 48;
 			}
+			
+			break;
 		}
 		case 45:
 		{
@@ -132,13 +148,15 @@ void TIM3_IRQHandler()
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop >= 50)
+			if(cycles_nop >= 150)
 			{
 				//Симулируем работу двигателей
 				skip_cycle = 0;
 				cycles_nop = 0;
-				ui_code = 38;
+				ui_code = 36;
 			}
+			
+			break;
 		}
 		case 47:
 		{
@@ -153,7 +171,7 @@ void TIM3_IRQHandler()
 				{
 					skip_cycle = 1;
 				}
-				if(cycles_nop >= 50)
+				if(cycles_nop >= 250)
 				{
 					//Условно, типа ждём механику
 					skip_cycle = 0;
@@ -161,6 +179,31 @@ void TIM3_IRQHandler()
 					ui_code = 35;
 				}
 			}
+			
+			break;
+		}
+		case 48:
+		{
+			if(cycles_nop == 0)
+			{
+				skip_cycle = 1;
+			}
+			if(cycles_nop >= 150)
+			{
+				//Симулируем сигнал на затвор
+				skip_cycle = 0;
+				cycles_nop = 0;
+				
+				//+1 к отфотканным кадрам
+				++frames_counter;
+				
+				ui_code = 37;
+			}
+			break;
+		}
+		default:
+		{
+			//Ничего не делаем в случае ошибочного попадания
 			break;
 		}
 	}
@@ -241,7 +284,7 @@ void TIM3_IRQHandler()
 	coils_engine_enable == COILS_ENGINE_DISABLE ? (GPIOB->ODR |= PB_COILS_ENABLE) : (GPIOB->ODR &= ~PB_COILS_ENABLE);
 	engine_cooler_enable == ENGINE_COOLER_DISABLE ? (GPIOB->ODR |= PB_FAN_ENABLE) : (GPIOB->ODR &= ~PB_FAN_ENABLE);
 	
-	ttm_engine_pwm_en == TTM_ENGINE_DISABLE ? (stop_ttm()) : (start_ttm());
+	ttm_engine_pwm_en == 1 ? (start_ttm()) : (stop_ttm());
 	feed_coil_engine_pwm_en == COILS_ENGINE_DISABLE ? (stop_feed_coil()) : (start_feed_coil());
 	take_coil_engine_pwm_en == ENGINE_COOLER_DISABLE ? (stop_take_coil()) : (start_take_coil());
 	
