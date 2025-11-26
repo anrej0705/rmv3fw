@@ -464,6 +464,11 @@ inline void check_buttons()
 			//Больше 1 срабатывания разных датчиков
 			break;
 		}
+		default:
+		{
+			//Ничего не делаем в случае ошибочного попадания
+			break;
+		}
 	}
 	
 	//Проверяем нажатие кнопки пуск
@@ -498,10 +503,10 @@ inline void check_switchers()
 		ttm_engine_enable = TTM_ENGINE_DISABLE;
 		coils_engine_enable = COILS_ENGINE_DISABLE;
 		
-		ttm_engine_pwm_en = 0;
+		//ttm_engine_pwm_en = 0;
 		green_led_frame_change = 0;
 		TIM15->CNT = 0;
-		ttm_current_speed = DRIVER_DEFAULT_ARR;
+		ttm_current_speed = TTM_START_SPEED;
 		
 		//Выключаем пропеллеры чтобы не шумели, всё равно охлаждать нечего
 		engine_cooler_enable = ENGINE_COOLER_DISABLE;
@@ -514,7 +519,7 @@ inline void check_switchers()
 		ttm_engine_enable = TTM_ENGINE_ENABLE;
 		coils_engine_enable = COILS_ENGINE_ENABLE;
 		
-		ttm_engine_pwm_en = 1;
+		//ttm_engine_pwm_en = 1;
 		
 		//Врубаем пропеллеры, а то всё перегреется к хуям)))
 		engine_cooler_enable = ENGINE_COOLER_ENABLE;

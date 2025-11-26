@@ -4,6 +4,8 @@
 #include "presets.h"
 #include "global_vars.h"
 
+#include "TIM15.h"
+
 #include "GPIO.h"
 #include "stdbool.h"
 
@@ -60,8 +62,14 @@ void TIM1_UP_TIM16_IRQHandler()
 	TIM15->CR1 &= ~TIM_CR1_CEN;
 	TIM15->BDTR &= ~TIM_BDTR_MOE;
 	
+	//Вырубаем двигатель
 	ttm_engine_pwm_en = 0;
-	ttm_current_speed = 300;
+	ttm_current_speed = TTM_START_SPEED;
+	set_speed_ttm(ttm_current_speed);
+	
+	//Переключаем машину состояний
+	ui_code = 45;
+	key_code = 255;
 	
 	green_led_frame_change = !green_led_frame_change;
 	

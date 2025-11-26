@@ -732,6 +732,11 @@ void update_screen(void)
 			cached_ui_code = ui_code;
 			break;
 		}
+		default:
+		{
+			//Ничего не делаем в случае ошибочного попадания
+			break;
+		}
 	}
 	/*char sensor_val[5];
 	
