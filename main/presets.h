@@ -80,4 +80,11 @@
 #define TTM_TARGET_SPEED						80
 #define TTM_SPEED_DV								18
 
+#define THRESHOLD_LOW								40
+#define THRESHOLD_MED								80
+#define THRESHOLD_HIG								120
+
+#define TTM_START_SPEED							500
+#define TTM_SLOWDOWN_THRESHOLD			2900
+
 #endif
