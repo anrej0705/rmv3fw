@@ -36,7 +36,7 @@ void setup_gpio(void)
 	GPIO_Init(GPIOA, &m_gpio);
 	
 	//GPIOB
-	m_gpio.GPIO_Pin = GPIO_Pin_7;
+	m_gpio.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_7;
 	GPIO_Init(GPIOB, &m_gpio);
 	
 	//GPIOC
@@ -157,14 +157,15 @@ inline void check_buttons()
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
-				return;
 			}
-			
-			//Настройка красного
-			level_red = convert_level(level_red, key_code);
-			
-			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+			else
+			{
+				//Настройка красного
+				level_red = convert_level(level_red, key_code);
+				
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 			key_code = 255;
+			}
 			
 			break;
 		}
@@ -183,14 +184,16 @@ inline void check_buttons()
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
-				return;
+				break;
 			}
-			
-			//Настройка красного
-			level_green = convert_level(level_green, key_code);
-			
-			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-			key_code = 255;
+			else
+			{
+				//Настройка красного
+				level_green = convert_level(level_green, key_code);
+				
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+			}
 			
 			break;
 		}
@@ -209,14 +212,16 @@ inline void check_buttons()
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
-				return;
+				break;
 			}
-			
-			//Настройка красного
-			level_blue = convert_level(level_blue, key_code);
-			
-			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-			key_code = 255;
+			else
+			{
+				//Настройка красного
+				level_blue = convert_level(level_blue, key_code);
+				
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+			}
 			
 			break;
 		}
@@ -298,15 +303,17 @@ inline void check_buttons()
 				key_code = 255;
 				return;
 			}
-			
-			//Настройка красного
-			level_red = convert_level(level_red, key_code);
-			
-			//Обновляем значение ШИМ
-			TIM2->CCR4 = level_red * 3;
-			
-			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-			key_code = 255;
+			else
+			{
+				//Настройка красного
+				level_red = convert_level(level_red, key_code);
+				
+				//Обновляем значение ШИМ
+				TIM2->CCR4 = level_red;
+				
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+			}
 			
 			break;
 		}
@@ -325,17 +332,20 @@ inline void check_buttons()
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
-				return;
+				
+				break;
 			}
-			
-			//Настройка красного
-			level_green = convert_level(level_green, key_code);
-			
-			//Обновляем значение ШИМ
-			TIM2->CCR2 = (level_green * 3) / 2;
-			
-			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-			key_code = 255;
+			else
+			{
+				//Настройка красного
+				level_green = convert_level(level_green, key_code);
+				
+				//Обновляем значение ШИМ
+				TIM2->CCR2 = level_green;
+				
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+			}
 			
 			break;
 		}
@@ -354,17 +364,19 @@ inline void check_buttons()
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
-				return;
+				break;
 			}
-			
-			//Настройка красного
-			level_blue = convert_level(level_blue, key_code);
-			
-			//Обновляем значение ШИМ
-			TIM2->CCR3 = level_blue;
-			
-			//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-			key_code = 255;
+			else
+			{
+				//Настройка красного
+				level_blue = convert_level(level_blue, key_code);
+				
+				//Обновляем значение ШИМ
+				TIM2->CCR3 = level_blue;
+				
+				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
+				key_code = 255;
+			}
 			
 			break;
 		}
