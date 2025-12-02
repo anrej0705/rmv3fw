@@ -137,6 +137,9 @@ void TIM3_IRQHandler()
 				skip_cycle = 0;
 				cycles_nop = 0;
 				
+				//+1 к отфотканным кадрам
+				++frames_counter;
+				
 				ui_code = 48;
 			}
 			
@@ -193,9 +196,6 @@ void TIM3_IRQHandler()
 				//Симулируем сигнал на затвор
 				skip_cycle = 0;
 				cycles_nop = 0;
-				
-				//+1 к отфотканным кадрам
-				++frames_counter;
 				
 				ui_code = 37;
 			}
