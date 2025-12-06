@@ -32,8 +32,8 @@ void setup_gpio(void)
 	m_gpio.GPIO_Mode = GPIO_Mode_IPD;
 	
 	//GPIOA
-	m_gpio.GPIO_Pin = GPIO_Pin_0;
-	GPIO_Init(GPIOA, &m_gpio);
+	//m_gpio.GPIO_Pin = GPIO_Pin_0;
+	//GPIO_Init(GPIOA, &m_gpio);			//Кнопка сервисного меню
 	
 	//GPIOB
 	m_gpio.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_7;
@@ -52,7 +52,7 @@ void setup_gpio(void)
 	m_gpio.GPIO_Mode = GPIO_Mode_Out_PP;
 	
 	//GPIOA
-	m_gpio.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_11;
+	m_gpio.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_8 | GPIO_Pin_11;
 	GPIO_Init(GPIOA, &m_gpio);
 	
 	//GPIOB
@@ -166,6 +166,16 @@ inline void check_buttons()
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 			key_code = 255;
 			}
+	
+			//Управляем лампочкой включённой подсветки
+			if(level_red != 0 || level_green != 0 || level_blue != 0 || level_yellow != 0)
+			{
+				green_led_sublight_en = 1;
+			}
+			else
+			{
+				green_led_sublight_en = 0;
+			}
 			
 			break;
 		}
@@ -194,6 +204,16 @@ inline void check_buttons()
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
 			}
+	
+			//Управляем лампочкой включённой подсветки
+			if(level_red != 0 || level_green != 0 || level_blue != 0 || level_yellow != 0)
+			{
+				green_led_sublight_en = 1;
+			}
+			else
+			{
+				green_led_sublight_en = 0;
+			}
 			
 			break;
 		}
@@ -221,6 +241,16 @@ inline void check_buttons()
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
+			}
+	
+			//Управляем лампочкой включённой подсветки
+			if(level_red != 0 || level_green != 0 || level_blue != 0 || level_yellow != 0)
+			{
+				green_led_sublight_en = 1;
+			}
+			else
+			{
+				green_led_sublight_en = 0;
 			}
 			
 			break;
@@ -314,6 +344,16 @@ inline void check_buttons()
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
 			}
+	
+			//Управляем лампочкой включённой подсветки
+			if(level_red != 0 || level_green != 0 || level_blue != 0 || level_yellow != 0)
+			{
+				green_led_sublight_en = 1;
+			}
+			else
+			{
+				green_led_sublight_en = 0;
+			}
 			
 			break;
 		}
@@ -346,6 +386,16 @@ inline void check_buttons()
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
 			}
+	
+			//Управляем лампочкой включённой подсветки
+			if(level_red != 0 || level_green != 0 || level_blue != 0 || level_yellow != 0)
+			{
+				green_led_sublight_en = 1;
+			}
+			else
+			{
+				green_led_sublight_en = 0;
+			}
 			
 			break;
 		}
@@ -376,6 +426,16 @@ inline void check_buttons()
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
+			}
+	
+			//Управляем лампочкой включённой подсветки
+			if(level_red != 0 || level_green != 0 || level_blue != 0 || level_yellow != 0)
+			{
+				green_led_sublight_en = 1;
+			}
+			else
+			{
+				green_led_sublight_en = 0;
 			}
 			
 			break;
@@ -521,7 +581,6 @@ inline void check_switchers()
 		coils_engine_enable = COILS_ENGINE_DISABLE;
 		
 		//ttm_engine_pwm_en = 0;
-		green_led_frame_change = 0;
 		TIM15->CNT = 0;
 		ttm_current_speed = TTM_START_SPEED;
 		

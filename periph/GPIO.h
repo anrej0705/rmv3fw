@@ -11,8 +11,14 @@
 #define PB_FAN_ENABLE								GPIO_Pin_2
 #define PB_COILS_ENABLE							GPIO_Pin_5
 #define PB_TTM_ENABLE								GPIO_Pin_6
-#define PB_FRAME_CHANGE_LED					GPIO_Pin_12
 #define PB_TTM_DIRECTION						GPIO_Pin_15
+
+#define PB_FEED_COIL_LED						GPIO_Pin_13
+#define PB_TAKE_COIL_LED						GPIO_Pin_11
+#define PB_FRAME_CHANGE_LED					GPIO_Pin_12
+#define PB_ALARM_LED								GPIO_Pin_10
+
+#define PC_SUBLIGHT_EN_LED					GPIO_Pin_11
 
 #define PD_MOTOR_MAIN_SWITCH				GPIO_Pin_2
 
