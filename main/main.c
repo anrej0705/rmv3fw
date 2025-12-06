@@ -139,7 +139,11 @@ int main(void)
 	feed_coil_engine_pwm_en = 1;
 	take_coil_engine_pwm_en = 1;
 	
-	USART_Cmd(USART1, ENABLE);set_speed_ttm(ttm_current_speed);
+	USART_Cmd(USART1, ENABLE);
+	
+	red_led_alarm = 1;
+	
+	set_speed_ttm(ttm_current_speed);
 	
 	//Запуски периферии
 	start_key_poller();																													//Запускаем опрос кнопок
