@@ -5,8 +5,6 @@
 #include "global_vars.h"
 #include "TIM6.h"
 
-bool led_switch1 = 0;
-
 //Есть такая тема - в контроллере баг, когда настраиваешь таймер при запуске он сразу же даёт 
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
 bool usart_irq_bugfix = 0;
@@ -44,11 +42,8 @@ void USART1_IRQHandler()
 	
 	if((USART1->SR & USART_SR_TC) != 0)
 	{
-		led_switch1 = 1;
 		if(!fifo_is_empty())
 		{
-			led_switch1 = 0;
-			
 			ba63_fifo.tx_en = 1;
 			
 			char tmp = fifo_read();
@@ -56,8 +51,6 @@ void USART1_IRQHandler()
 			USART_SendData(USART1, tmp);																		//Начинаем педерачу
 		}
 	}
-	
-	led_switch1 == 0 ? (GPIOB->ODR &= ~GPIO_Pin_11) : (GPIOB->ODR |= GPIO_Pin_11);
 	
 	USART_ClearITPendingBit(USART1, USART_IT_TC);
 }
