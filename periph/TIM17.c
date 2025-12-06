@@ -42,6 +42,9 @@ inline void start_feed_coil(void)
 {	//ВРУБАЕМ ТАЙМЕР И ШЫМ ЕБАНЫЙ
 	TIM17->CR1 |= TIM_CR1_CEN;
 	TIM17->BDTR |= TIM_BDTR_MOE;
+	
+	//Врубаем лампочку
+	yellow_led_feed_coil = 1;
 }
 
 inline void stop_feed_coil(void)
@@ -51,6 +54,9 @@ inline void stop_feed_coil(void)
 	
 	//Зануляем счётчик
 	TIM17->CNT = 0;
+	
+	//Вырубаем лампочку
+	yellow_led_feed_coil = 0;
 }
 
 inline void set_speed_feed_coil(uint16_t speed)

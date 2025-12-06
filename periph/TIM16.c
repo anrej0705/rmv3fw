@@ -42,6 +42,9 @@ inline void start_take_coil(void)
 {	//ВРУБАЕМ ТАЙМЕР И ШЫМ ЕБАНЫЙ
 	TIM16->CR1 |= TIM_CR1_CEN;
 	TIM16->BDTR |= TIM_BDTR_MOE;
+	
+	//Врубаем лампочку
+	yellow_led_take_coil = 1;
 }
 
 inline void stop_take_coil(void)
@@ -51,6 +54,9 @@ inline void stop_take_coil(void)
 	
 	//Зануляем счётчик
 	TIM16->CNT = 0;
+	
+	//Вырубаем лампочку
+	yellow_led_take_coil = 0;
 }
 
 inline void set_speed_take_coil(uint16_t speed)

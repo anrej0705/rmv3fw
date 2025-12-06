@@ -79,15 +79,17 @@ void TIM4_IRQHandler()
 		tim4_irq_bugfix = 1;
 		return;
 	}
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	//Зажигаем или гасим светодиод смены кадра
-	green_led_frame_change == 0 ? (GPIOB->ODR &= ~PB_FRAME_CHANGE_LED) : (GPIOB->ODR |= PB_FRAME_CHANGE_LED);
-	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	/*if(feed_coil_tension_sensor != cached_feed_coil_tension_sensor || take_coil_tension_sensor != cached_take_coil_tension_sensor)
-	{
-		update_screen();
-	}*/
+	
 	update_screen();
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Зажигаем или гасим светодиоды
+	green_led_sublight_en == 0 ? (GPIOC->ODR &= ~PC_SUBLIGHT_EN_LED) : (GPIOC->ODR |= PC_SUBLIGHT_EN_LED);
+	green_led_frame_change == 0 ? (GPIOB->ODR &= ~PB_FRAME_CHANGE_LED) : (GPIOB->ODR |= PB_FRAME_CHANGE_LED);
+	yellow_led_feed_coil == 0 ? (GPIOB->ODR &= ~PB_FEED_COIL_LED) : (GPIOB->ODR |= PB_FEED_COIL_LED);
+	yellow_led_take_coil == 0 ? (GPIOB->ODR &= ~PB_TAKE_COIL_LED) : (GPIOB->ODR |= PB_TAKE_COIL_LED);
+	red_led_alarm == 0 ? (GPIOB->ODR &= ~PB_ALARM_LED) : (GPIOB->ODR |= PB_ALARM_LED);
+	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
 
 void update_screen(void)
@@ -99,17 +101,21 @@ void update_screen(void)
 	
 	if(led_enabled)
 	{
-			//Обновляем значение ШИМ
-			TIM2->CCR4 = level_red * 3;
-			TIM2->CCR2 = (level_green * 3) / 2;
-			TIM2->CCR3 = level_blue;
+		//Зажигаем лампочку показывающую что подсветка работае
+		green_led_sublight_en = 1;
+		//Обновляем значение ШИМ
+		TIM2->CCR4 = level_red;
+		TIM2->CCR2 = level_green;
+		TIM2->CCR3 = level_blue;
 	}
 	else
 	{
-			//Обновляем значение ШИМ
-			TIM2->CCR4 = 0;
-			TIM2->CCR2 = 0;
-			TIM2->CCR3 = 0;
+		//Гасим лампочку показывающую что подсветка работае
+		green_led_sublight_en = 0;
+		//Обновляем значение ШИМ
+		TIM2->CCR4 = 0;
+		TIM2->CCR2 = 0;
+		TIM2->CCR3 = 0;
 	}
 	
 	switch(ui_code)
@@ -328,7 +334,7 @@ void update_screen(void)
 			//Сканирование с ожиданием
 			
 			//Чистим значки в буфере и обновляем экран
-			screen_buf.second[13] = ' ';
+			screen_buf.second[13] = 0x90;
 			screen_buf.second[15] = ' ';
 			
 			BA63_SetPos(0, 1);
@@ -512,7 +518,7 @@ void update_screen(void)
 		case 46:
 		{
 			//Сообщение с просьбой включить двигатели
-			if(!engine_override)
+			if(engine_override)
 			{
 				strncpy(screen_buf.second, ru_engine_disabled, 21);
 				BA63_SetPos(0, 1);
@@ -546,7 +552,7 @@ void update_screen(void)
 			//Протяжка плёнки вперёд
 			
 			//Ставим значок
-			screen_buf.second[13] = ' ';
+			screen_buf.second[13] = 0x90;
 			screen_buf.second[15] = ' ';
 			
 			//Обновляем счётчик кадров

@@ -71,8 +71,6 @@ void TIM1_UP_TIM16_IRQHandler()
 	ui_code = 45;
 	//key_code = 255;
 	
-	green_led_frame_change = !green_led_frame_change;
-	
 	//Зануляем счётчик, готовим к новой партии импульсов
 	TIM1->CNT = 0;
 }

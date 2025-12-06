@@ -2,6 +2,7 @@
 #include "stm32f10x_tim.h"
 #include "presets.h"
 #include "GPIO.h"
+#include "global_vars.h"
 
 //Настройка таймера
 void setup_ttm(void)
@@ -45,6 +46,8 @@ inline void start_ttm(void)
 {	//ВРУБАЕМ ТАЙМЕР И ШЫМ ЕБАНЫЙ
 	TIM15->CR1 |= TIM_CR1_CEN;
 	TIM15->BDTR |= TIM_BDTR_MOE;
+	//Врубаем лампу сообщающую о работе двигателя
+	green_led_frame_change = 1;
 }
 
 inline void stop_ttm(void)
@@ -54,6 +57,8 @@ inline void stop_ttm(void)
 	
 	//Зануляем счётчик
 	TIM15->CNT = 0;
+	//Вырубаем лампу сообщающую о работе двигателя
+	green_led_frame_change = 0;
 }
 
 inline void set_speed_ttm(uint16_t speed)
