@@ -8,8 +8,6 @@
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
 bool tim7_irq_bugfix = 0;
 
-bool led_switch = 0;
-
 void setup_key_poller()
 {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
@@ -58,10 +56,6 @@ void TIM7_IRQHandler()
 		tim7_irq_bugfix = 1;
 		return;
 	}
-	
-	led_switch = !led_switch;
-	
-	led_switch == 1 ? (GPIOB->ODR |= GPIO_Pin_10) : (GPIOB->ODR &= ~GPIO_Pin_10);
 	
 	//Сначала проверка клавиатуры для уменьшения количества кода, затем уже проверка кнопок и остального
 	check_keyboard();

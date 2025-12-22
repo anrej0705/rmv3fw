@@ -4,12 +4,13 @@
 #include "TIM17.h"
 #include "TIM16.h"
 #include "TIM15.h"
+#include "TIM1.h"
 
 #include "global_vars.h"
 #include "key_convert.h"
 
 bool pa_service_menu_button_lock = 0;
-bool pb_main_switch_lock = 0;
+bool pb_main_switch_lock = 1;
 
 void setup_gpio(void)
 {	
@@ -98,12 +99,12 @@ inline void check_buttons()
 {
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Проверяем нажатие кнопки сервисного меню
-	if((GPIOA->IDR & PA_SERVICE_MENU_BUTTON) == 1 && !pa_service_menu_button_lock)
+	/*if((GPIOA->IDR & PA_SERVICE_MENU_BUTTON) == 1 && !pa_service_menu_button_lock)
 	{
 		pa_service_menu_button_lock = 1;
 		
-		GPIOA->ODR |= PA_FEED_COIL_DIRECTION;
-		GPIOA->ODR &= ~PA_TAKE_COIL_DIRECTION;
+		GPIOA->ODR &= ~PA_FEED_COIL_DIRECTION;
+		GPIOA->ODR |= PA_TAKE_COIL_DIRECTION;
 		GPIOB->ODR |= PB_TTM_DIRECTION;
 		
 		//Пока что переключаем направление вращения двигателей
@@ -112,13 +113,14 @@ inline void check_buttons()
 	{
 		pa_service_menu_button_lock = 0;
 		
-		GPIOA->ODR &= ~PA_FEED_COIL_DIRECTION;
-		GPIOA->ODR |= PA_TAKE_COIL_DIRECTION;
+		GPIOA->ODR |= PA_FEED_COIL_DIRECTION;
+		GPIOA->ODR &= ~PA_TAKE_COIL_DIRECTION;
 		GPIOB->ODR &= ~PB_TTM_DIRECTION;
 		
 		//Пока что переключаем направление вращения двигателей
-	}
+	}*/
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
 	switch(ui_code)
 	{
 		case 0:
@@ -164,7 +166,7 @@ inline void check_buttons()
 				level_red = convert_level(level_red, key_code);
 				
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-			key_code = 255;
+				key_code = 255;
 			}
 	
 			//Управляем лампочкой включённой подсветки
@@ -223,6 +225,8 @@ inline void check_buttons()
 			//Если нажата решётка то переходим к следующему пункту
 			if(key_code == 15)
 			{
+				engines_enabled = 1;
+				
 				ui_code = 3;		//Здесь должен быть переход на жёлтый, но его пока нет
 				
 				//Чистка от мусора
@@ -257,22 +261,82 @@ inline void check_buttons()
 		}
 		case 35:
 		{
-			//Готовность
-			
-			if(key_code == 13)
+			switch(key_code)
 			{
-				ui_code = 1;
-				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-				key_code = 255;
-			}
-			else if(key_code == 20)
-			{
-				//Блочик сервисные кнопки, чтобы пользователь случайно не сломал процесс
-				service_lane_lock = 1;
-				//Рисуем шаблон и переходим к сканированию
-				ui_code = 2;
-				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
-				key_code = 255;
+				case 0:
+				{
+					//Двигаем кадр вперёд
+					film_direction = FILM_DIRECTION_DEFAULT;
+					
+					if(high_speed)
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED_HIGH);
+					}
+					else
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED);
+					}
+					start_ttm();
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					//key_code = 255;
+					
+					break;
+				}
+				case 4:
+				{
+					//Двигаем кадр назад
+					
+					//Меняем направление
+					film_direction = FILM_DIRECTION_REVERSE;
+					
+					if(high_speed)
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED_HIGH);
+					}
+					else
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED);
+					}
+					start_ttm();
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					//key_code = 255;
+					
+					break;
+				}
+				case 8:
+				{
+					//Переключение скорости
+					high_speed = !high_speed;
+				}
+				case 13:
+				{
+					ui_code = 1;
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					key_code = 255;
+					break;
+				}
+				case 15:
+				{
+					//Останавливаем двигатель и сбрасываем бит направления
+					set_speed_ttm(TTM_START_SPEED);
+					stop_ttm();
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					key_code = 255;
+					
+					break;
+				}
+				case 20:
+				{
+					//Запускаем таймер управления двигателем привода ЛПМ
+					start_ttm_controller();
+					//Блочик сервисные кнопки, чтобы пользователь случайно не сломал процесс
+					service_lane_lock = 1;
+					//Рисуем шаблон и переходим к сканированию
+					ui_code = 2;
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					key_code = 255;
+					break;
+				}
 			}
 			
 			break;
@@ -280,24 +344,51 @@ inline void check_buttons()
 		case 36:
 		{
 			//Сканирование с ожиданием
+			
+			/*if(key_code == 20)
+			{
+				//Сбрасываем кнопку и переключаем на сообщение завершения
+				key_code = 255;
+				ui_code = 43;
+			}*/
+			
 			break;
 		}
 		case 37:
 		{
 			//Протяжка плёнки вперёд
+			
+			/*if(key_code == 20)
+			{
+				//Сбрасываем кнопку и переключаем на сообщение завершения
+				key_code = 255;
+				ui_code = 43;
+			}*/
+			
 			break;
 		}
 		case 38:
 		{
 			//Сигнал затвора камеры
+			
+			/*if(key_code == 20)
+			{
+				//Сбрасываем кнопку и переключаем на сообщение завершения
+				key_code = 255;
+				ui_code = 43;
+			}*/
+			
 			break;
 		}
 		case 39:
 		{
 			//Пауза
 			
+			//Сбрасываем флаг
+			camera_shot = 0;
+			
 			//Проверяем решил ли пользователь изменить настройки цвета
-			if(key_code == 13)
+			/*if(key_code == 13)
 			{
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
@@ -306,12 +397,81 @@ inline void check_buttons()
 			}
 			else if(key_code == 20)
 			{
+				//Запускаем таймер управления двигателем привода ЛПМ
+				start_ttm_controller();
 				//Блочик сервисные кнопки, чтобы пользователь случайно не сломал процесс
 				service_lane_lock = 1;
 				//Рисуем шаблон и переходим к сканированию
 				ui_code = 2;
 				//Чтобы избежать повторного срабатывания пишем какую-нибудь хрень в код кнопки
 				key_code = 255;
+			}*/
+			switch(key_code)
+			{
+				case 0:
+				{
+					//Двигаем кадр вперёд
+					film_direction = FILM_DIRECTION_DEFAULT;
+					
+					if(high_speed)
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED_HIGH);
+					}
+					else
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED);
+					}
+					start_ttm();
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					//key_code = 255;
+					
+					break;
+				}
+				case 4:
+				{
+					//Двигаем кадр назад
+					
+					//Меняем направление
+					film_direction = FILM_DIRECTION_REVERSE;
+					
+					if(high_speed)
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED_HIGH);
+					}
+					else
+					{
+						set_speed_ttm(TTM_CORRECTION_SPEED);
+					}
+					start_ttm();
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					//key_code = 255;
+					
+					break;
+				}
+				case 8:
+				{
+					//Переключение скорости
+					high_speed = !high_speed;
+				}
+				case 13:
+				{
+					ui_code = 1;
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					key_code = 255;
+					break;
+				}
+				case 20:
+				{
+					//Запускаем таймер управления двигателем привода ЛПМ
+					start_ttm_controller();
+					//Блочик сервисные кнопки, чтобы пользователь случайно не сломал процесс
+					service_lane_lock = 1;
+					//Рисуем шаблон и переходим к сканированию
+					ui_code = 2;
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					key_code = 255;
+					break;
+				}
 			}
 			
 			break;
@@ -443,6 +603,10 @@ inline void check_buttons()
 		case 43:
 		{
 			//Завершено
+			
+			//Сбрасываем флаг
+			camera_shot = 0;
+			
 			break;
 		}
 		case 44:
@@ -457,6 +621,9 @@ inline void check_buttons()
 			//Тут можно паузу замутить
 			if(key_code == 15)
 			{
+				//Вырубаем прерывания
+				stop_ttm_controller();
+				
 				//Разблок сервисные кнопки, можно выкл подсветку например или поправить расположение кадра
 				service_lane_lock = 0;
 				
@@ -474,6 +641,28 @@ inline void check_buttons()
 		case 48:
 		{
 			//Ожидание ответа камеры
+
+			//Защитный интервал
+			if(def < 48)
+			{
+				++def;
+			}
+			
+			if(key_code == 20)
+			{
+				if(def >= 48)
+				{
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					key_code = 255;
+					ui_code = 43;
+				}
+				else
+				{
+					//Сбрасываем кнопку и переключаем на сообщение завершения
+					key_code = 255;
+				}
+			}
+			
 			break;
 		}
 		case 50:
@@ -567,28 +756,40 @@ inline void check_buttons()
 		//Устраняем повторное срабатывание
 		key_code = 255;
 	}
+	
+	if(!take_coil_freeze)
+	{
+		//Проверяем сработал ли датчик выпадения
+		drop_detect = GPIOC->IDR >> 10 & 0x0001;
+	}
+	else
+	{
+		drop_detect = 0;
+	}
+	
+	//Так как датчики не сделаны то используем светодиод по другому назначению
+	red_led_alarm = drop_detect;
 }
 
 inline void check_switchers()
 {
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	if((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 1 && pb_main_switch_lock)
-	{	//Лог.1 - выкл
+	if((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 1 && pb_main_switch_lock && engines_enabled)
+	{	//Лог.1 - вкл
 		pb_main_switch_lock = 0;
 		engine_override = 0;
 		
 		ttm_engine_enable = TTM_ENGINE_DISABLE;
 		coils_engine_enable = COILS_ENGINE_DISABLE;
 		
-		//ttm_engine_pwm_en = 0;
 		TIM15->CNT = 0;
 		ttm_current_speed = TTM_START_SPEED;
 		
 		//Выключаем пропеллеры чтобы не шумели, всё равно охлаждать нечего
-		engine_cooler_enable = ENGINE_COOLER_DISABLE;
+		//engine_cooler_enable = ENGINE_COOLER_DISABLE;
 	}
 	else if ((GPIOD->IDR & PD_MOTOR_MAIN_SWITCH) >> 2 == 0 && !pb_main_switch_lock)
-	{	//Лог.0 - вкл
+	{	//Лог.0 - выкл
 		pb_main_switch_lock = 1;
 		engine_override = 1;
 		
@@ -598,9 +799,17 @@ inline void check_switchers()
 		//ttm_engine_pwm_en = 1;
 		
 		//Врубаем пропеллеры, а то всё перегреется к хуям)))
-		engine_cooler_enable = ENGINE_COOLER_ENABLE;
+		//engine_cooler_enable = ENGINE_COOLER_ENABLE;
 	}
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	if((GPIOB->IDR & PB_CALLBACK_DISABLE) >> 2 == 0)
+	{
+		take_coil_freeze = 1;
+	}
+	else
+	{
+		take_coil_freeze = 0;
+	}
 }
 
 inline void check_keyboard()

@@ -19,9 +19,6 @@
 #include "stdbool.h"
 
 uint16_t psc = 0;
-uint8_t ptr = 0;
-
-uint8_t ui_code_arr[31] = { 0, 1, 2, 3, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 50, 51, 52, 53, 54, 55, 100, 101, 102, 103, 104, 105, 106 };
 
 //Есть такая тема - в контроллере баг, когда настраиваешь таймер при запуске он сразу же даёт 
 //прерывание которое никто не ждал. Чтобы такой лабуды не было нужно первый вызов прерывания скипать
@@ -82,11 +79,7 @@ void TIM3_IRQHandler()
 	{
 		case 36:
 		{
-			if(cycles_nop == 0)
-			{
-				skip_cycle = 1;
-			}
-			if(cycles_nop >= 50)
+			if(!camera_busy)
 			{
 				//Симулируем датчик обратной связи
 				skip_cycle = 0;
@@ -99,15 +92,13 @@ void TIM3_IRQHandler()
 		}
 		case 37:
 		{
-			if(cycles_nop == 0)
+			if(drop_detect)
 			{
-				skip_cycle = 1;
+				//Завершаем сканирование
+				ui_code = 43;
 			}
-			
-			if(!ttm_engine_pwm_en)
+			else if(!ttm_engine_pwm_en)
 			{
-				skip_cycle = 0;
-				cycles_nop = 0;
 				//ui_code = 255;
 				
 				//Запускаем протяжку на 1 кадр вперёд
@@ -115,23 +106,19 @@ void TIM3_IRQHandler()
 				ttm_engine_pwm_en = 1;
 				start_ttm();
 			}
-			/*if(cycles_nop >= 150)
-			{
-				//Симулируем протяжку плёнки
-				skip_cycle = 0;
-				cycles_nop = 0;
-				ui_code = 45;
-			}*/
 			
 			break;
 		}
 		case 38:
 		{
+			//Подаём сигнал на затвор
+			camera_shot = 1;
+			
 			if(cycles_nop == 0)
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop >= 70)
+			if(cycles_nop >= 40)
 			{
 				//Симулируем сигнал на затвор
 				skip_cycle = 0;
@@ -145,53 +132,65 @@ void TIM3_IRQHandler()
 			
 			break;
 		}
+		case 39:
+		{
+			//Сбрасываем счетчик для защитного интервала
+			def = 0;
+			
+			break;
+		}
+		case 43:
+		{
+			//Снимаем сигнал на затвор камеры
+			camera_shot = 0;
+			//Гасим свет
+			led_enabled = 0;
+			//Выкл двигателей
+			ttm_engine_enable = TTM_ENGINE_ENABLE;
+			coils_engine_enable = COILS_ENGINE_ENABLE;
+			
+			break;
+		}
 		case 45:
 		{
 			if(cycles_nop == 0)
 			{
 				skip_cycle = 1;
 			}
-			if(cycles_nop >= 150)
+			//Костыль, чтобы кнопка паузы успела опроситься хотя бы 1 раз
+			if(cycles_nop >= 80)
 			{
-				//Симулируем работу двигателей
-				skip_cycle = 0;
-				cycles_nop = 0;
-				ui_code = 36;
+				//Ждём остановки двигателя подающей бобины
+				if(!yellow_led_feed_coil)
+				{
+					ui_code = 36;
+				}
 			}
 			
 			break;
 		}
 		case 47:
 		{
+			engines_enabled = 1;
+			
 			if(pause_request)
 			{
 				//Настройка из режима паузы
 				ui_code = 39;
 			}
-			else
+			else if(!yellow_led_feed_coil && !yellow_led_take_coil)
 			{
-				if(cycles_nop == 0)
-				{
-					skip_cycle = 1;
-				}
-				if(cycles_nop >= 250)
-				{
-					//Условно, типа ждём механику
-					skip_cycle = 0;
-					cycles_nop = 0;
 					ui_code = 35;
-				}
 			}
 			
 			break;
 		}
 		case 48:
 		{
-			if(cycles_nop == 0)
-			{
-				skip_cycle = 1;
-			}
-			if(cycles_nop >= 150)
+			//Снимаем сигнал на затвор
+			camera_shot = 0;
+			
+			if(camera_busy)
 			{
 				//Симулируем сигнал на затвор
 				skip_cycle = 0;
@@ -199,6 +198,7 @@ void TIM3_IRQHandler()
 				
 				ui_code = 37;
 			}
+			
 			break;
 		}
 		default:
@@ -217,85 +217,66 @@ void TIM3_IRQHandler()
 		cycles_nop = 0;
 	}
 	
-	//if(!ttm_engine_pwm_en)
-	//{
-	//	++psc;
-	//}
-	
-	/*if(psc == 160)
-	{
-		TIM2->CCR2 = 384;
-	}
-	if(psc == 210)
-	{
-		TIM2->CCR2 = 0;
-	}
-	
-	if(psc == 260)
-	{
-		TIM2->CCR3 = 384;
-	}
-	if(psc == 310)
-	{
-		TIM2->CCR3 = 0;
-	}
-	
-	if(psc == 360)
-	{
-		TIM2->CCR4 = 384;
-	}
-	if(psc == 410)
-	{
-		TIM2->CCR4 = 0;
-	}
-	
-	if(psc == 480)
-	{
-		ttm_engine_pwm_en = 1;
-		green_led_frame_change = 0;
-		psc = 0;
-		TIM2->CCR2 = 0;
-		TIM2->CCR3 = 0;
-		TIM2->CCR4 = 0;
-	}*/
-	
-	/*if(psc == 180)
-	{
-		ttm_engine_pwm_en = 1;
-		green_led_frame_change = 0;
-		psc = 0;
-	}*/
-	
-	if(psc == 100)
-	{
-		++ptr;
-		if(ptr >= 31)
-		{
-			ptr = 0;
-		}
-		
-		//ui_code = ui_code_arr[ptr];
-		
-		psc = 0;
-	}
-	
 	//Смотрим битики
 	ttm_engine_enable == TTM_ENGINE_DISABLE ? (GPIOB->ODR |= PB_TTM_ENABLE) : (GPIOB->ODR &= ~PB_TTM_ENABLE);
 	coils_engine_enable == COILS_ENGINE_DISABLE ? (GPIOB->ODR |= PB_COILS_ENABLE) : (GPIOB->ODR &= ~PB_COILS_ENABLE);
-	engine_cooler_enable == ENGINE_COOLER_DISABLE ? (GPIOB->ODR |= PB_FAN_ENABLE) : (GPIOB->ODR &= ~PB_FAN_ENABLE);
+	//engine_cooler_enable == ENGINE_COOLER_DISABLE ? (GPIOB->ODR |= PB_FAN_ENABLE) : (GPIOB->ODR &= ~PB_FAN_ENABLE);
+	
+	camera_shot == 1 ? (GPIOC->ODR |= PC_CAMERA_SHOT) : (GPIOC->ODR &= ~PC_CAMERA_SHOT);
 	
 	ttm_engine_pwm_en == 1 ? (start_ttm()) : (stop_ttm());
 	feed_coil_engine_pwm_en == COILS_ENGINE_DISABLE ? (stop_feed_coil()) : (start_feed_coil());
 	take_coil_engine_pwm_en == ENGINE_COOLER_DISABLE ? (stop_take_coil()) : (start_take_coil());
 	
-	//GPIOB->ODR |= PB_COILS_ENABLE;
-	//GPIOB->ODR |= PB_TTM_ENABLE;
-	//GPIOB->ODR |= PB_FAN_ENABLE;
+	//Опрос датчика обратной связи камеры
+	if(callback_sensor > CALLBACK_THRESHOLD_EN && !camera_busy)
+	{
+		camera_busy = 1;
+	}
+	else if(callback_sensor < CALLBACK_THRESHOLD_DIS && camera_busy)
+	{
+		camera_busy = 0;
+	}
 	
 	insert_sample(feed_coil_samples_map, &feed_coil_semaples_map_ptr, feed_coil_tension_sensor);
 	insert_sample(take_coil_samples_map, &take_coil_semaples_map_ptr, take_coil_tension_sensor);
 	
+	if(!film_direction)
+	{
+		GPIOA->ODR &= ~PA_FEED_COIL_DIRECTION;
+		GPIOA->ODR |= PA_TAKE_COIL_DIRECTION;
+		GPIOB->ODR |= PB_TTM_DIRECTION;
+		
+		//Пока что переключаем направление вращения двигателей
+	}
+	else
+	{
+		GPIOA->ODR |= PA_FEED_COIL_DIRECTION;
+		GPIOA->ODR &= ~PA_TAKE_COIL_DIRECTION;
+		GPIOB->ODR &= ~PB_TTM_DIRECTION;
+		
+		//Пока что переключаем направление вращения двигателей
+	}
+
 	set_speed_feed_coil(calc_segment(get_sample(feed_coil_samples_map), &feed_coil_current_speed, feed_coil_tension_sensor, FEED_COIL));
-	set_speed_take_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, take_coil_tension_sensor, TAKE_COIL));
+	
+	if(!take_coil_freeze)
+	{
+		//Фикс - проверка флага до расчёта скорости так как расчёт скорости отключает двигатель
+		//если достигнут порог остановки
+		if(!take_coil_freeze_lock)
+		{
+			take_coil_engine_pwm_en = 1;
+			take_coil_freeze_lock = 1;
+		}
+		set_speed_take_coil(calc_segment(get_sample(take_coil_samples_map), &take_coil_current_speed, take_coil_tension_sensor, TAKE_COIL));
+	}
+	else if(take_coil_freeze_lock)
+	{
+		take_coil_engine_pwm_en = 0;
+		take_coil_freeze_lock = 0;
+		//drop_detect = 0;
+	}
+	
 	set_speed_ttm(get_new_speed());
 }

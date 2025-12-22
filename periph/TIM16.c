@@ -53,7 +53,7 @@ inline void stop_take_coil(void)
 	TIM16->BDTR &= ~TIM_BDTR_MOE;
 	
 	//Зануляем счётчик
-	TIM16->CNT = 0;
+	//TIM16->CNT = 0;
 	
 	//Вырубаем лампочку
 	yellow_led_take_coil = 0;

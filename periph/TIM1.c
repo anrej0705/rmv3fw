@@ -32,20 +32,22 @@ void setup_ttm_controller()
 	
 	//Здесь настраиваем таймер чтобы он тактировался снаружи
 	TIM_ETRClockMode2Config(TIM1, TIM_ExtTRGPSC_OFF, TIM_ExtTRGPolarity_NonInverted, 0x00);
-	
-	//Врубаем прерывания
-	TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);
-	NVIC_EnableIRQ(TIM1_UP_TIM16_IRQn);
 }
 
 inline void start_ttm_controller()
 {
 	TIM1->CR1 |= TIM_CR1_CEN;
+	//Врубаем прерывания
+	TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);
+	NVIC_EnableIRQ(TIM1_UP_TIM16_IRQn);
 }
 
 inline void stop_ttm_controller()
 {
 	TIM1->CR1 &= ~TIM_CR1_CEN;
+	//Вырубаем прерывания
+	TIM_ITConfig(TIM1, TIM_IT_Update, DISABLE);
+	NVIC_DisableIRQ(TIM1_UP_TIM16_IRQn);
 }
 
 void TIM1_UP_TIM16_IRQHandler()
