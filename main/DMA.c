@@ -12,7 +12,7 @@ void setup_dma(void)
 	DMA_InitTypeDef m_dma;
 	DMA_StructInit(&m_dma);
 	
-	m_dma.DMA_BufferSize = 4;
+	m_dma.DMA_BufferSize = 6;
 	m_dma.DMA_DIR = DMA_DIR_PeripheralSRC;
 	m_dma.DMA_M2M = DMA_M2M_Disable;
 	m_dma.DMA_MemoryBaseAddr = (uint32_t)&adc_buffer;
@@ -41,8 +41,14 @@ void DMA1_Channel1_IRQHandler(void)
 	
 	take_coil_tension_sensor += adc_buffer[1];
 	take_coil_tension_sensor = take_coil_tension_sensor / 2;
+	
+	callback_sensor += adc_buffer[2];
+	callback_sensor = callback_sensor / 2;
+	
+	led_calibration += adc_buffer[3];
+	led_calibration = led_calibration / 2;
 
-	cpu_temp_sensor += adc_buffer[2];
+	cpu_temp_sensor += adc_buffer[4];
 	cpu_temp_sensor = cpu_temp_sensor / 2;
 	
 	feed_coil_tension_sensor >= 2000 ? (feed_coil_tension_sensor = 1999) : (feed_coil_tension_sensor = feed_coil_tension_sensor);

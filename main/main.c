@@ -76,10 +76,10 @@ int main(void)
 	
 	//TIM2 - управление яркостью подсветки
 	m_pwm.TIM_Pulse = 0;
-	TIM_OC2Init(TIM2, &m_pwm);		//Включаем ШИМ(25% Зелёный)
-	TIM_OC3Init(TIM2, &m_pwm);		//Включаем ШИМ(25% Синий)
+	TIM_OC2Init(TIM2, &m_pwm);		//Включаем ШИМ
+	TIM_OC3Init(TIM2, &m_pwm);		//Включаем ШИМ
 	//m_pwm.TIM_Pulse = 512;			//50%
-	TIM_OC4Init(TIM2, &m_pwm);		//Включаем ШИМ(50% Красный)
+	TIM_OC4Init(TIM2, &m_pwm);		//Включаем ШИМ
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -97,14 +97,16 @@ int main(void)
 	m_adc.ADC_DataAlign = ADC_DataAlign_Right;
 	m_adc.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
 	m_adc.ADC_Mode = ADC_Mode_Independent;
-	m_adc.ADC_NbrOfChannel = 4;
+	m_adc.ADC_NbrOfChannel = 6;
 	m_adc.ADC_ScanConvMode = ENABLE;
 	ADC_Init(ADC1, &m_adc);
 	
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 1, ADC_SampleTime_239Cycles5);
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_5, 2, ADC_SampleTime_239Cycles5);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_TempSensor, 3, ADC_SampleTime_239Cycles5);
-	ADC_RegularChannelConfig(ADC1, ADC_Channel_Vrefint, 4, ADC_SampleTime_239Cycles5);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_14, 3, ADC_SampleTime_239Cycles5);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_15, 4, ADC_SampleTime_239Cycles5);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_TempSensor, 5, ADC_SampleTime_239Cycles5);
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_Vrefint, 6, ADC_SampleTime_239Cycles5);
 	ADC_Cmd(ADC1, ENABLE);
 	ADC_DMACmd(ADC1, ENABLE);
 	
@@ -133,7 +135,6 @@ int main(void)
 	USART_Cmd(USART1, ENABLE);
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
-	//ttm_current_speed = 80;
 	ttm_speed_dv = TTM_SPEED_DV;
 	ttm_target_speed = TTM_TARGET_SPEED;
 	feed_coil_engine_pwm_en = 1;
@@ -141,19 +142,19 @@ int main(void)
 	
 	USART_Cmd(USART1, ENABLE);
 	
-	red_led_alarm = 1;
-	
 	set_speed_ttm(ttm_current_speed);
 	
 	//Запуски периферии
 	start_key_poller();																													//Запускаем опрос кнопок
 	start_sensor_poll();																												//Запускаем опрос датчиков, пока юзер настраивает они нормализуются
-	start_ttm_controller();																											//Запускаем таймер управления двигателем привода ЛПМ
+	//start_ttm_controller();																											//Запускаем таймер управления двигателем привода ЛПМ
+	
+	GPIOB->ODR |= PB_TTM_DIRECTION;
 	
 	//Ждём пока экран раскочегарится, нагреется крч приведёт себя в готовность
-	delay_ms(166);																															//Ждём пока всё загрузится и просрётся
+	delay_ms(266);																															//Ждём пока всё загрузится и просрётся
 	BA63_Init();																																//Чистим экран от мусора
-	//welcome();																																	//Здороваемся с челом
+	welcome();																																	//Здороваемся с челом
 		
 	//Передаём управление экраном таймеру 4
 	start_led_screen_update();																									//Запускаем сканирование и обновление экрана
@@ -219,12 +220,14 @@ void welcome(void)
 	delay_ms(300);
 	BA63_SetPos(0,0);
 	BA63_DeleteToEndline();
+	BA63_SetPos(0,0);
+	BA63_SendString(author, sizeof(author));
 	BA63_SetPos(0,1);
 	BA63_SendString(fwVer, sizeof(fwVer));
 	delay_ms(1250);
 	BA63_SetPos(0,1);
-	BA63_SendString(author, sizeof(author));
-	delay_ms(1250);
+	BA63_SendString(year, sizeof(year));
+	delay_ms(1500);
 	
 	//Приветствие завершено
 }
@@ -233,12 +236,3 @@ void HardFault_Handler(void)
 {
 	NVIC_SystemReset();
 }
-
-/*void DMA1_Channel1_IRQHandler()
-{
-	//Когда DMA завершил свою работу сохраняем значения из массива
-	
-	feed_coil_tension_sensor = adc_buffer[0];
-	take_coil_tension_sensor = adc_buffer[1];
-	cpu_temp_sensor = adc_buffer[2];
-}*/
