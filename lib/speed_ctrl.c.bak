@@ -123,13 +123,13 @@ uint16_t calc_segment(uint16_t target_val, uint16_t *current_speed, uint16_t ten
 	
 	if(engine_select)
 	{
-		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed - 660];
-		return feed_coil_acceleration_lut[*current_speed - 660];
+		degub_selected_feed_coil_pwm = feed_coil_acceleration_lut[*current_speed - 560];
+		return feed_coil_acceleration_lut[*current_speed - 560];
 	}
 	else
 	{
-		degub_selected_take_coil_pwm = coil_acceleration_lut[*current_speed + 20];
-		return coil_acceleration_lut[*current_speed + 20];
+		degub_selected_take_coil_pwm = coil_acceleration_lut[*current_speed + 400];
+		return coil_acceleration_lut[*current_speed + 400];
 	}
 }
 
