@@ -159,7 +159,7 @@ int main(void)
 	//Передаём управление экраном таймеру 4
 	start_led_screen_update();																									//Запускаем сканирование и обновление экрана
 	
-	ui_code = 1;																																//Запускаем настройку
+	ui_code = 80;//1;																														//Запускаем настройку
 	
 	//Цiкл в конце обязателен, если конечно хочется чтобы прерывания работали
 	while(1)
@@ -192,7 +192,6 @@ void welcome(void)
 	BA63_SetPos(0,0);
 	BA63_SendString(device_name_frame7, sizeof(device_name_frame7));
 	
-	//В процессе разработки мне регулярно снилась одна милфа(SR) так что её имя будет кодовым для проекта(нахуя?)
 	BA63_SetPos(0,1);
 	BA63_SendString(projectCode, sizeof(projectCode));
 	
