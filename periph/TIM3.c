@@ -116,7 +116,7 @@ void TIM3_IRQHandler()
 			
 			if(cycles_nop == 0)
 			{
-				skip_cycle = 1;
+				skip_cycle = 0;
 			}
 			if(cycles_nop >= 40)
 			{
@@ -125,7 +125,7 @@ void TIM3_IRQHandler()
 				cycles_nop = 0;
 				
 				//+1 к отфотканным кадрам
-				++frames_counter;
+				//++frames_counter;
 				
 				ui_code = 48;
 			}
@@ -155,10 +155,12 @@ void TIM3_IRQHandler()
 		{
 			if(cycles_nop == 0)
 			{
-				skip_cycle = 1;
+				skip_cycle = 0;
 			}
+			
+			//Выжидаем 150 мс чтобы на экране значение обновились
 			//Костыль, чтобы кнопка паузы успела опроситься хотя бы 1 раз
-			if(cycles_nop >= 80)
+			if(cycles_nop >= 150)
 			{
 				//Ждём остановки двигателя подающей бобины
 				if(!yellow_led_feed_coil)
@@ -190,13 +192,32 @@ void TIM3_IRQHandler()
 			//Снимаем сигнал на затвор
 			camera_shot = 0;
 			
+			//Логика поменялась. Теперь флаг означает что надо подождать пока отработает затвор
+			//время задержки устанавливает пользователь
 			if(camera_busy)
 			{
 				//Симулируем сигнал на затвор
 				skip_cycle = 0;
 				cycles_nop = 0;
 				
+				ui_code = 81;
+			}
+			
+			break;
+		}
+		case 81:
+		{
+			if(cycles_nop >= xt_shutter_delay)
+			{
+				//Симулируем сигнал на затвор
+				skip_cycle = 0;
+				cycles_nop = 0;
+				
+				//+1 к отфотканным кадрам
+				++frames_counter;
+				
 				ui_code = 37;
+				
 			}
 			
 			break;
@@ -208,7 +229,7 @@ void TIM3_IRQHandler()
 		}
 	}
 	
-	if(skip_cycle)
+	if(!skip_cycle)
 	{
 		++cycles_nop;
 	}

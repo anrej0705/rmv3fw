@@ -110,9 +110,9 @@ void update_screen(void)
 		//Зажигаем лампочку показывающую что подсветка работае
 		green_led_sublight_en = 1;
 		//Обновляем значение ШИМ
-		TIM2->CCR4 = level_red * 5 / 2;
-		TIM2->CCR2 = level_green * 2;
-		TIM2->CCR3 = level_blue * 14 / 8;
+		TIM2->CCR4 = level_red;
+		TIM2->CCR2 = level_green;
+		TIM2->CCR3 = level_blue;
 	}
 	else/* if(!led_enabled && led_enabled_lock)*/
 	{
@@ -362,6 +362,10 @@ void update_screen(void)
 			screen_buf.second[13] = 0x99;
 			screen_buf.second[15] = ' ';
 			
+			//Обновляем счётчик кадров
+			sprintf(char_frames_counter, "%05d", frames_counter);
+			strncpy(&screen_buf.second[5], char_frames_counter, 5);
+			
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
 			
@@ -576,10 +580,6 @@ void update_screen(void)
 			screen_buf.second[13] = 0x90;
 			screen_buf.second[15] = ' ';
 			
-			//Обновляем счётчик кадров
-			sprintf(char_frames_counter, "%05d", frames_counter);
-			strncpy(&screen_buf.second[5], char_frames_counter, 5);
-			
 			BA63_SetPos(0, 1);
 			BA63_SendString(screen_buf.second, 21);
 			
@@ -676,6 +676,49 @@ void update_screen(void)
 			//Рисуем пункты меню на экране
 			strncpy(screen_buf.first, ru_service_menu_11, 21);
 			strncpy(screen_buf.second, ru_service_menu_12, 21);
+			
+			BA63_SetPos(0, 0);
+			BA63_SendString(screen_buf.first, 21);
+			BA63_SetPos(0, 1);
+			BA63_SendString(screen_buf.second, 21);
+			
+			cached_ui_code = ui_code;
+			break;
+		}
+		case 80:
+		{
+			//Установка режима затвора
+			
+			//Рисуем пункты меню на экране
+			strncpy(screen_buf.first, ru_shutter_delay_first, 21);
+			strncpy(screen_buf.second, ru_shutter_delay_second, 21);
+			
+			//Поправка на количество разрядов
+			if(xt_shutter_mode < 4)
+			{
+				//1 разряд
+				sprintf(&screen_buf.first[10], "%01d", (int)ru_shutter_presets[xt_shutter_mode]);
+			}
+			else if(xt_shutter_mode >= 4 && xt_shutter_mode < 7)
+			{
+				//2 разряда
+				sprintf(&screen_buf.first[10], "%02d", (int)ru_shutter_presets[xt_shutter_mode]);
+			}
+			else if(xt_shutter_mode >= 7 && xt_shutter_mode < 10)
+			{
+				//3 разряда
+				sprintf(&screen_buf.first[10], "%03d", (int)ru_shutter_presets[xt_shutter_mode]);
+			}
+			else if(xt_shutter_mode >= 10)
+			{
+				//4 разряда
+				sprintf(&screen_buf.first[10], "%04d", (int)ru_shutter_presets[xt_shutter_mode]);
+			}
+			else
+			{
+				//Прочая ебень
+				sprintf(&screen_buf.first[10], "%04d", (int)ru_shutter_presets[xt_shutter_mode]);
+			}
 			
 			BA63_SetPos(0, 0);
 			BA63_SendString(screen_buf.first, 21);
