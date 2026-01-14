@@ -6,7 +6,7 @@
 
 //TIM2 - управление яркостью подсветки - RGBY_PRESET/RGBY_PWM_RANGE = скважность ШИМ
 #define RGBY_PSC										1				//Делитель(если менять делитель, будет меняться цветовая температура!)
-#define RGBY_PWM_RANGE							768			//Значение для 100% ШИМ
+#define RGBY_PWM_RANGE							384			//Значение для 100% ШИМ
 #define RGBY_PRESET									128			//Предварительно установленное значение, 25% ШИМ
 #define RGBY_PWM_MUL								1				//Множитель вводимого пользователем значения - ввод * RGBY_PWM_MUL
 
@@ -60,7 +60,7 @@
 #define TAKE_COIL_START_THRESHOLD		720
 
 #define FEED_COIL_STOP_THRESHOLD		1920		//Порог для остановки двигателя
-#define TAKE_COIL_STOP_THRESHOLD		1166
+#define TAKE_COIL_STOP_THRESHOLD		1533
 
 #define FEED_COIL										1
 #define TAKE_COIL										0
