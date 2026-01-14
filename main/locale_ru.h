@@ -24,6 +24,8 @@ extern const char ru_finish[21];
 extern const char ru_remote_ctrl[21];
 extern const char ru_engine_disabled[21];
 extern const char ru_wait[21];
+extern const char ru_shutter_delay_first[21];
+extern const char ru_shutter_delay_second[21];
 
 extern const char ru_service_menu_1[21];
 extern const char ru_service_menu_2[21];
@@ -45,5 +47,7 @@ extern const char ru_alarm_ttm_break[21];
 extern const char ru_alarm_feed_break[21];
 extern const char ru_alarm_take_break[21];
 extern const char ru_alarm_general_feilor[21];
+
+extern const uint16_t ru_shutter_presets[14];
 
 #endif
