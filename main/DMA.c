@@ -42,8 +42,8 @@ void DMA1_Channel1_IRQHandler(void)
 	take_coil_tension_sensor += adc_buffer[1];
 	take_coil_tension_sensor = take_coil_tension_sensor / 2;
 	
-	callback_sensor += adc_buffer[2];
-	callback_sensor = callback_sensor / 2;
+	//callback_sensor += adc_buffer[2];
+	//callback_sensor = callback_sensor / 2;
 	
 	led_calibration += adc_buffer[3];
 	led_calibration = led_calibration / 2;
