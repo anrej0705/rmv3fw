@@ -250,14 +250,15 @@ void TIM3_IRQHandler()
 	take_coil_engine_pwm_en == ENGINE_COOLER_DISABLE ? (stop_take_coil()) : (start_take_coil());
 	
 	//Опрос датчика обратной связи камеры
-	if(callback_sensor > CALLBACK_THRESHOLD_EN && !camera_busy)
+	(GPIOC->IDR >> 4 & 0x0001) == 0 ? (camera_busy = 1) : (camera_busy = 0);
+	/*if(callback_sensor > CALLBACK_THRESHOLD_EN && !camera_busy)
 	{
 		camera_busy = 1;
 	}
 	else if(callback_sensor < CALLBACK_THRESHOLD_DIS && camera_busy)
 	{
 		camera_busy = 0;
-	}
+	}*/
 	
 	insert_sample(feed_coil_samples_map, &feed_coil_semaples_map_ptr, feed_coil_tension_sensor);
 	insert_sample(take_coil_samples_map, &take_coil_semaples_map_ptr, take_coil_tension_sensor);
