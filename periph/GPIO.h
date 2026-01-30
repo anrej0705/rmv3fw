@@ -17,6 +17,7 @@
 #define PB_FEED_COIL_LED						GPIO_Pin_13
 #define PB_TTM_DIRECTION						GPIO_Pin_15
 
+#define PC_CALLBACK_TRIGGER					GPIO_Pin_4
 #define PC_DROP_DETECT							GPIO_Pin_10
 #define PC_SUBLIGHT_EN_LED					GPIO_Pin_11
 #define PC_CAMERA_SHOT							GPIO_Pin_12

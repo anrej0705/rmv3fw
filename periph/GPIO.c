@@ -41,7 +41,7 @@ void setup_gpio(void)
 	GPIO_Init(GPIOB, &m_gpio);
 	
 	//GPIOC
-	m_gpio.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
+	m_gpio.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4;
 	GPIO_Init(GPIOC, &m_gpio);
 	
 	//GPIOD
@@ -77,7 +77,7 @@ void setup_gpio(void)
 	GPIO_Init(GPIOB, &m_gpio);
 	
 	//GPIOC
-	m_gpio.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
+	m_gpio.GPIO_Pin =  GPIO_Pin_5;
 	GPIO_Init(GPIOC, &m_gpio);
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
